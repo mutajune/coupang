@@ -1,3 +1,93 @@
 .App {
   text-align: center;
 }
+
+li {
+ list-style:none;
+}
+
+#top_bar {
+  display: flex;
+  background-color: #f0f0f0;;
+}
+
+#top_bar menu {
+  margin: 0 auto;
+  display: flex;
+}
+#top_bar menu li{
+  height: 24px;
+  padding: 10px 0 0 12px;
+  cursor: pointer;
+}
+
+.category_btn {
+  background-image: url(https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_180104.png);
+  background-repeat: no-repeat;
+  width: 110px;
+  height: 115px;
+  top: 32px;
+  left: 0;
+  margin-right: 30px;
+  background-position: 0 0;
+  text-align: center;
+}
+
+.category_btn > a {
+    display: block;
+    padding-top: 72px;
+    color: #fff;
+    font-size: 13px;
+}
+
+#header {
+  display: flex;
+}
+
+.header_search_box {
+  height: 91px;
+  margin: 25px 0 0 0;
+}
+
+.header_search_box_top {
+ display: flex;
+ justify-content: center; 
+ align-items: center;
+}
+
+.coupang_img {
+  width: 174px;
+  height: 41px;
+  margin: 2px 20px 0 0;
+}
+
+.header_search_form {
+  display: flex;
+  position: relative;
+  height: 100%;
+  border: 1px solid #007aff;
+}
+
+#search_category_select {
+  border: 0px;
+  border-right: 1px solid #aaa;
+}
+
+.header_search_input input{
+  border: 0px;
+}
+
+@supports (-webkit-appearance:none) {
+  .speech_content_mic{
+    z-index: 30;
+    overflow: hidden;
+    position: absolute;
+    top: 0px;
+    right: -30px;
+    width: 26px;
+    height: 26px;
+    background: url(//img1a.coupangcdn.com/image/coupang/common/ic_mic.png) 3px 1px no-repeat;
+    background-size: 20px 48px;
+    text-indent: -99px;
+}
+}
