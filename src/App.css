@@ -1,26 +1,41 @@
 .App {
   text-align: center;
 }
-
 li {
  list-style:none;
 }
 
-#top_bar {
-  display: flex;
-  background-color: #f0f0f0;;
+a {
+  color: black;
+  text-decoration-line: none;
 }
 
+/* top_bar = main */
+#top_bar {
+  display: flex;
+  justify-content: center;
+  background-color: #f0f0f0;;
+}
 #top_bar menu {
-  margin: 0 auto;
   display: flex;
 }
 #top_bar menu li{
   height: 24px;
-  padding: 10px 0 0 12px;
   cursor: pointer;
+  font-size: 11px;
 }
+.top_menus{
+  display: flex;
+  width: 1020px;
+  justify-content: space-between;
+}
+.left_menu li {
+  padding: 10px 0 0 12px;
 
+}
+.right_menu li{
+  padding: 10px 12px 0 0 ;
+}
 .category_btn {
   background-image: url(https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_180104.png);
   background-repeat: no-repeat;
@@ -32,18 +47,16 @@ li {
   background-position: 0 0;
   text-align: center;
 }
-
 .category_btn > a {
     display: block;
     padding-top: 72px;
     color: #fff;
     font-size: 13px;
 }
-
 #header {
   display: flex;
+  justify-content: center;
 }
-
 .header_search_box {
   height: 91px;
   margin: 25px 0 0 0;
@@ -64,30 +77,1276 @@ li {
 .header_search_form {
   display: flex;
   position: relative;
-  height: 100%;
-  border: 1px solid #007aff;
+  height: 37px;
+  border: 2px solid #007aff;
+  margin-right: 22px;
 }
 
 #search_category_select {
   border: 0px;
   border-right: 1px solid #aaa;
+  width: 110px;
 }
 
 .header_search_input input{
   border: 0px;
+  width: 384px;
+  height: 35px;
+  margin-right: 22px;
 }
-
 @supports (-webkit-appearance:none) {
   .speech_content_mic{
     z-index: 30;
     overflow: hidden;
     position: absolute;
-    top: 0px;
-    right: -30px;
+    top: 5px;
+    right: 40px;
     width: 26px;
     height: 26px;
     background: url(//img1a.coupangcdn.com/image/coupang/common/ic_mic.png) 3px 1px no-repeat;
     background-size: 20px 48px;
     text-indent: -99px;
 }
+}
+
+.header_search_btn {
+  background-image: url(https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_180104.png);
+    background-repeat: no-repeat;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    width: 50px;
+    height: 39px;
+    background-position: -112px -71px;
+    text-indent: -9em;
+}
+
+.icon_menus {
+  display: flex;
+}
+
+.icon_menus li {
+  position:relative;
+  margin-right: 20px;
+}
+
+.icon_menus li a > span{
+  font-size: 11px;
+}
+
+.icon_menus img{
+  width: 30px;
+  height: 30px
+}
+
+.icon_menus li > em{
+  display: inline-flex;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  top: -10px;
+  right: -5px;
+  justify-content: center;
+  align-items: center;
+  background-color: #346aff;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.header_search_box_bottom {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  max-width: 837px;
+  width: 100%;
+  z-index: 0;
+}
+
+.b_menu_btn_left{
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/common/pc_gnb_arrow-left-gray@2x.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  top: 5px;
+  left: -5px;
+  width: 20px;
+  height: 32px;
+  line-height: 32px;
+  z-index: 1;
+}
+
+.b_menu_btn_left_active{
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/common/pc_gnb_arrow-left@2x.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  top: 5px;
+  left: -5px;
+  width: 20px;
+  height: 32px;
+  line-height: 32px;
+  z-index: 1;
+}
+
+.b_menu_btn_right {
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/common/pc_gnb_arrow-right-gray@2x.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  top: 5px;
+  right: 0;
+  width: 20px;
+  height: 32px;
+  line-height: 32px;
+  z-index: 1;
+}
+
+.b_menu_btn_right_active {
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/common/pc_gnb_arrow-right@2x.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  top: 5px;
+  right: 0;
+  width: 20px;
+  height: 32px;
+  line-height: 32px;
+  z-index: 1;
+}
+
+.b_menu_item_box{
+  position: absolute;
+  display: flex;
+  transition: all 0.35s ease-in-out;
+}
+
+.b_menu_item_box_scroll{
+  position: absolute;
+  left: -632px;
+  display: flex;
+  transition: all 0.35s ease-in-out;
+}
+
+.b_menu_item{
+  margin-left: 10px;
+  padding: 0 5px;
+}
+
+.b_menu_item > a{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor:pointer;
+}
+
+.b_menu_item img {
+  margin-right: 2px;
+  width: 20px;
+}
+
+.b_menu_item span {
+  font-size: 12px;
+  white-space: nowrap;
+}
+/*  top_bar = marketplace */
+
+/*  top_bar = sell_sign_up */
+.sell_sign_up_bar{
+  display: flex;
+  background-color: #fff;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 72px;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+
+}
+
+.sell_sign_up {
+  background-image: url(https://marketplace.coupangcorp.com/sfsites/c/file-asset/logo2x);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 197px;
+  height: 27px;
+  cursor: pointer;
+}
+
+.sell_login_btn {
+  margin-left: auto;
+  margin-right: 40px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 25px;
+  text-align: left;
+  width: 80px;
+  height: 40px;
+}
+
+.sell_login_btn a > button {
+  font-size: 16px;
+  line-height: 25px;
+  height: 40px;
+  padding: 0 16px;
+  min-width: 94px;
+  font-weight: 700;
+  border: 1px solid #346aff;
+  color: #346aff;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.sell_drop_menu {
+  position: absolute;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  top: 100%;
+  width: 100%;
+  padding: 10px;
+  left: 0;
+  background-color: #fff;
+}
+
+.sell_drop_menu > a{
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 5px 10px;
+  font-size: 20px;
+}
+
+.sell_sign_up_title {
+  margin-top: 120px;
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 36px;
+  text-align: center;
+  color: #000;
+}
+
+.sell_sign_up_formbox {
+  margin: 20px auto 0px;
+  border: 1px solid #dadce0;
+  border-radius: 14px;
+  width: 444px;
+  min-height: 783px;
+}
+
+.sell_sign_up_form {
+  margin-top: 40px;
+  justify-self: center;;
+}
+
+.sell_input_box {
+  margin-bottom: 8px;
+}
+
+.input_style{
+  display: flex;
+  align-items: center;
+  border: 1px solid #dadce0;
+  width: 340px;
+  height: 56px;
+  text-align: left;
+}
+
+.error_message {
+  max-width: 340px;
+  height: 17px;
+  font-size: 12px;
+  text-align: left;
+  color: red;
+}
+
+.check_message {
+  max-width: 340px;
+  font-size: 12px;
+  text-align: left;
+  color: green;
+}
+
+.input_style > div{
+  width: 240px;
+  margin-left: 16px;
+}
+
+.input_style > div > label{
+  font-size: 10px;
+}
+
+.input_style > div > input{
+  width: 287px;
+  height: 25px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.check {
+  display: flex;
+  justify-content: center;
+  color: green;
+}
+
+#primary_bt {
+  margin-left: 0px;
+  height: 56px;
+  width: 90px;
+}
+
+.primary_bt button {
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  color: #d9d9d9;
+  border-color: #d9d9d9;
+  background-color: #f5f5f5;
+}
+
+.primary_bt_active button {
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  font-weight: 400;
+  padding: 0 15px;
+  color: #fff;
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.sell_input_box > select {
+  padding-left: 10px;
+  color: #333;
+  font-size: 16px;
+}
+
+.agree_box {
+  width: 340px;
+  font-size: 16px;;
+  text-align: left;
+}
+
+.all_check_box{
+  display: flex;
+}
+
+#all_check {
+  min-width: 24px;
+  min-height: 24px;
+  margin-right: 10px;
+}
+
+.explain {
+  font-size: 14px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+.agree {
+  font-size: 14px;
+  padding-bottom: 16px;
+  border: 1px solid #ccc;
+}
+
+.agree > div {
+  display: flex;
+  margin: 16px 16px 0px;
+}
+
+.agree > div > input {
+  display: flex;
+  min-width: 24px;
+  min-height: 24px;
+  margin-right: 10px;
+}
+
+.sumit_bt{
+  width: 340px;
+  text-align: center;
+  height: 56px;
+  margin-bottom: 16px;
+  margin-top: 12px;
+  font-size: 18px;
+  border: 1px solid #d9d9d9;
+  color: rgba(0, 0, 0, .25);
+  background-color: #f5f5f5;
+}
+
+.sumit_bt_active{
+  width: 340px;
+  text-align: center;
+  height: 56px;
+  margin-bottom: 16px;
+  margin-top: 12px;
+  font-size: 18px;
+  border: 1px solid #1890ff;
+  color: #fff;
+  background-color: #1890ff;
+}
+
+.explain_bottom {
+  width: 340px;
+  text-align: left;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #555;
+}
+
+.help_text {
+  text-align: left;
+  font-size: 14px;
+  color: #111;
+}
+
+.help_text > a {
+  color: #1890ff;
+}
+
+.help_text_bottom {
+  text-align: left;
+  font-size: 14px;
+  margin-bottom: 52px;
+  color: #111;
+}
+
+.help_text_bottom > a {
+  color: #1890ff;
+}
+
+/* benner */
+
+.banner_box {
+  width: 100%;
+  height: 450px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.banner_img {
+  position: absolute;
+  left: 50%;
+  margin-left: -960px;
+}
+
+.banner_img_mark {
+  position: relative;
+  width: 1028px;
+  height: 450px;
+  margin: auto;
+}
+
+
+.banner_mark_box {
+  position: absolute;
+  top: 35px;
+  left: 80%;
+  z-index: 10;
+}
+
+.mark_box{
+  max-height: 60px;
+  max-width: 180px;
+  border-top: 1px solid #eee;;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #eee;
+  border-left: 1px solid #fff;
+}
+
+.mark_box_active {
+  max-height: 60px;
+  max-width: 180px;
+  border: 2px solid #4285f4;
+}
+
+/* main_pruduct */
+.all_pruduct_contener {
+  width: 100%;
+  min-width: 1020px;
+  position: relative;
+  width: 980px;
+  margin: 0px auto;
+}
+
+.pruduct_box {
+  position: relative;
+  margin: 0px auto;
+  padding: 40px 40px 0 0;
+}
+
+.pruduct_hot_header {
+  display: block;
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/main/bg_main_sprite_180103.png);
+  background-repeat: no-repeat;
+  width: 355px;
+  height: 33px;
+  background-position: 0 -65px;
+}
+
+.pruduct_hot_box {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2px 0 13px 10px;
+  background: #fff;
+  border: 1px solid #d6d6d6;
+  margin: 0 auto;
+}
+
+.hot_box {
+  margin: 10px 2px 0 4px;
+  position: relative;
+}
+
+.hot_img {
+  height: 300px;
+  background: #fff;
+  border: 1px solid #d6d6d6;
+}
+
+.hot_img_focus  {
+  height: 300px;
+  background: #000;
+  border: 1px solid #007aff;
+}
+
+.hot_bt {
+  position: absolute;
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/main/bg_main_sprite_180103.png);
+  background-repeat: no-repeat;
+  background-color: none;
+  text-indent: -9999em;
+  border: 0px;
+  background-position: -515px -235px;
+  width: 40px;
+  height: 40px;
+  left: 5%;
+  bottom: 10%;
+}
+
+.hot_bt_focus {
+  position: absolute;
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/main/bg_main_sprite_180103.png);
+  background-repeat: no-repeat;
+  background-color: none;
+  text-indent: -9999em;
+  border: 0px;
+  background-position: -562px -235px;
+  width: 100px;
+  height: 40px;
+  left: 5%;
+  bottom: 10%;
+}
+
+/* title_mark */
+.showping {
+  background-image: url(https://static.coupangcdn.com/image/coupang/gateway/ad-carousel/pc/icon-shopping-bag@3x.png);
+}
+
+.trending {
+  background-image: url(https://static.coupangcdn.com/image/coupang/gateway/ad-carousel/pc/icon-trending-up@3x.png);
+}
+
+/* pruduct_list */
+
+.pruduct_list_contener{
+  position: relative;
+  margin: 0px auto;
+  padding: 40px 40px 0 0;
+  border-bottom: 1px solid #EEE;
+}
+
+.pruduct_list_box {
+  position: relative;
+  height: 410px;
+  overflow: hidden;
+}
+
+.pruduct_title {
+  display: flex;
+  align-items: center;
+  padding-left: 35px;
+  height: 29px;
+  background-repeat: no-repeat;
+  text-align: left;
+  margin-bottom: 18px;
+  background-size: contain;
+}
+
+.pruduct_list {
+  position: relative;
+  width: 9900px;
+  display: flex;
+}
+
+.list_box {
+  position: relative;
+  display: flex;
+  left: 0px;
+}
+
+.list_box > li {
+  margin: 0 1px;
+}
+
+.list_box > li > img {
+  width: 196px
+}
+
+.list_info {
+  text-align: left;
+}
+
+.info_title {
+  width: 196px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.delivery_info_box{
+  height: 24px;
+  display: block;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.delivery_info {
+  font-size: 14px;
+  width: 84px;
+}
+
+.review_box {
+  width: 100%;
+  display: flex;
+}
+
+.score_bg {
+  position: relative;
+  display: block;
+  width: 76px;
+  height: 14px;
+  background-image: url(https://img1a.coupangcdn.com/image/fodium/desktop/widget-sdp-alsoviewedproducts-20160622.png);
+  background-position: -39px -43px;
+  background-repeat: no-repeat;
+}
+
+.score_active {
+  position: absolute;
+  display: block;
+  height: 14px;
+  top: 0;
+  left: 0;
+  background-image: url(https://img1a.coupangcdn.com/image/fodium/desktop/widget-sdp-alsoviewedproducts-20160622.png);
+  background-position: -39px -59px;
+  background-repeat: no-repeat;
+}
+
+.review_num {
+  font-size: 12px;
+}
+
+.nonarrow {
+  position: absolute;
+  top: 45%;
+  left: 0px;
+  display: none;
+  text-indent: -9999em;
+}
+
+.black_btn_left{
+  width: 42px;
+  height: 42px;
+  background-image: url(https://static.coupangcdn.com/image/coupang/gateway/ad-carousel/pc/btn-arrow-black.png);
+  transform: scaleX(-1);
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 45%;
+  left: 0px;
+  line-height: 32px;
+  z-index: 1;
+  text-indent: -9999em;
+  opacity: 0.5;
+}
+
+.black_btn_right {
+  width: 42px;
+  height: 42px;
+  background-image: url(https://static.coupangcdn.com/image/coupang/gateway/ad-carousel/pc/btn-arrow-black.png);
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 45%;
+  left: 940px;
+  line-height: 32px;
+  z-index: 1;
+  text-indent: -9999em;
+  opacity: 0.5;
+}
+
+/* pruduct_list_box_small */
+
+.pruduct_list_contener_small{
+  position: relative;
+  margin: 0px auto;
+  padding: 40px 40px 0 0;
+}
+
+.pruduct_list_box_small {
+  margin: 0 50px;
+  position: relative;
+  width: 900px;
+  height: 310px;
+  overflow: hidden;
+}
+
+.pruduct_list_small {
+  position: relative;
+  width: 9900px;
+  display: flex;
+}
+
+.pruduct_title_small {
+  display: flex;
+  align-items: center;
+  height: 29px;
+  background-repeat: no-repeat;
+  text-align: left;
+  margin-bottom: 18px;
+  background-size: contain;
+}
+
+.list_box_small {
+  position: relative;
+  display: flex;
+  left: 0px;
+}
+
+.list_box_small > li {
+  width: 180px;
+  margin: 0 1px;
+}
+
+.list_box_small > li > img {
+  width: 160px;
+  margin-top: 8px;
+}
+
+.list_info_small {
+  text-align: left;
+}
+
+.info_title_small {
+  width: 160px;
+  max-height: 51px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+
+.delivery_info_box_small {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  display: block;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.delivery_info_small {
+  font-size: 14px;
+  width: 84px;
+}
+
+.review_box_small {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+}
+
+.score_bg_small {
+  position: relative;
+  display: block;
+  width: 76px;
+  height: 14px;
+  background-image: url(https://img1a.coupangcdn.com/image/fodium/desktop/widget-sdp-alsoviewedproducts-20160622.png);
+  background-position: -39px -43px;
+  background-repeat: no-repeat;
+}
+
+.score_active_small {
+  position: absolute;
+  display: block;
+  height: 14px;
+  top: 0;
+  left: 0;
+  background-image: url(https://img1a.coupangcdn.com/image/fodium/desktop/widget-sdp-alsoviewedproducts-20160622.png);
+  background-position: -39px -59px;
+  background-repeat: no-repeat;
+}
+
+.review_num_small {
+  font-size: 12px;
+}
+
+.white_btn_left{
+  width: 36px;
+  height: 39px;
+  background-image: url(https://static.coupangcdn.com/image/fodium/desktop/widget-sdp-alsoviewedproducts-20160622.png);
+  background-position: -2px -43px;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 40%;
+  left: 0px;
+  line-height: 32px;
+  z-index: 1;
+  text-indent: -9999em;
+  opacity: 0.5;
+}
+
+.white_btn_right {
+  width: 36px;
+  height: 39px;
+  background-image: url(https://static.coupangcdn.com/image/fodium/desktop/widget-sdp-alsoviewedproducts-20160622.png);
+  background-position: -2px -43px;
+  background-repeat: no-repeat;
+  transform: scaleX(-1);
+  position: absolute;
+  top: 40%;
+  right: 1%;
+  line-height: 32px;
+  z-index: 1;
+  text-indent: -9999em;
+  opacity: 0.5;
+}
+
+.price_small {
+  color: #ae0000;
+  margin-right: 10px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.price_piece_box {
+  color: #ae0000;
+  font-size: 11px;
+}
+
+.price_piece_small {
+  color: #ae0000;
+  font-size: 11px;
+}
+
+/* span color */
+.orange {
+  margin-left: 5px;
+  color: #cb1400;
+}
+
+.purple{
+  margin-left: 5px;
+  color: #9e20d3;
+}
+
+/* sidebar */
+
+.side_bar{
+  padding-top: 16px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin: 40px 0 0 495px;
+}
+
+.side_bar img{
+  width: 102px;
+  height: 150px;
+}
+
+/* scroll_menu_box  */
+
+.scroll_menu_box {
+  margin: 0 calc((100% - 980px) / 2 - 17px);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  contain: content;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.scroll_menu {
+  position: fixed;
+  width: 34px;
+  height: 667px;
+  margin-top: 10px;
+  top: 0;
+  left: 0;
+  display: block;
+  background: #fff;
+  border: 1px solid #ddd;
+  margin: 0 auto;
+}
+
+.scroll_menu a {
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/main/categoryBest/pc_bestcategory_v4.png);
+  background-repeat: no-repeat;
+  display: flex;
+  width: 34px;
+  height: 34px;
+  color: #fff;
+  text-indent: -999em;
+}
+
+.scroll_menu a:hover{
+  line-height: 34px;
+  width: 160px;
+  font-size: 12px;
+  text-indent: 42px;
+}
+
+.baby {
+  background-position: 0 -150px;
+}
+.travel{
+  background-position: 0 -650px;
+}
+.health{
+  background-position: 0 -850px;
+}
+.manclothe{
+  background-position: 0 -50px;
+}
+.food{
+  background-position: 0 -200px;
+}
+.sports{
+  background-position: 0 -450px;
+}
+.womanclothe{
+  background-position: 0 -0px;
+}
+.home_decoration{
+  background-position: 0 -350px;
+}
+.digital{
+  background-position: 0 -400px;
+}
+.office{
+  background-position: 0 -500px;
+}
+.living{
+  background-position: 0 -300px;
+}
+.beauty{
+  background-position: 0 -100px;
+}
+.babyfashion{
+  background-position: 0 -800px;
+}
+.kitchen{
+  background-position: 0 -250px;
+}
+.pets{
+  background-position: 0 -550px;
+}
+.hobby{
+  background-position: 0 -700px;
+}
+.car{
+  background-position: 0 -750px;
+}
+.book{
+  background-position: 0 -600px;
+}
+
+
+
+.baby.on {
+  background-position: -50px -150px;
+  background-color: #00aad4;
+}
+.travel.on{
+  background-position: -50px -650px;
+  background-color: #00b599;
+}
+.health.on{
+  background-position: -50px -850px;
+  background-color: #d22e60;
+}
+.manclothe.on{
+  background-position: -50px -50px;
+  background-color: #1992df;
+}
+.food.on{
+  background-position: -50px -200px;
+  background-color: #ee9200;
+}
+.sports.on{
+  background-position: -50px -450px;
+  background-color: #83be41;
+}
+.womanclothe.on{
+  background-color: #f6699e;
+  background-position: -50px 0px;
+}
+.home_decoration.on{
+  background-position: -50px -350px;
+  background-color: #dd6641;
+}
+.digital.on{
+  background-position: -50px -400px;
+  background-color: #5868be;
+}
+.office.on{
+  background-position: -50px -500px;
+  background-color: #97563e;
+}
+.living.on{
+  background-position: -50px -300px;
+  background-color: #9d7a6d;
+}
+.beauty.on{
+  background-position: -50px -100px;
+  background-color: #7e57c2;
+}
+.babyfashion.on{
+  background-position: -50px -800px;
+  background-color: #00aab4;
+}
+.kitchen.on{
+  background-position: -50px -250px;
+  background-color: #62ab66;
+}
+.pets.on{
+  background-position: -50px -550px;
+  background-color: #ab47bc;
+}
+.hobby.on{
+  background-position: -50px -700px;
+  background-color: #3e8d86;
+}
+.car.on{
+  background-position: -50px -750px;
+  background-color: #254e98;
+}
+.book.on{
+  background-position: -50px -600px;
+  background-color: #b74b4b;
+}
+
+.baby:hover{
+  background-position: -50px -150px;
+  background-color: #00aad4;
+}
+.travel:hover{
+  background-position: -50px -650px;
+  background-color: #00b599;
+  width: 160px;
+}
+.health:hover{
+  background-position: -50px -850px;
+  background-color: #d22e60;
+   width: 160px;
+}
+.manclothe:hover{
+  background-position: -50px -50px;
+  background-color: #1992df;
+  width: 160px;
+}
+.food:hover{
+  background-position: -50px -200px;
+  background-color: #ee9200;
+  width: 160px;
+}
+.sports:hover{
+  background-position: -50px -450px;
+  background-color: #83be41;
+  width: 160px;
+}
+.womanclothe:hover{
+  background-color: #f6699e;
+  background-position: -50px 0px;
+  width: 160px;
+}
+.home_decoration:hover{
+  background-position: -50px -350px;
+  background-color: #dd6641;
+  width: 160px;
+}
+.digital:hover{
+  background-position: -50px -400px;
+  background-color: #5868be;
+  width: 160px;
+}
+.office:hover{
+  background-position: -50px -500px;
+  background-color: #97563e;
+  width: 160px;
+}
+.living:hover{
+  background-position: -50px -300px;
+  background-color: #9d7a6d;
+  width: 160px;
+}
+.beauty:hover{
+  background-position: -50px -100px;
+  background-color: #7e57c2;
+  width: 160px;
+}
+.babyfashion:hover{
+  background-position: -50px -800px;
+  background-color: #00aab4;
+  width: 160px;
+}
+.kitchen:hover{
+  background-position: -50px -250px;
+  background-color: #62ab66;
+  width: 160px;
+}
+.pets:hover{
+  background-position: -50px -550px;
+  background-color: #ab47bc;
+  width: 160px;
+}
+.hobby:hover{
+  background-position: -50px -700px;
+  background-color: #3e8d86;
+  width: 160px;
+}
+.car:hover{
+  background-position: -50px -750px;
+  background-color: #254e98;
+  width: 160px;
+}
+.book:hover{
+  background-position: -50px -600px;
+  background-color: #b74b4b;
+  width: 160px;
+}
+
+
+/* trend_category_box */
+.trend_category_box {
+  position: relative;
+  padding-left: 48px;
+}
+
+.trend_category_title {
+  display: block;
+  background-image: url(https://static.coupangcdn.com/image/coupang/main/bg_main_sprite_200218.png);
+  background-position: 0 -123px;
+  background-repeat: no-repeat;
+  width: 290px;
+  height: 52px;
+  line-height: 99em;
+  margin-bottom: 20px;
+}
+
+.category_box {
+  position: relative;
+  display: flex;
+  border-top: 2px solid #00aad4;
+  margin-bottom: 20px;
+  background-color: #fff;
+  height: 601px;
+}
+
+.category_title {
+  position: absolute;
+  width: 114px;
+  padding: 40px 0 0 22px;
+  left: 0;
+  top: 0;
+}
+
+.category_title img{
+  width: 114px;
+}
+
+.go_category {
+  display: block;
+  text-align: left;
+  margin-top: 9px;
+  font-size: 11px;
+  color: #888;
+}
+
+.category_best {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 124px;
+  padding: 22px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.category_best_a {
+  display: block;
+  line-height: 28px;
+  padding: 0 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+}
+
+.promotion {
+    position: relative;
+    margin-left: 146px;
+    width: 325px;
+    height: 600px;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    background: #fafafa;
+    text-align: center;
+}
+
+.banner_description{
+  position: absolute;
+  display: block;
+  width: 261px;
+  height: 53px;
+  left: 20px;
+  padding: 12px;
+  bottom: 50px;
+  color: #fff;
+}
+
+.description_baby{
+  background-color: #00aad4;
+}
+
+.category_data {
+  display: flex;
+}
+
+.swiper-button-prev:after {
+  display: block;
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/main/categoryBest/pc_bestcategory_v2_setting.png);
+  background-position: 0px -13px;
+  content: '' !important;
+  left: 0;
+  width: 30px;
+  height: 50px;
+}
+
+.swiper-button-next:after {
+  display: block;
+  content: '' !important;
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/main/categoryBest/pc_bestcategory_v2_setting.png);
+  background-position: -50px -13px;
+  right: 0;
+  width: 30px;
+  height: 50px;
+}
+
+.swiper-pagination-bullet-active { 
+  background-color: #000 !important ;
 }
