@@ -473,7 +473,7 @@ const Main = () => {
 
             <section class="trend_category_box">
 
-              <div>
+              <div class="category_container">
                 <h3 class="trend_category_title"></h3>
                 
                 <div class="category_box">
@@ -509,13 +509,41 @@ const Main = () => {
                         <div class="banner_description description_baby ">{num.banner_name } <br/> {num.banner_description}</div> </SwiperSlide>)}
 
                         <SwiperSlide>Slide 1</SwiperSlide>
-
                       </Swiper>
                       </dd>
 
-                    <dd>
-                      {post.filter((num) => num.part === "CB" )
-                      .map((num) => <div>{num.name}</div>)}
+                    <dd class="category_list">
+                       <Swiper
+                        modules={[Navigation, Pagination, Autoplay]}
+                        spaceBetween={0}
+                        slidesPerView={1}
+                        slidesPerGroup={1}
+                        navigation
+                        pagination={{ clickable: true }}
+                        loop={true}
+                        onSlideChange={(e) => console.log(e)}
+                        onSwiper={(swiper) => console.log(swiper)}
+                      >
+                        <SwiperSlide>
+                          <div class="category_slide_box">
+                          {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 7)  
+                          .map((num) =>
+                          <div class="category_slide_list">
+                            <img src={num.list_image}/>
+                            <div class="category_slide_span"><a>{num.name}</a></div>
+                            <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
+                          </div>)}   
+                          </div>                       
+                        </SwiperSlide>
+
+                        <SwiperSlide>
+                          {post.filter((num) => num.part === "CB" && num.p_key < 13  && num.p_key > 6 )
+                          .map((num) =>
+                          <div class="">{num.name}</div>)}                          
+                        </SwiperSlide>
+
+                      </Swiper>                      
+                      
                     </dd>
                   </dl>
 
