@@ -16,9 +16,11 @@ const Main = () => {
   const [post, setpost] = useState("")
   const [banner_num, setbanner_num] = useState(0)
   const [tag, settag] = useState("")
+  const [category, setcategory] = useState("")
 
   // category
   const [scroll, setscroll] = useState(false)
+  const [width, setwidth] = useState(false)
 
   // user
   const [focus , setfocus] = useState("")
@@ -82,11 +84,22 @@ const Main = () => {
       console.error(error);
     }
   }
+  async function getcategory() {
+  try {
+    //응답 성공 
+    const response = await axios.get(`http://localhost:3000/category`);
+    setcategory(response.data)
+  } catch (error) {
+    //응답 실패
+    console.error(error);
+  }
+}
 
   useEffect(() => {
   getpost();
   getproduct();
   gettag();
+  getcategory();
   }, []);
 
 // useEffect(() => {
@@ -111,8 +124,14 @@ const Main = () => {
   function scrollmenu () {
     setscroll(window.scrollY);
   }
+
+    function outerWidth () {
+    // setwidth(window.outerWidth);
+  }
+
     useEffect(() => {
     window.addEventListener('scroll', scrollmenu);
+    window.addEventListener('resize', outerWidth);
   }, []);
 
   // fouce
@@ -324,7 +343,7 @@ const Main = () => {
       {topbar ? <Topbar screen={screen} setscreen={setscreen} /> : null} 
       
       {screen.main ? <>
-        {post !== "" && product !== "" && tag !== "" ? <>
+        {post !== "" && product !== "" && tag !== "" && category !=="" ? <>
           <section class="banner_box">
             <img class="banner_img" alt={post[banner_num].banner_name} src={post[banner_num].banner_img}/>
             <div class="banner_img_mark"><ul class="banner_mark_box">
@@ -472,104 +491,148 @@ const Main = () => {
             </section>
 
             <section class="trend_category_box">
+            
+            <div class="category_container">
+              <h3 class="trend_category_title"></h3>
+              {category.map((sno) =>
+             
+                  <div 
+                  className={`category_box ${sno.class}_box`}>
+                    <dt class="category_title">
+                      <img src={category[sno.sno - 1].title_img}/>
+                      <a class="go_category">바로가기</a>
+                    </dt>
 
-              <div class="category_container">
-                <h3 class="trend_category_title"></h3>
-                
-                <div class="category_box">
-                  <dt class="category_title">
-                    <img src={tag[0].title_img}/>
-                    <a class="go_category">바로가기</a>
-                  </dt>
+                    <dl class="category_data">
 
-                  <dl class="category_data">
-
-                    <dd class="category_best">
-                      <strong>HOT키워드</strong>
-                      {tag.filter((num) => num.category === 1)
-                      .map((num) => <a class="category_best_a">{num.tag}</a>)}
-                    </dd>
-
-                    <dd class="promotion">
-
-                       <Swiper
-                        modules={[Navigation, Pagination, Autoplay]}
-                        spaceBetween={50}
-                        slidesPerView={1}
-                        slidesPerGroup={1}
-                        navigation
-                        pagination={{ clickable: true }}
-                        autoplay={{ delay: 2000, disableOnInteraction: false}}
-                        loop={true}
-                        onSlideChange={(e) => console.log(e)}
-                        onSwiper={(swiper) => console.log(swiper)}
-                      >
-                        {post.filter((num) => num.part === "CB" && num.product === null)
-                        .map((num) => <SwiperSlide><img src={num.banner_img}/>
-                        <div class="banner_description description_baby ">{num.banner_name } <br/> {num.banner_description}</div> </SwiperSlide>)}
-
-                        <SwiperSlide>Slide 1</SwiperSlide>
-                      </Swiper>
+                      <dd class="category_best">
+                        <strong>HOT키워드</strong>
+                        {tag.filter((num) => num.category === sno.sno)
+                        .map((num) => <> <a className={`category_best_a ${sno.class}_tag`}>{num.tag} </a> <br/> </>)}
                       </dd>
 
-                    <dd class="category_list">
-                       <Swiper
-                        modules={[Navigation, Pagination, Autoplay]}
-                        spaceBetween={0}
-                        slidesPerView={1}
-                        slidesPerGroup={1}
-                        navigation
-                        pagination={{ clickable: true }}
-                        loop={true}
-                        onSlideChange={(e) => console.log(e)}
-                        onSwiper={(swiper) => console.log(swiper)}
-                      >
-                        <SwiperSlide>
-                          <div class="category_slide_box">
-                          {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 7)  
-                          .map((num) =>
-                          <div class="category_slide_list">
-                            <img src={num.list_image}/>
-                            <div class="category_slide_span"><a>{num.name}</a></div>
-                            <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
-                          </div>)}   
-                          </div>                       
-                        </SwiperSlide>
+                      <dd class="promotion">
 
-                        <SwiperSlide>
-                          {post.filter((num) => num.part === "CB" && num.p_key < 13  && num.p_key > 6 )
-                          .map((num) =>
-                          <div class="">{num.name}</div>)}                          
-                        </SwiperSlide>
+                        <Swiper
+                          modules={[Navigation, Pagination, Autoplay]}
+                          spaceBetween={50}
+                          slidesPerView={1}
+                          slidesPerGroup={1}
+                          navigation
+                          pagination={{ clickable: true }}
+                          autoplay={{ delay: 2000, disableOnInteraction: false}}
+                          loop={true}
+                          // onSlideChange={(e) => console.log(e)}
+                          // onSwiper={(swiper) => console.log(swiper)}
+                        >
+                          {post.filter((num) => num.part === "CB" && num.product === null && num.banner_category === sno.sno)
+                          .map((num) => <SwiperSlide><img src={num.banner_img}/>
+                          <div  className={`banner_description description_${sno.class}`}>{num.banner_name } <br/> {num.banner_description}</div> </SwiperSlide>)}
 
-                      </Swiper>                      
-                      
-                    </dd>
-                  </dl>
+                        </Swiper>
+                        </dd>
 
-                </div>
-              </div>
+                      <dd class="category_list">
+                        <Swiper
+                          modules={[Navigation, Pagination, Autoplay]}
+                          spaceBetween={0}
+                          slidesPerView={1}
+                          slidesPerGroup={1}
+                          navigation
+                          pagination={{ clickable: true }}
+                          loop={true}
+                          // onSlideChange={(e) => console.log(e)}
+                          // onSwiper={(swiper) => console.log(swiper)}
+                        >
+                            <SwiperSlide>
+                              <div class="category_slide_box">
+                              {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 7 && num.category === sno.sno)  
+                              .map((num) =>
+                              <div class="category_slide_list">
+                                <img src={num.list_image}/>
+                                <div class="category_slide_span"><a>{num.name}</a></div>
+                                <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
+                              </div>)}   
+                              </div>                       
+                            </SwiperSlide>
 
+                            <SwiperSlide>
+                              <div class="category_slide_box">
+                              {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 13 &&  num.p_key > 6 && num.category === sno.sno)  
+                              .map((num) =>
+                              <div class="category_slide_list">
+                                <img src={num.list_image}/>
+                                <div class="category_slide_span"><a>{num.name}</a></div>
+                                <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
+                              </div>)}   
+                              </div>                       
+                            </SwiperSlide>
+
+                            <SwiperSlide>
+                              <div class="category_slide_box">
+                              {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 19 &&  num.p_key > 12 && num.category === sno.sno)  
+                              .map((num) =>
+                              <div class="category_slide_list">
+                                <img src={num.list_image}/>
+                                <div class="category_slide_span"><a>{num.name}</a></div>
+                                <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
+                              </div>)}   
+                              </div>                       
+                            </SwiperSlide>
+
+                            <SwiperSlide>
+                              <div class="category_slide_box">
+                              {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 25 &&  num.p_key > 18 && num.category === sno.sno)  
+                              .map((num) =>
+                              <div class="category_slide_list">
+                                <img src={num.list_image}/>
+                                <div class="category_slide_span"><a>{num.name}</a></div>
+                                <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
+                              </div>)}   
+                              </div>                       
+                            </SwiperSlide>
+
+                            <SwiperSlide>
+                              <div class="category_slide_box">
+                              {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 31 &&  num.p_key > 24 && num.category === sno.sno)  
+                              .map((num) =>
+                              <div class="category_slide_list">
+                                <img src={num.list_image}/>
+                                <div class="category_slide_span"><a>{num.name}</a></div>
+                                <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
+                              </div>)}   
+                              </div>                       
+                            </SwiperSlide>
+
+                        </Swiper>                      
+                      </dd>
+                    </dl>
+
+                  </div>
+              )}
+             </div>
+            
+            {/* scroll */}
              <div class="scroll_menu_box">{scroll > 3600 ? <div class="scroll_menu">
                 <div class="scroll_menu_list">
-                  <a class="baby" className={scroll > 3600 && scroll < 4200 ? "baby on" : "baby"}>출산/유아동</a>
-                  <a class="travel" className={scroll > 4200 && scroll < 4800 ? "travel on" : "travel"}>여행</a>
-                  <a class="health" className={scroll > 4800 && scroll < 5400 ? "health on" : "health"}>헬스/건강식품</a>
-                  <a class="manclothe" className={scroll > 5400 && scroll < 6000 ? "manclothe on" : "manclothe"}>남성패션</a>
-                  <a class="food" className={scroll > 6000 && scroll < 6600 ? "food on" : "food"}>식품</a>
-                  <a class="sports" className={scroll > 6600 && scroll < 7200 ? "sports on" : "sports"}>스포츠/레저</a>
-                  <a class="womanclothe" className={scroll > 7200 && scroll < 7800 ? "womanclothe on" : "womanclothe"}>여성패션</a>
-                  <a class="home_decoration" className={scroll > 7800 && scroll < 8400 ? "home_decoration on" : "home_decoration"}>가구/홈인테리어</a>
-                  <a class="digital" className={scroll > 8400 && scroll < 9000 ? "digital on" : "digital"}>가전/디지털</a>
-                  <a class="office" className={scroll > 9000 && scroll < 9600 ? "office on" : "office"}>문구/오피스</a>
-                  <a class="living" className={scroll > 9600 && scroll < 10200 ? "living on" : "living"}>생활용품</a>
-                  <a class="beauty" className={scroll > 10200 && scroll < 10800 ? "beauty on" : "beauty"}>뷰티</a>
-                  <a class="babyfashion" className={scroll > 10800 && scroll < 11400 ? "babyfashion on" : "babyfashion"}>유아동패션</a>
-                  <a class="kitchen" className={scroll > 11400 && scroll < 12000 ? "kitchen on" : "kitchen"}>주방용품</a>
-                  <a class="pets" className={scroll > 12000 && scroll < 12600 ? "pets on" : "pets"}>반려동물용품</a>
-                  <a class="hobby" className={scroll > 12600 && scroll < 13200 ? "hobby on" : "hobby"}>완구/취미</a>
-                  <a class="car" className={scroll > 13200 && scroll < 13800 ? "car on" : "car"}>자동차용품</a>
-                  <a class="book" className={scroll > 13800 && scroll < 14400 ? "book on" : "book"}>도서/CD/DVD</a>
+                  <a class="baby" onClick={()=> {window.scrollTo({top: 3601});}} className={scroll > 3600 && scroll < 4200 ? "baby on" : "baby"}>출산/유아동</a>
+                  <a class="travel" onClick={()=> {window.scrollTo({top: 4201});}} className={scroll > 4200 && scroll < 4800 ? "travel on" : "travel"}>여행</a>
+                  <a class="health" onClick={()=> {window.scrollTo({top: 4801});}} className={scroll > 4800 && scroll < 5400 ? "health on" : "health"}>헬스/건강식품</a>
+                  <a class="manclothe" onClick={()=> {window.scrollTo({top: 5401});}} className={scroll > 5400 && scroll < 6000 ? "manclothe on" : "manclothe"}>남성패션</a>
+                  <a class="food" onClick={()=> {window.scrollTo({top: 6001});}} className={scroll > 6000 && scroll < 6600 ? "food on" : "food"}>식품</a>
+                  <a class="sports" onClick={()=> {window.scrollTo({top: 6601});}} className={scroll > 6600 && scroll < 7200 ? "sports on" : "sports"}>스포츠/레저</a>
+                  <a class="womanclothe" onClick={()=> {window.scrollTo({top: 7201});}} className={scroll > 7200 && scroll < 7800 ? "womanclothe on" : "womanclothe"}>여성패션</a>
+                  <a class="home_decoration" onClick={()=> {window.scrollTo({top: 7801});}} className={scroll > 7800 && scroll < 8400 ? "home_decoration on" : "home_decoration"}>가구/홈인테리어</a>
+                  <a class="digital"onClick={()=> {window.scrollTo({top: 8401});}}  className={scroll > 8400 && scroll < 9000 ? "digital on" : "digital"}>가전/디지털</a>
+                  <a class="office" onClick={()=> {window.scrollTo({top: 9001});}} className={scroll > 9000 && scroll < 9600 ? "office on" : "office"}>문구/오피스</a>
+                  <a class="living" onClick={()=> {window.scrollTo({top: 9601});}} className={scroll > 9600 && scroll < 10200 ? "living on" : "living"}>생활용품</a>
+                  <a class="beauty" onClick={()=> {window.scrollTo({top: 10201});}} className={scroll > 10200 && scroll < 10800 ? "beauty on" : "beauty"}>뷰티</a>
+                  <a class="babyfashion" onClick={()=> {window.scrollTo({top: 10801});}} className={scroll > 10800 && scroll < 11400 ? "babyfashion on" : "babyfashion"}>유아동패션</a>
+                  <a class="kitchen" onClick={()=> {window.scrollTo({top: 11401});}} className={scroll > 11400 && scroll < 12000 ? "kitchen on" : "kitchen"}>주방용품</a>
+                  <a class="pets" onClick={()=> {window.scrollTo({top: 12001});}} className={scroll > 12000 && scroll < 12600 ? "pets on" : "pets"}>반려동물용품</a>
+                  <a class="hobby" onClick={()=> {window.scrollTo({top: 12601});}} className={scroll > 12600 && scroll < 13200 ? "hobby on" : "hobby"}>완구/취미</a>
+                  <a class="car" onClick={()=> {window.scrollTo({top: 13201});}} className={scroll > 13200 && scroll < 13800 ? "car on" : "car"}>자동차용품</a>
+                  <a class="book" onClick={()=> {window.scrollTo({top: 13801});}} className={scroll > 13800 && scroll < 14400 ? "book on" : "book"}>도서/CD/DVD</a>
                 </div>
 
               </div> : null} </div>
