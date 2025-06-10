@@ -1,5 +1,6 @@
 import {React, useEffect, useState} from 'react'
 import Topbar from './Topbar'
+import Footer from './Footer'
 import axios from 'axios';
 
 import { Navigation, Pagination, Autoplay,  } from "swiper/modules";
@@ -12,6 +13,7 @@ import "swiper/css/scrollbar";
 
 const Main = () => {
   const [topbar, settopbar] = useState(true)
+  const [footer, setfooter] = useState(true)
   const [screen, setscreen] = useState({coupang: true , main : true})
   const [post, setpost] = useState("")
   const [banner_num, setbanner_num] = useState(0)
@@ -340,7 +342,7 @@ const Main = () => {
 
   return (
     <>
-      {topbar ? <Topbar screen={screen} setscreen={setscreen} /> : null} 
+      {topbar ? <Topbar screen={screen} setscreen={setscreen} setfooter={setfooter} /> : null} 
       
       {screen.main ? <>
         {post !== "" && product !== "" && tag !== "" && category !=="" ? <>
@@ -495,7 +497,7 @@ const Main = () => {
             <div class="category_container">
               <h3 class="trend_category_title"></h3>
               {category.map((sno) =>
-             
+              <>
                   <div 
                   className={`category_box ${sno.class}_box`}>
                     <dt class="category_title">
@@ -527,7 +529,7 @@ const Main = () => {
                         >
                           {post.filter((num) => num.part === "CB" && num.product === null && num.banner_category === sno.sno)
                           .map((num) => <SwiperSlide><img src={num.banner_img}/>
-                          <div  className={`banner_description description_${sno.class}`}>{num.banner_name } <br/> {num.banner_description}</div> </SwiperSlide>)}
+                          <div  className={`banner_description description_${sno.class}`}>{num.banner_name } <br/> <span>{num.banner_description}</span></div> </SwiperSlide>)}
 
                         </Swiper>
                         </dd>
@@ -609,11 +611,14 @@ const Main = () => {
                     </dl>
 
                   </div>
+
+                 {sno.bt_banner !="" ? <img class="trend_bt_banner" src={sno.bt_banner} />: null}
+              </>    
               )}
              </div>
             
             {/* scroll */}
-             <div class="scroll_menu_box">{scroll > 3600 ? <div class="scroll_menu">
+             <div class="scroll_menu_box">{scroll > 3600 && scroll < 14400 ? <div class="scroll_menu">
                 <div class="scroll_menu_list">
                   <a class="baby" onClick={()=> {window.scrollTo({top: 3601});}} className={scroll > 3600 && scroll < 4200 ? "baby on" : "baby"}>출산/유아동</a>
                   <a class="travel" onClick={()=> {window.scrollTo({top: 4201});}} className={scroll > 4200 && scroll < 4800 ? "travel on" : "travel"}>여행</a>
@@ -633,6 +638,7 @@ const Main = () => {
                   <a class="hobby" onClick={()=> {window.scrollTo({top: 12601});}} className={scroll > 12600 && scroll < 13200 ? "hobby on" : "hobby"}>완구/취미</a>
                   <a class="car" onClick={()=> {window.scrollTo({top: 13201});}} className={scroll > 13200 && scroll < 13800 ? "car on" : "car"}>자동차용품</a>
                   <a class="book" onClick={()=> {window.scrollTo({top: 13801});}} className={scroll > 13800 && scroll < 14400 ? "book on" : "book"}>도서/CD/DVD</a>
+                  <a class="setting">설정<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" data-sentry-element="svg" data-sentry-component="SettingIcon" data-sentry-source-file="index.tsx"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.51648 0L8.42202 0.0053353C8.08021 0.0441436 7.79305 0.291162 7.70803 0.63122L7.10061 3.06168L7.00261 3.10267C6.74306 3.21575 6.48931 3.34367 6.24225 3.4863L5.99842 3.63326C5.83797 3.73413 5.68176 3.84074 5.52995 3.9529L5.44561 4.01668L3.03685 3.32814C2.6692 3.22297 2.27716 3.3815 2.08596 3.71266L0.599463 6.28733L0.55349 6.37964C0.420731 6.69336 0.491976 7.06143 0.74188 7.30308L2.54311 9.04502L2.52244 9.21359C2.46723 9.73573 2.4667 10.2627 2.52144 10.7858L2.54227 10.955L0.741886 12.6969C0.466987 12.9627 0.408267 13.3815 0.599463 13.7127L2.08596 16.2873L2.14292 16.3733C2.34823 16.6451 2.70261 16.7675 3.03683 16.6719L5.44477 15.9825L5.57869 16.0841C6.00168 16.3914 6.45532 16.6534 6.93196 16.8662L7.08477 16.9308L7.69528 19.3688C7.78803 19.7398 8.12134 20 8.50373 20H11.4767L11.5712 19.9947C11.913 19.9559 12.2002 19.7088 12.2852 19.3688L12.8906 16.9433L12.9943 16.9013C13.257 16.7873 13.5138 16.658 13.7637 16.5138L14.064 16.3309C14.1626 16.2678 14.2594 16.2024 14.3546 16.135L14.5464 15.9917L16.9627 16.6829C17.3303 16.7881 17.7224 16.6295 17.9136 16.2984L19.4001 13.7237L19.4461 13.6314C19.5788 13.3177 19.5076 12.9496 19.2577 12.708L17.4598 10.9692L17.4825 10.7956C17.539 10.2674 17.5396 9.73425 17.4836 9.20509L17.4606 9.02835L19.2577 7.29208C19.5326 7.02627 19.5913 6.60749 19.4001 6.27633L17.9136 3.70166L17.8566 3.6157C17.6513 3.34386 17.2969 3.22153 16.9627 3.31714L14.5481 4.00752L14.4137 3.90616C13.99 3.59974 13.5358 3.33876 13.0587 3.12698L12.9048 3.06252L12.2979 0.63122C12.2052 0.260248 11.8718 0 11.4894 0H8.51648ZM9.16727 1.66585H10.8381L11.3936 3.88595C11.4618 4.15867 11.6629 4.37863 11.9284 4.47095C12.621 4.71175 13.2633 5.08028 13.8205 5.55931L13.9037 5.62222C14.1053 5.75578 14.3571 5.79604 14.5929 5.72857L16.7956 5.09835L17.6314 6.54585L15.9917 8.13167C15.7892 8.32747 15.6993 8.61233 15.7528 8.8889C15.8947 9.62309 15.8934 10.377 15.7516 11.1098L15.7382 11.2137C15.7223 11.4562 15.8132 11.6958 15.9905 11.8672L17.6314 13.4534L16.7956 14.9008L14.5922 14.2713C14.323 14.1942 14.0331 14.2576 13.8205 14.4399C13.5449 14.6763 13.2476 14.8872 12.9303 15.0704C12.6056 15.2579 12.2661 15.4127 11.9148 15.5346L11.8183 15.575C11.6008 15.6826 11.4392 15.881 11.3795 16.1198L10.8256 18.3325H9.15394L8.59831 16.1091C8.53028 15.837 8.32995 15.6174 8.06524 15.5247C7.37305 15.2823 6.73161 14.9125 6.17557 14.4323L6.09233 14.3691C5.89047 14.2349 5.63817 14.1943 5.40176 14.2619L3.20394 14.89L2.36727 13.4425L4.0115 11.8538C4.21353 11.6585 4.30349 11.3745 4.25077 11.0984C4.11213 10.3725 4.11332 9.62752 4.2519 8.90296L4.26507 8.79924C4.28046 8.55722 4.18949 8.31832 4.01267 8.14734L2.36727 6.55668L3.20394 5.10918L5.40249 5.7384C5.6723 5.81559 5.96284 5.75179 6.17549 5.56866C6.45407 5.32875 6.75463 5.11499 7.07558 4.92968C7.39665 4.74432 7.73205 4.5909 8.07895 4.46969L8.17515 4.42916C8.39196 4.32136 8.55296 4.12336 8.61252 3.88511L9.16727 1.66585ZM9.99977 6.25C7.92872 6.25 6.24977 7.92895 6.24977 10C6.24977 12.0711 7.9287 13.75 9.99977 13.75C12.0708 13.75 13.7498 12.0711 13.7498 10C13.7498 7.92895 12.0708 6.25 9.99977 6.25ZM9.99977 7.91666C11.1504 7.91666 12.0831 8.84943 12.0831 10C12.0831 11.1506 11.1504 12.0833 9.99977 12.0833C8.84918 12.0833 7.91644 11.1506 7.91644 10C7.91644 8.84943 8.84919 7.91666 9.99977 7.91666Z" fill="#4285F4" data-sentry-element="path" data-sentry-source-file="index.tsx"></path></svg></a>
                 </div>
 
               </div> : null} </div>
@@ -641,10 +647,11 @@ const Main = () => {
 
           </section>
 
-
-
         </> : null}
       </>: null}
+
+      {screen.search ? <>
+      </> : null}
       
       {screen.sell_sign_up ? <>
         <div class="sell_sign_up_title"><span>쿠팡과 함께 비즈니스를 시작하세요!</span></div>
@@ -848,6 +855,9 @@ const Main = () => {
 
 
       </>: null}
+
+      {footer ? <Footer screen={screen} setscreen={setscreen} /> : null} 
+
     </>
   )
 }

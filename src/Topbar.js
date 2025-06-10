@@ -1,7 +1,7 @@
 import {React, useState} from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-const Topbar = ({screen , setscreen}) => {
+const Topbar = ({screen , setscreen , setfooter}) => {
   const [sildermenu, setsildermenu] = useState(false)
   const [menuopen, setmenuopen] = useState(false)
   
@@ -27,7 +27,7 @@ const Topbar = ({screen , setscreen}) => {
             <li><a>로그인</a></li>
             <li><a>회원가입</a></li>
             <li><a>고객센터</a></li>
-            <li onClick={()=>{setscreen({sell_sign_up : true});}}><a>판매자 가입</a></li>
+            <li onClick={()=>{setscreen({sell_sign_up : true}); setfooter(false);}}><a>판매자 가입</a></li>
           </menu>
           </div>
         </section>
@@ -47,11 +47,11 @@ const Topbar = ({screen , setscreen}) => {
                 <option value=""></option>
               </select>
 
-              <div class="header_search_input">
-                <input placeholder="찾고 싶은 상품을 검색해보세요" />
+              <form class="header_search_input" onSubmit={(e)=> {e.preventDefault(); setscreen({coupang : true , search: true })}}>
+                <input type="text" class="search_input" placeholder="찾고 싶은 상품을 검색해보세요" />
                 <a class="speech_content_mic">마이크</a>
-                <a class="header_search_btn">검색</a>
-              </div>
+                <button class="header_search_btn" type="submit" >검색</button >
+              </form>
             </div>
             
             <ul class="icon_menus">
@@ -91,7 +91,7 @@ const Topbar = ({screen , setscreen}) => {
 
       {screen.sell_sign_up ? <>
        <section class="sell_sign_up_bar">
-         <div class="sell_sign_up"><a></a></div>
+         <div class="sell_sign_up" onClick={()=> {setscreen({coupang: true , main : true}); setfooter(true);}}><a></a></div>
          <div class="sell_login_btn"><a><button>로그인</button></a></div>
          <div onClick={()=> {setmenuopen(menuopen => !menuopen)}}><img src={ menuopen ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAZCAYAAAArK+5dAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADCSURBVHgB7ZUxCsQgEEVHC88h2HiNnNxr2AgeQyx0MxDBLIozC7Ip8qponPejxgTgZYHoG8YYV2vVSqnDex+BgT6RUjohRAwhHK1f9oNQjmNzzs5aq4FIk+Pl5YBhQCkFkyMnpJdjLc6+vy8oBbPloowVvxZSH2QYsBJwZjkNmIlSSkCVLwNGIa2bIicFDEKAKkckbGb7EkmOHIXcw/if13TrQdv6qeDIqTW3TebKkXjyvfE3Z9/AnwVHPgq5HC8P4gMuJsExIeiWXgAAAABJRU5ErkJggg==" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABiSURBVHgB7dOxDYBACAXQ78Uwh47iJDqam7gGpXNQEDmTs6XBRHO85sgVEEg+8HdDKyZTStkQgIh2Zj5rPbZPa37UOQggIqs9890XL3s2UNUl8kRIn5E5cGUOOpA5cGUOXBf4bikUcuEISAAAAABJRU5ErkJggg=="}/></div>
          {menuopen ? <div class="sell_drop_menu">

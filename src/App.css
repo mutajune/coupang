@@ -53,6 +53,7 @@ a {
     color: #fff;
     font-size: 13px;
 }
+
 #header {
   display: flex;
   justify-content: center;
@@ -110,15 +111,17 @@ a {
 }
 
 .header_search_btn {
+  border: 0px;
+  background-color: transparent;
   background-image: url(https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_180104.png);
-    background-repeat: no-repeat;
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    width: 50px;
-    height: 39px;
-    background-position: -112px -71px;
-    text-indent: -9em;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  width: 50px;
+  height: 39px;
+  background-position: -112px -71px;
+  text-indent: -9em;
 }
 
 .icon_menus {
@@ -973,19 +976,20 @@ a {
 /* scroll_menu_box  */
 
 .scroll_menu_box {
-  margin: 0 calc((100% - 980px) / 2 - 17px);
-  width: 100%;
-  height: 100%;
+  margin: 0 calc((100% - 980px) / 2 - 17px) 0;
+  width: 40px;
+  height: 651px;;
   position: fixed;
   contain: content;
   top: 0;
   left: 0;
+  z-index: 0;
 }
 
 .scroll_menu {
   position: fixed;
   width: 34px;
-  height: 667px;
+  height: 649px;
   margin-top: 10px;
   top: 0;
   left: 0;
@@ -1065,6 +1069,21 @@ a {
 }
 .book{
   background-position: 0 -600px;
+}
+
+.setting , .setting:hover{
+  background-image: none !important;
+  display: flex !important;
+  width: 34px !important;
+  height: 34px !important;
+  color: #fff !important;
+  text-indent: -999em !important;;
+  border-top: 1px solid #ddd;
+  background-color: #fafafa;
+}
+
+.setting svg {
+  margin: auto auto;
 }
 
 
@@ -1257,6 +1276,11 @@ a {
   background-color: #fff;
   height: 601px;
   width: 972px;
+}
+
+.trend_bt_banner {
+  width: 1020px;
+  margin-bottom: 15px;
 }
 
 /* c */
@@ -1513,6 +1537,10 @@ a {
   color: #fff;
 }
 
+.banner_description > span{
+  font-size: 12px;
+}
+
 
 .category_data {
   display: flex;
@@ -1625,3 +1653,111 @@ a {
         width: 360px;
     }
 } */
+
+
+/* footer */
+
+.footer_menu {
+  display: flex;
+  justify-content: center;
+  margin: 0px auto;
+  margin-top: 40px;
+  border-top: 2px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.footer_menu a{
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0 14px;
+  margin-top: 15px;
+  font-size: 12px;
+  color: #555;
+  border-right: 1px solid #555;
+}
+
+.footer_text_menus {
+  text-align: center;
+}
+
+.footer_pick {
+  margin-top: 15px;
+  padding: 0 14px;
+  width: 180px;
+  text-align: left;
+}
+
+.business_info {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  padding-bottom: 15px;
+  gap: 24px;
+  font-size: 11px;
+}
+
+.business_info_img{
+  width: 117px;
+  height: 27px;
+}
+
+.security_mark {
+  display: flex;
+  text-align: left;
+  justify-content: center;
+  margin-bottom: 16px;
+  gap: 8px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 20px;
+}
+
+.security_item {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+}
+
+.security_item img {
+  width: auto;
+  height: 36px;
+}
+
+.fw-flex {
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+.footer_bt {
+  display: flex;
+  justify-content: center;
+  background: #333;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 11px;
+}
+
+.coupang-copyright{
+  gap: 20px;
+}
+
+.sns-link li {
+  margin-right: 8px;
+}
+
+.sns-link img {
+  width: 100%;
+  height: 100%;
+  box-sizing: content-box;
+  border-radius: 9999px;
+}
+
+.search_input {
+ padding-left: 10px;
+}
+
+.search_input:focus {
+  outline:none;
+}
+
