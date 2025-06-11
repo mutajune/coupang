@@ -1,10 +1,23 @@
 import {React, useState} from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
+import axios from 'axios';
 
-const Topbar = ({screen , setscreen , setfooter}) => {
+const Topbar = ({screen , setscreen , setfooter, division, setdivision , setproduct, setsearch}) => {
   const [sildermenu, setsildermenu] = useState(false)
   const [menuopen, setmenuopen] = useState(false)
   
+    async function getproduct(e) {
+    console.log(e)
+    try {
+      //응답 성공 
+      const response = await axios.get(`http://localhost:3000/product?division=${division}&search=${e}`);
+
+      setproduct(response.data)
+    } catch (error) {
+      //응답 실패
+      console.error(error);
+    }
+  }
   
   return (
     <header>
@@ -39,15 +52,15 @@ const Topbar = ({screen , setscreen , setfooter}) => {
 
         <div class="header_search_box">
           <div class="header_search_box_top">
-            <img class="coupang_img" src="https://image7.coupangcdn.com/image/coupang/common/logo_coupang_w350.png"/>
+            <img onClick={()=>{ setscreen({coupang : true , main: true })}} class="coupang_img" src="https://image7.coupangcdn.com/image/coupang/common/logo_coupang_w350.png"/>
 
             <div class="header_search_form">
-              <select id="search_category_select">
-                <option value="-1">전체</option>
+              <select id="search_category_select" onChange={(e)=>{setdivision(e.target.value)}}>
+                <option value="all">전체</option>
                 <option value=""></option>
               </select>
 
-              <form class="header_search_input" onSubmit={(e)=> {e.preventDefault(); setscreen({coupang : true , search: true })}}>
+              <form class="header_search_input" onSubmit={(e)=> {e.preventDefault(); setscreen({coupang : true , search: true }); getproduct(e.target.children[0].value); setsearch(e.target.children[0].value); }}>
                 <input type="text" class="search_input" placeholder="찾고 싶은 상품을 검색해보세요" />
                 <a class="speech_content_mic">마이크</a>
                 <button class="header_search_btn" type="submit" >검색</button >

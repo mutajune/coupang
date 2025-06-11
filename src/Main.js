@@ -29,6 +29,9 @@ const Main = () => {
   const [id , setid] = useState("")
   const [pw , setpw] = useState("")
 
+  const [search , setsearch] = useState("")
+  const [division, setdivision] = useState("all")
+
   const [iderror , setiderror] = useState("")
   const [pwerror , setpwerror] = useState("")
   const [recheckerror , setrecheckerror] = useState("")
@@ -75,17 +78,6 @@ const Main = () => {
       console.error(error);
     }
   }
-  async function getproduct() {
-    try {
-      //응답 성공 
-      const response = await axios.get(`http://localhost:3000/product`);
-
-      setproduct(response.data)
-    } catch (error) {
-      //응답 실패
-      console.error(error);
-    }
-  }
   async function getcategory() {
   try {
     //응답 성공 
@@ -95,11 +87,10 @@ const Main = () => {
     //응답 실패
     console.error(error);
   }
-}
+  }
 
   useEffect(() => {
   getpost();
-  getproduct();
   gettag();
   getcategory();
   }, []);
@@ -342,10 +333,10 @@ const Main = () => {
 
   return (
     <>
-      {topbar ? <Topbar screen={screen} setscreen={setscreen} setfooter={setfooter} /> : null} 
+      {topbar ? <Topbar screen={screen} setscreen={setscreen} setproduct={setproduct} setfooter={setfooter} division={division} setsearch={setsearch} setdivision={setdivision} /> : null} 
       
       {screen.main ? <>
-        {post !== "" && product !== "" && tag !== "" && category !=="" ? <>
+        {post !== "" && tag !== "" && category !=="" ? <>
           <section class="banner_box">
             <img class="banner_img" alt={post[banner_num].banner_name} src={post[banner_num].banner_img}/>
             <div class="banner_img_mark"><ul class="banner_mark_box">
@@ -380,7 +371,8 @@ const Main = () => {
               <div class="pruduct_list">
                 <div  class="black_btn_left nonarrow" onClick={(e)=> {btn_left(e)}}>left</div>
                 <ul class="list_box">
-                  {product.map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  {post.filter((num) => num.part === 'TS')
+                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info">
                       <div class="info_title"> <span>{num.name}</span></div>
                     <div class="delivery_info_box">
@@ -402,7 +394,8 @@ const Main = () => {
               <div class="pruduct_list_box_small">
               <div class="pruduct_list_small">
                 <ul class="list_box_small">
-                  {product.map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  {post.filter((num) => num.part === 'NP')
+                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info_small">
                       <div class="info_title_small"> <span>{num.name}</span></div>
                     <div class="delivery_info_box_small">
@@ -426,7 +419,8 @@ const Main = () => {
               <div class="pruduct_list">
                 <div  class="black_btn_left nonarrow" onClick={(e)=> {btn_left(e)}}>left</div>
                 <ul class="list_box">
-                  {product.map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  {post.filter((num) => num.part === 'LC')
+                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info">
                       <div class="info_title"> <span>{num.name}</span></div>
                     <div class="delivery_info_box">
@@ -448,7 +442,8 @@ const Main = () => {
               <div class="pruduct_list_box_small">
               <div class="pruduct_list_small">
                 <ul class="list_box_small">
-                  {product.map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  {post.filter((num) => num.part === 'TSS')
+                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info_small">
                       <div class="info_title_small"> <span>{num.name}</span></div>
                     <div class="delivery_info_box_small">
@@ -474,7 +469,8 @@ const Main = () => {
               <div class="pruduct_list_box_small">
               <div class="pruduct_list_small">
                 <ul class="list_box_small">
-                  {product.map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  {post.filter((num) => num.part === 'RGS')
+                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info_small">
                       <div class="info_title_small"> <span>{num.name}</span></div>
                     <div class="delivery_info_box_small">
@@ -651,6 +647,53 @@ const Main = () => {
       </>: null}
 
       {screen.search ? <>
+       {product !== "" ? <>
+          <section>
+
+            <div class="serch_division">
+            {division === "all" ?
+              <><a>전체</a>
+               <svg class="srp_arrowIcon__bNaNA" width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" data-sentry-element="svg" data-sentry-component="ArrowIcon" data-sentry-source-file="Breadcrumb.tsx"><path d="M3.8859 2.15732C4.0606 1.9717 4.34367 1.94925 4.54434 2.09575L4.59268 2.1359L8.84268 6.1359C9.03746 6.31922 9.05137 6.61975 8.88442 6.81982L8.84268 6.8641L4.59268 10.8641C4.3916 11.0534 4.07516 11.0438 3.8859 10.8427C3.7112 10.6571 3.70593 10.3732 3.86432 10.1817L3.90732 10.1359L7.77 6.50001L3.90732 2.8641C3.7217 2.6894 3.69925 2.40634 3.84575 2.20566L3.8859 2.15732Z" fill="#AAB5C0" data-sentry-element="path" data-sentry-source-file="Breadcrumb.tsx"></path></svg>
+               <strong>'{search}'</strong></> 
+            : <><a>전체</a> <a>{division}</a>
+                <svg class="srp_arrowIcon__bNaNA" width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" data-sentry-element="svg" data-sentry-component="ArrowIcon" data-sentry-source-file="Breadcrumb.tsx"><path d="M3.8859 2.15732C4.0606 1.9717 4.34367 1.94925 4.54434 2.09575L4.59268 2.1359L8.84268 6.1359C9.03746 6.31922 9.05137 6.61975 8.88442 6.81982L8.84268 6.8641L4.59268 10.8641C4.3916 11.0534 4.07516 11.0438 3.8859 10.8427C3.7112 10.6571 3.70593 10.3732 3.86432 10.1817L3.90732 10.1359L7.77 6.50001L3.90732 2.8641C3.7217 2.6894 3.69925 2.40634 3.84575 2.20566L3.8859 2.15732Z" fill="#AAB5C0" data-sentry-element="path" data-sentry-source-file="Breadcrumb.tsx"></path></svg>
+                <strong>'{search}'</strong></>}
+              </div>
+
+
+            <div class="search_contents">
+              <div class="search_side_filter"></div>
+
+              <div class="search_main_contents">
+                <div class="search_result">
+                  <span><strong>'{search}'</strong> 에 대한 검색결과</span>
+                  <div><span>연관검색어:</span></div>
+                </div>
+
+                  <ul class="list_box">
+                    {product.map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  <div class="list_info_small">
+                      <div class="info_title_small"> <span>{num.name}</span></div>
+                    <div class="delivery_info_box_small">
+                      <span class="price_small">{num.price}원</span>
+                      { num.delivery === "무료배송" ? <span class="delivery_info_small">{num.delivery}</span> : <img class="delivery_info_small" name={num.delivery}  src={num.delivery_img}/> }                    
+                      </div>
+                    <div class="price_piece_box"><span class="price_piece_small"></span></div>
+                    <div class="review_box_small"><span class="score_bg_small"><span class="score_active_small" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+                  </div></li>)}
+                  </ul>
+              </div>
+            </div>
+
+            <article class="side_bar">
+              <ul><li></li></ul> 
+              <ul>{post.filter((num) => num.part === "SD")
+              .map((num) => <li><img src={num.post_mark}/></li>)}</ul>
+              <ul><li></li></ul> 
+            </article>
+          </section>
+
+        </>: null}
       </> : null}
       
       {screen.sell_sign_up ? <>

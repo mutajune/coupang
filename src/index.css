@@ -21,7 +21,7 @@ html, body {
 }
 
 html {
-  height: 7000px;
+  height: auto;
   overflow-y: scroll;
 }
 

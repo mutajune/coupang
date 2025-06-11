@@ -1761,3 +1761,31 @@ a {
   outline:none;
 }
 
+.search_contents {
+  display: flex;
+  gap: 20px;
+}
+
+.search_side_filter{
+  width: 180px;
+  padding: 10px 0px;
+}
+
+.search_main_contents {
+  width: 519px;
+}
+
+.serch_division {
+  text-align: left;
+  padding: 0 20px ;
+  border-top: 1px solid #dfe3e8;
+  border-bottom: 1px solid #dfe3e8;
+  background: #f9fafb;
+  font-size: 12px;
+  line-height: 36px;
+}
+
+
+.search_result {
+  text-align: left;
+}
