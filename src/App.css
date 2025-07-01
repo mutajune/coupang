@@ -34,7 +34,21 @@ a {
 
 }
 .right_menu li{
-  padding: 10px 12px 0 0 ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 12px 0 0 ;
+}
+.right_menu_nickname{
+  font-weight: bold;
+}
+.right_menu_nickname span {
+  margin-left: 5px;
+  font-weight: normal;
+}
+.right_menu_log_out button{
+  font-size: 11px ;
+  color: #333;
 }
 .category_btn {
   background-image: url(https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_180104.png);
@@ -55,8 +69,9 @@ a {
 }
 
 #header {
+  width: 1020px;
   display: flex;
-  justify-content: center;
+  margin: 0 auto;
 }
 .header_search_box {
   height: 91px;
@@ -254,9 +269,9 @@ a {
   font-size: 12px;
   white-space: nowrap;
 }
-/*  top_bar = marketplace */
+/* top_bar: marketplace */
 
-/*  top_bar = sell_sign_up */
+/* top_bar: sell_sign_up */
 .sell_sign_up_bar{
   display: flex;
   background-color: #fff;
@@ -326,6 +341,8 @@ a {
   font-size: 20px;
 }
 
+/* screen: sell_sign_up */
+
 .sell_sign_up_title {
   margin-top: 120px;
   margin-bottom: 20px;
@@ -350,6 +367,7 @@ a {
 }
 
 .sell_input_box {
+  position: relative;
   margin-bottom: 8px;
 }
 
@@ -525,6 +543,122 @@ a {
 .help_text_bottom > a {
   color: #1890ff;
 }
+
+/* screen: sign_up */
+.sign_up_title{
+  width: 460px;
+  margin: 0 auto;
+  padding-top: 50px;
+}
+.sign_up_title img {
+  width: 195px;
+  height: 100%;
+}
+.sign_up_formbox{
+  width: 460px;
+  margin: 0 auto;
+}
+
+.sign_up_input_style{
+  display: flex;
+  align-items: center;
+  border: 1px solid #dadce0;
+  width: 460px;
+  height: 48px;
+  text-align: left;
+}
+
+.sign_up_input_box{
+  width: 460px;
+  display: flex;
+  height: 100%;
+}
+
+.login_icon_email {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 44px;
+  min-height: 100%;
+  border-right: 1px solid #ccc;
+  background-color: #fafafa;
+}
+
+.sign_up_input_style > div > label{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+}
+
+.sign_up_input_style > div > label > input{
+  width: 413px;
+  padding-left: 10px;
+  box-sizing: border-box;
+  height: 100%;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  border: 0px;
+}
+
+.login_icon_email > i{
+  display: inline-block;
+  min-width: 22px;
+  min-height: 21px;
+  background-image: url(https://img1a.coupangcdn.com/image/static/login/sprite-member.20171115.svg);
+  background-position: 0px -0px;
+}
+
+.sign_check {
+position: absolute;
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #fff;
+width: 44px;
+height: 48px;
+right: 0;
+}
+
+.sign_check i{
+width: 21px;
+height: 15px;
+background-image: url(https://img1a.coupangcdn.com/image/static/login/sprite-join.20160902.svg);
+background-position: -65px -1px;
+}
+
+.input_b_red {
+  border-bottom: 2px solid red;
+}
+
+.input_b_blue {
+  border-bottom: 2px solid blue;
+}
+
+.sign_agree_box {
+  width: 100%;
+  font-size: 16px;;
+  text-align: left;
+}
+
+.sign_agree_box > .explain {
+  font-size: 12px;
+  margin-left: 20px;
+} 
+
+.sign_submit_bt{
+  width: 100%;
+  text-align: center;
+  height: 56px;
+  margin-bottom: 16px;
+  margin-top: 12px;
+  font-size: 17px;
+  border: 1px solid #0074e9;;
+  color: #fff;
+  background-color: #0074e9;;
+  font-weight: 500;
+} 
 
 /* benner */
 
@@ -826,6 +960,11 @@ a {
   background-size: contain;
 }
 
+.pruduct_title_small span {
+  margin-left: 10px;
+  color:  rgb(203 20 0 / var(--tw-text-opacity, 1));
+}
+
 .list_box_small {
   position: relative;
   display: flex;
@@ -971,6 +1110,51 @@ a {
 .side_bar img{
   width: 102px;
   height: 150px;
+}
+
+.cart_box{
+  background-color: #fff;
+  width:102px;
+}
+
+.side_cart {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 10px;
+  background: #3a4056;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid silver;
+}
+
+.cart_count {
+  color: #18a0fb;
+  line-height: 14px;
+}
+
+.recently_viewed_products {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 10px;
+  background: #3a4056;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid silver;
+}
+
+.recently_viewed_no_list{
+  padding: 10px;
+  height: 158px;
+  padding: 110px 0 0;
+  font-size: 11px;
+  line-height: 160%;
+  border: 1px solid silver;
+}
+
+.no_item{
+  color: #929292;
 }
 
 /* scroll_menu_box  */
@@ -1761,22 +1945,17 @@ a {
   outline:none;
 }
 
-.search_contents {
-  display: flex;
-  gap: 20px;
-}
+/* screen serch */
 
-.search_side_filter{
-  width: 180px;
-  padding: 10px 0px;
-}
-
-.search_main_contents {
-  width: 519px;
+.screen_serch {
+  position: relative;
+  width: 1020px;
+  margin: 0 auto;
 }
 
 .serch_division {
-  text-align: left;
+  display: flex;
+  justify-content: left;
   padding: 0 20px ;
   border-top: 1px solid #dfe3e8;
   border-bottom: 1px solid #dfe3e8;
@@ -1785,7 +1964,381 @@ a {
   line-height: 36px;
 }
 
+.serch_division_text{
+  width: 1020px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.search_contents {
+  display: flex;
+  width: 1020px;
+  margin: 0 auto;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.search_side_filter{
+  width: 180px;
+  padding: 10px 0px;
+  box-shadow: 1px 0 1px 0 #eee, -1px 0 1px 0 #eee;
+  font-size: 12px;
+  line-height: 2;
+}
+
+.search_main_contents {
+  width: 866.969px;
+  margin-top: 20px;
+}
 
 .search_result {
   text-align: left;
+}
+
+.search_result span{
+  display: block;
+  padding-bottom: 15px;
+}
+
+.search_filter_bts {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  background-color: #fafafa;
+  padding: 8px 0 0 16px;
+  margin-bottom: 15px;
+  color: #555;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.search_filter_bts > div > a {
+  border-right: 1px solid #dfe3e8;
+  padding: 0 10px;
+  margin-bottom: 8px;
+}
+
+.search_filter_bts > div > a > span {
+  display: inline-block;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.search_filter_bts > div > select {
+  margin-right: 20px;
+}
+
+.search_paginations {
+  width: 100%;
+  padding: 10px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.search_paginations_scroll {
+  width: 100%;
+  padding: 10px 0;
+  border-top: 1px solid #fff;
+  background-color: hsla(0, 0%, 100%, .9);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+@media screen and (max-width: 500px) {
+  .search_shopping_cart{
+    display: none;
+  }
+}
+.search_shopping_cart{
+  padding-top: 16px;
+  position: absolute;
+  top: -50px;
+  right: -115px;
+  margin: 40px 0 0 495px;
+}
+
+.search_shopping_cart img{
+  width: 102px;
+  height: 150px;
+}
+
+.search_list_contener_gray{
+  position: relative;
+  margin: 0px auto;
+  padding: 40px 40px 0 0;
+  width: 1020px;
+  background-color: #f5f5f5;
+  box-sizing: border-box;
+}
+
+.search_title_gray {
+  text-align: left;
+  font-size: 16px;
+  margin: 0 0 20px 35px;
+  color: #222;
+  box-sizing: border-box;
+
+}
+
+.search_list_contener{
+  position: relative;
+  margin: 0px auto;
+  padding: 40px 40px 0 0;
+  width: 1020px;
+  max-width: 1020px;
+
+}
+.search_contents_list_box {
+  margin: 0 auto;
+  width: 100%;
+ display: flex;
+ flex-wrap: wrap;
+}
+
+.search_contents_list_box > li{
+  width: 21%;
+  padding: 10px 16px 20px;
+  text-align: left;
+}
+
+.search_contents_list_box > li > img{
+  width: 100%;
+  height: auto;
+}
+
+/* .pruduct_list_box_small {
+  margin: 0 50px;
+  position: relative;
+  width: 900px;
+  height: 310px;
+  overflow: hidden;
+} */
+
+.search_info_title {
+  max-height: 51px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  width: 100%;
+}
+
+/* log_in */
+.log_in_page{
+}
+
+.log_in_header{
+   margin: 0 auto;
+   width: 460px;
+   margin-bottom: 20px;
+}
+
+.log_in_header img{
+  width: 195px;
+  height: 100%;
+  padding: 40px 0 0;
+  margin: 0px;
+}
+
+.log_in_form_bt {
+  margin-top: 24px;
+  border-bottom: 1px solid  #454f5b;
+}
+
+.log_in_form_bt > a{
+   font-size: 16px;
+    display: inline-block;
+    width: 153.328px;
+    padding: 14px 0;
+    color: #454f5b;
+    text-align: center;
+    text-decoration: none;
+}
+
+.log_in_bt_active{
+  color: #346aff !important;
+  font-weight: bold;
+  border-bottom: 3px solid #346aff;
+}
+
+.log_in_form_detail {
+  margin: 0 auto;
+  width: 460px;
+  text-align: left;
+}
+
+.log_in_form_detail > div{
+  display: flex;
+  border: 1px solid #ccc;
+  align-items: center;
+  margin-top: 20px;
+  height: 50px;
+}
+
+.log_in_form_detail > div >label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  margin-right: -46px;
+  padding-right: 46px;
+}
+
+.log_in_form_detail > div >label > input{
+  width: calc(100% - 44px);
+  height: 48px;
+  padding: 16px 0 12px;
+  box-sizing: border-box;
+  text-indent: 12px;
+}
+
+.input_icon_email {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 44px;
+  min-height: 48px;
+  border-right: 1px solid #ccc;
+  background-color: #fafafa;
+}
+
+.input_icon_email > i{
+  display: inline-block;
+  min-width: 22px;
+  min-height: 21px;
+  background-image: url(https://img1a.coupangcdn.com/image/static/login/sprite-member.20171115.svg);
+  background-position: 0px -0px;
+}
+
+.input_icon_x{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 44px;
+  min-height: 48px;
+  border-right: 1px solid #fff;
+  background-color: #fff;
+}
+
+.input_icon_x > i{
+  display: inline-block;
+  min-width: 22px;
+  min-height: 21px;
+  background-image: url(https://img1a.coupangcdn.com/image/static/login/sprite-member.20171115.svg);
+  background-position: 22px -0px;
+}
+
+.input_icon_pw {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 44px;
+  min-height: 48px;
+  border-right: 1px solid #ccc;
+  background-color: #fafafa;
+}
+
+.input_icon_pw > i{
+  display: inline-block;
+  min-width: 22px;
+  min-height: 21px;
+  background-image: url(https://img1a.coupangcdn.com/image/static/login/sprite-member.20171115.svg);
+  background-position: -21px -0px;
+}
+
+.input_icon_show{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 44px;
+  min-height: 48px;
+  border-right: 1px solid #fff;
+  background-color: #fff;
+}
+
+.input_icon_show > i{
+  display: inline-block;
+  min-width: 22px;
+  min-height: 21px;
+  background-image: url(https://img1a.coupangcdn.com/image/static/login/sprite-member.20171115.svg);
+  background-position: 43px -0px;
+}
+
+.login_checkbox_form {
+  display: flex;
+  justify-content: space-between;
+  height: 24px !important;
+  margin-top: 5px;
+  border: 0px !important
+}
+
+.login_checkbox {
+  font-size: 16px;
+}
+
+.login_checkbox > label{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login_checkbox > label > input {
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/icon/xhdpi/checkbox@2x-off.png) center no-repeat;
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+}
+
+.login_checkbox > label > input :checked {
+  background-image: url(https://img1a.coupangcdn.com/image/coupang/icon/xhdpi/checkbox@2x-off.png) center no-repeat;
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+}
+
+.login_checkbox > label > input{
+  margin-right: 10px;
+}
+
+.login_find {
+  font-size: 16px;
+}
+
+.login_find a{
+  color: #007aff;
+}
+
+.login_content {
+  display: flex;
+  flex-wrap: wrap;
+  border: 0px !important;
+  height: 120px !important
+}
+
+.login_content button {
+  font-size: 16px;
+  width: 100%;
+  border: 0px;
+  padding: 12.5px 0;
+  line-height: 19px;
+  border-radius: 5px;
+}
+
+.login_content :first-child {
+  background-color: #346aff;
+  color: #fff;
+}
+
+.login_content :nth-last-child(1) {
+  background-color: #fff !important;
+  color: #454f5b !important;
+  border: 1px solid #919eab !important;
+}
+
+.login_footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0px !important;
+  color: #555;
 }

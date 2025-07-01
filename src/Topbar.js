@@ -2,7 +2,7 @@ import {React, useState} from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import axios from 'axios';
 
-const Topbar = ({screen , setscreen , setfooter, division, setdivision , setproduct, setsearch}) => {
+const Topbar = ({screen , setscreen , setfooter, division, setdivision , setproduct, setsearch, setfocus, login, setlogin, user}) => {
   const [sildermenu, setsildermenu] = useState(false)
   const [menuopen, setmenuopen] = useState(false)
   
@@ -37,8 +37,13 @@ const Topbar = ({screen , setscreen , setfooter, division, setdivision , setprod
           </menu>
 
           <menu class="right_menu">
-            <li><a>로그인</a></li>
-            <li><a>회원가입</a></li>
+            {login === false ?<>
+            <li onClick={()=>{setscreen({log_in : true}); setfooter(false); setfocus("login_e")}}><a>로그인</a></li>
+            <li onClick={()=>{setscreen({sign_up : true}); setfooter(false);}}><a>회원가입</a></li>            
+            </> : <>
+            <li class="right_menu_nickname"><span>{user[0].nickname}님</span></li>
+            <li class="right_menu_log_out" onClick={()=>{setlogin(false)}}><button>로그아웃</button></li>
+            </>}
             <li><a>고객센터</a></li>
             <li onClick={()=>{setscreen({sell_sign_up : true}); setfooter(false);}}><a>판매자 가입</a></li>
           </menu>

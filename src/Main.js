@@ -3,6 +3,9 @@ import Topbar from './Topbar'
 import Footer from './Footer'
 import axios from 'axios';
 
+import { Alert, Switch } from "antd";
+import { Pagination as Paginations} from "antd";
+
 import { Navigation, Pagination, Autoplay,  } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -28,6 +31,8 @@ const Main = () => {
   const [focus , setfocus] = useState("")
   const [id , setid] = useState("")
   const [pw , setpw] = useState("")
+  const [login, setlogin] = useState(false)
+  const [user, setuser] = useState(false)
 
   const [search , setsearch] = useState("")
   const [division, setdivision] = useState("all")
@@ -48,6 +53,10 @@ const Main = () => {
   const [agreepi , setagreepi] = useState("")
   const [agreepiforad, setagreepiforad] = useState("")
   const [agreeforad, setagreeforad] = useState("")
+  const [email_push, setemail_push] = useState("")
+  const [sns_push, setsns_push] = useState("")
+  const [app_push, setapp_push] = useState("")
+
   const [product, setproduct] = useState("")         
   
   
@@ -89,6 +98,53 @@ const Main = () => {
   }
   }
 
+  async function getlogin(e) {
+    e.preventDefault()
+    const form_e_mail = e.target.children[0].children[0].children[1].value
+    const form_pw = e.target.children[1].children[0].children[1].value
+    console.log(form_e_mail)
+    console.log(form_pw) 
+      try {
+      //응답 성공 
+      const response = await axios.get(`http://localhost:3000/coupang/user/login?e_mail=${form_e_mail}&pw=${form_pw}`);
+      console.log(response.data[0].is_success)
+      if(response.data[0].is_success === true) {
+        setlogin(true)
+        setscreen({coupang : true , main: true })
+        setuser(response.data)
+      } else if (response.data.is_success === false) {
+        alert("틀렸어요")
+      } else{
+
+      }
+    } catch (error) {
+      //응답 실패
+    }
+  }
+
+function login_check(e) {
+  e.preventDefault()
+  if ( mailerror.error != false) {
+    console.log(mailerror.error)
+    setfocus("e_mail")
+    window.scrollTo({top: 0});
+  } else if ( pwerror.error != false) {
+    setfocus("pw")
+    window.scrollTo({top: 0});
+  } else if ( recheckerror.error != false) {
+    setfocus("pw_recheck")
+    window.scrollTo({top: 0});
+  } else if ( nameerror.error != false) {
+    setfocus("name")
+    window.scrollTo({top: 0});
+  } else if ( phoneerror.error != false) {
+    setfocus("phone")
+    window.scrollTo({top: 0});
+  } else {
+
+  }
+}
+
   useEffect(() => {
   getpost();
   gettag();
@@ -118,11 +174,11 @@ const Main = () => {
     setscroll(window.scrollY);
   }
 
-    function outerWidth () {
+  function outerWidth () {
     // setwidth(window.outerWidth);
   }
 
-    useEffect(() => {
+  useEffect(() => {
     window.addEventListener('scroll', scrollmenu);
     window.addEventListener('resize', outerWidth);
   }, []);
@@ -228,6 +284,9 @@ const Main = () => {
       setagreepi(true);
       setagreepiforad(true);
       setagreeforad(true);
+      setemail_push(true)
+      setsns_push(true)
+      setapp_push(true)
     }else {
       setallcheck(false);
       settermsage(false);
@@ -236,7 +295,48 @@ const Main = () => {
       setagreepi(false);
       setagreepiforad(false);
       setagreeforad(false);
+      setemail_push(false)
+      setsns_push(false)
+      setapp_push(false)
     } 
+  }
+    function marketing (e) {
+      console.log( e.target.checked, email_push , sns_push , (email_push === true && sns_push  === true && app_push === true) !== true , !email_push + !sns_push + !app_push)
+    if(e.target.id === "agreepiforad" && e.target.checked === true ) {
+      setagreepiforad(true);
+      setagreeforad(true);
+      setemail_push(true)
+      setsns_push(true)
+      setapp_push(true)
+    } else if (e.target.id === "agreepiforad" && e.target.checked === false ){
+      setagreepiforad(false);
+      setagreeforad(false);
+      setemail_push(false)
+      setsns_push(false)
+      setapp_push(false)     
+    } else if (e.target.id === "agreeforad" && e.target.checked === true ){
+      setagreepiforad(true);
+      setagreeforad(true);
+      setemail_push(true)
+      setsns_push(true)
+      setapp_push(true)
+    } else if (e.target.id === "agreeforad" && e.target.checked === false ){
+      setagreeforad(false);
+      setemail_push(false)
+      setsns_push(false)
+      setapp_push(false)
+    }  else if ( e.target.checked === true && ( e.target.id === "email_push" || e.target.id === "sns_push" || e.target.id === "app_push") ) {
+      setagreepiforad(true);
+      setagreeforad(true);
+    }  else if ( e.target.checked === false &&  e.target.id === "email_push" && sns_push === false && app_push === false){
+      setagreeforad(false);
+    }   else if ( e.target.checked === false &&  e.target.id === "sns_push" && email_push === false && app_push === false){
+      setagreeforad(false);
+    }   else if ( e.target.checked === false &&  e.target.id === "app_push" && email_push === false && sns_push === false){
+      setagreeforad(false);
+    }  else {
+      
+    }
   }
 
   // bt
@@ -328,12 +428,14 @@ const Main = () => {
     }
   }, [termsage,termsservice, termseft,agreepi,agreepiforad,agreeforad])
 
-
+const onChange = checked => {
+  console.log(`switch to ${checked}`);
+};
 
 
   return (
     <>
-      {topbar ? <Topbar screen={screen} setscreen={setscreen} setproduct={setproduct} setfooter={setfooter} division={division} setsearch={setsearch} setdivision={setdivision} /> : null} 
+      {topbar ? <Topbar screen={screen} setscreen={setscreen} setproduct={setproduct} setfooter={setfooter} division={division} setsearch={setsearch} setdivision={setdivision} setfocus={setfocus} login={login} setlogin={setlogin} user={user}/>  : null} 
       
       {screen.main ? <>
         {post !== "" && tag !== "" && category !=="" ? <>
@@ -362,7 +464,12 @@ const Main = () => {
               <ul><li></li></ul> 
               <ul>{post.filter((num) => num.part === "SD")
               .map((num) => <li><img src={num.post_mark}/></li>)}</ul>
-              <ul><li></li></ul> 
+              <ul><li></li></ul>
+              <div class="cart_box">
+                <div class="side_cart"><span>장바구니</span> <em class="cart_count">0</em></div>
+                <div class="recently_viewed_products"><span>최근본상품</span> <em class="cart_count">0</em></div>
+                <div class="recently_viewed_no_list"> <span class="no_item">최근본 상품이<br/>없습니다.</span></div>
+              </div>
             </article>
 
             <section class="pruduct_list_contener">
@@ -554,6 +661,8 @@ const Main = () => {
                               </div>                       
                             </SwiperSlide>
 
+
+                            {Math.ceil((post.filter((num)=> num.part === "CB"  && num.category === sno.sno )).length / 6) > 1 ? 
                             <SwiperSlide>
                               <div class="category_slide_box">
                               {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 13 &&  num.p_key > 6 && num.category === sno.sno)  
@@ -565,7 +674,9 @@ const Main = () => {
                               </div>)}   
                               </div>                       
                             </SwiperSlide>
+                             : null}
 
+                            {Math.ceil((post.filter((num)=> num.part === "CB"  && num.category === sno.sno )).length / 6) > 2 ?
                             <SwiperSlide>
                               <div class="category_slide_box">
                               {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 19 &&  num.p_key > 12 && num.category === sno.sno)  
@@ -577,7 +688,9 @@ const Main = () => {
                               </div>)}   
                               </div>                       
                             </SwiperSlide>
+                             : null}
 
+                            {Math.ceil((post.filter((num)=> num.part === "CB"  && num.category === sno.sno )).length / 6) > 3 ?
                             <SwiperSlide>
                               <div class="category_slide_box">
                               {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 25 &&  num.p_key > 18 && num.category === sno.sno)  
@@ -589,7 +702,9 @@ const Main = () => {
                               </div>)}   
                               </div>                       
                             </SwiperSlide>
+                             : null}
 
+                            {Math.ceil((post.filter((num)=> num.part === "CB"  && num.category === sno.sno )).length / 6) > 4 ?
                             <SwiperSlide>
                               <div class="category_slide_box">
                               {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 31 &&  num.p_key > 24 && num.category === sno.sno)  
@@ -601,7 +716,7 @@ const Main = () => {
                               </div>)}   
                               </div>                       
                             </SwiperSlide>
-
+                             : null}
                         </Swiper>                      
                       </dd>
                     </dl>
@@ -648,19 +763,17 @@ const Main = () => {
 
       {screen.search ? <>
        {product !== "" ? <>
-          <section>
-
             <div class="serch_division">
             {division === "all" ?
-              <><a>전체</a>
+              <div class="serch_division_text"><a>전체</a>
                <svg class="srp_arrowIcon__bNaNA" width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" data-sentry-element="svg" data-sentry-component="ArrowIcon" data-sentry-source-file="Breadcrumb.tsx"><path d="M3.8859 2.15732C4.0606 1.9717 4.34367 1.94925 4.54434 2.09575L4.59268 2.1359L8.84268 6.1359C9.03746 6.31922 9.05137 6.61975 8.88442 6.81982L8.84268 6.8641L4.59268 10.8641C4.3916 11.0534 4.07516 11.0438 3.8859 10.8427C3.7112 10.6571 3.70593 10.3732 3.86432 10.1817L3.90732 10.1359L7.77 6.50001L3.90732 2.8641C3.7217 2.6894 3.69925 2.40634 3.84575 2.20566L3.8859 2.15732Z" fill="#AAB5C0" data-sentry-element="path" data-sentry-source-file="Breadcrumb.tsx"></path></svg>
-               <strong>'{search}'</strong></> 
-            : <><a>전체</a> <a>{division}</a>
+               <strong>'{search}'</strong></div> 
+            : <div class="serch_division_text"><a>전체</a> <a>{division}</a>
                 <svg class="srp_arrowIcon__bNaNA" width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" data-sentry-element="svg" data-sentry-component="ArrowIcon" data-sentry-source-file="Breadcrumb.tsx"><path d="M3.8859 2.15732C4.0606 1.9717 4.34367 1.94925 4.54434 2.09575L4.59268 2.1359L8.84268 6.1359C9.03746 6.31922 9.05137 6.61975 8.88442 6.81982L8.84268 6.8641L4.59268 10.8641C4.3916 11.0534 4.07516 11.0438 3.8859 10.8427C3.7112 10.6571 3.70593 10.3732 3.86432 10.1817L3.90732 10.1359L7.77 6.50001L3.90732 2.8641C3.7217 2.6894 3.69925 2.40634 3.84575 2.20566L3.8859 2.15732Z" fill="#AAB5C0" data-sentry-element="path" data-sentry-source-file="Breadcrumb.tsx"></path></svg>
-                <strong>'{search}'</strong></>}
-              </div>
+                <strong>'{search}'</strong></div>}
+            </div>       
 
-
+          <section class="screen_serch">
             <div class="search_contents">
               <div class="search_side_filter"></div>
 
@@ -670,8 +783,62 @@ const Main = () => {
                   <div><span>연관검색어:</span></div>
                 </div>
 
-                  <ul class="list_box">
+                <div class="search_filter_bts">
+                  <div><a><Switch onChange={onChange} /><span>배송비 포함</span></a></div>
+                  
+                  <div>
+                    <select>
+                      <option value="all">36 개씩 보기</option>
+                    </select>
+                  </div>
+                </div>
+
+                  <ul class="search_contents_list_box">
                     {product.map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  <div class="list_info_small">
+                      <div class="search_info_title"> <span>{num.name}</span></div>
+                    <div class="delivery_info_box_small">
+                      <span class="price_small">{num.price}원</span>
+                      { num.delivery === "무료배송" ? <span class="delivery_info_small">{num.delivery}</span> : <img class="delivery_info_small" name={num.delivery}  src={num.delivery_img}/> }                    
+                      </div>
+                    <div class="price_piece_box"><span class="price_piece_small"></span></div>
+                    <div class="review_box_small"><span class="score_bg_small"><span class="score_active_small" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+                  </div></li>)}
+                  </ul>
+
+              </div>
+            </div>
+            {scroll < 700 ? <div class="search_paginations_scroll">
+              <Paginations align="center" defaultCurrent={1} total={50} />
+              </div> : null}
+            <div class="search_paginations">
+                <div></div>
+                <Paginations align="center" defaultCurrent={1} total={50} /> 
+            </div>
+
+
+            <article class="search_shopping_cart">
+
+              <div class="cart_box">
+                <div class="side_cart"><span>장바구니</span> <em class="cart_count">0</em></div>
+                <div class="recently_viewed_products"><span>최근본상품</span> <em class="cart_count">0</em></div>
+                <div class="recently_viewed_no_list"> <span class="no_item">최근본 상품이<br/>없습니다.</span></div>
+              </div>
+
+            </article>
+
+          </section>
+
+          <section class="search_list_contener_gray">
+              <h2 class="search_title_gray">이 상품을 검색한 다른 분들이 함께 본 상품</h2>
+
+              <div class="white_btn_left nonarrow" onClick={(e)=> {white_btn_left(e)}}>left</div>
+
+              <div class="pruduct_list_box_small">
+              <div class="pruduct_list_small">
+                <ul class="list_box_small">
+                  {post.filter((num) => num.part === 'TS')
+                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info_small">
                       <div class="info_title_small"> <span>{num.name}</span></div>
                     <div class="delivery_info_box_small">
@@ -681,16 +848,39 @@ const Main = () => {
                     <div class="price_piece_box"><span class="price_piece_small"></span></div>
                     <div class="review_box_small"><span class="score_bg_small"><span class="score_active_small" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
                   </div></li>)}
-                  </ul>
+                </ul>
               </div>
-            </div>
+              </div>
 
-            <article class="side_bar">
-              <ul><li></li></ul> 
-              <ul>{post.filter((num) => num.part === "SD")
-              .map((num) => <li><img src={num.post_mark}/></li>)}</ul>
-              <ul><li></li></ul> 
-            </article>
+              <div  class="white_btn_right" onClick={(e)=> {white_btn_right(e)}}>right</div>
+
+          </section>
+
+          <section class="search_list_contener">
+              <h2 class="pruduct_title_small">오늘의<span>판매자 특가</span></h2>
+
+              <div class="white_btn_left nonarrow" onClick={(e)=> {white_btn_left(e)}}>left</div>
+
+              <div class="pruduct_list_box_small">
+              <div class="pruduct_list_small">
+                <ul class="list_box_small">
+                  {post.filter((num) => num.part === 'TS')
+                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  <div class="list_info_small">
+                      <div class="info_title_small"> <span>{num.name}</span></div>
+                    <div class="delivery_info_box_small">
+                      <span class="price_small">{num.price}원</span>
+                      { num.delivery === "무료배송" ? <span class="delivery_info_small">{num.delivery}</span> : <img class="delivery_info_small" name={num.delivery}  src={num.delivery_img}/> }                    
+                      </div>
+                    <div class="price_piece_box"><span class="price_piece_small"></span></div>
+                    <div class="review_box_small"><span class="score_bg_small"><span class="score_active_small" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+                  </div></li>)}
+                </ul>
+              </div>
+              </div>
+
+              <div  class="white_btn_right" onClick={(e)=> {white_btn_right(e)}}>right</div>
+
           </section>
 
         </>: null}
@@ -893,6 +1083,219 @@ const Main = () => {
             <div class="help_text"><span>이미 계정이 있나요?</span><a>로그인</a></div>
 
             <div class="help_text_bottom"><span>해외 사업자번호를 갖고 계신가요?</span><a >글로벌 셀러 가입하기</a></div>            
+          </form>
+        </div>
+
+
+      </>: null}
+
+      {screen.log_in ? <section class="log_in_page">
+        <div class="log_in_header">
+          <img onClick={()=>{ setscreen({coupang : true , main: true })}} class="coupang_img" src="https://static.coupangcdn.com/image/static/login/logo-coupang.x2.20201201.png"/>
+        </div>
+
+        <div class="log_in_form_bt">
+          <a onClick={(e)=> handlefouce(e.target.name)}  name="login_e" className={focus === "login_e" ? "log_in_bt_active": ""}>이메일 로그인</a>
+          <a onClick={(e)=> handlefouce(e.target.name)}  name="login_p" className={focus === "login_p" ? "log_in_bt_active": ""} >휴대폰번호 로그인</a>
+          <a onClick={(e)=> handlefouce(e.target.name)}  name="login_qr" className={focus === "login_qr" ? "log_in_bt_active": ""}>QR코드 로그인 </a>
+        </div>
+
+        <form class="log_in_form_detail" onSubmit={(e)=>{getlogin(e)}}>
+          <div><label for="login_e_mail"><span class="input_icon_email"><i></i></span><input id="login_e_mail" type="text" /></label><span class="input_icon_x"><i></i></span></div>
+          <div><label for="login_pw"><span class="input_icon_pw"><i></i></span><input id="login_pw" type="password" /></label><span class="input_icon_show"><i></i></span></div>
+          <div class="login_checkbox_form">
+            <div class="login_checkbox"><label><input type="checkbox"/><span>자동 로그인</span></label></div>
+            <div class="login_find"><a>아이디∙비밀번호 찾기 > </a></div>
+          </div>
+          <div class="login_content">
+            <button>로그인</button>
+            <button>회원가입</button>
+          </div>
+
+          <div class="login_footer">
+            <span>©Coupang Corp. All rights reserved.</span>
+          </div>
+        </form>
+      </section>: null}
+
+      {screen.sign_up ? <>
+        <div class="sign_up_title"><img onClick={()=>{ setscreen({coupang : true , main: true})}} src="https://static.coupangcdn.com/image/static/login/logo-coupang.x2.20201201.png"/></div>
+       
+        <div class="sign_up_formbox">
+          <form class="sign_up_form" method="post" action="http://localhost:3000/coupang/sign_up">
+            {/* id (e-mail) */}
+            <div class="sell_input_box">
+
+              <div class="sign_up_input_style" className={focus === "e_mail" ? `sign_up_input_style ${mailerror.error ? "input_b_red" : "input_b_blue"}`: "sign_up_input_style"}>
+                <div class="sign_up_input_box">
+                  <label for="login_e_mail">
+                    <span class="login_icon_email"><i></i></span>
+                    <input autocomplete="off" placeholder="아아디(이메일)" name="e_mail" onFocus={(e) =>{handlefouce(e.target.name)}} onBlur={(e)=>{nonefouce(e.target.value)}} onChange={(e) =>{mailerror_check(e.target.value)}} type="text"></input>
+                  </label>
+                </div>
+                { mailerror.error === false  && focus !== "e_mail"? <div class="sign_check check">
+                   <i></i>
+                  </div> :  null}
+              </div>
+              { mailerror.error ? <div class="error_message">
+                이메일을 올바르게 입력해주세요.
+                </div> : <>{mailerror.empty === false ? <>{focus === "e_mail" ? <div class="check_message">
+                </div>  : null}</> : null}</>}
+            </div>
+
+            {/* pw */}
+            <div class="sell_input_box">
+
+              <div class="sign_up_input_style" className={focus === "pw" ? `sign_up_input_style ${pwerror.error ? "input_b_red" : "input_b_blue"}`: "sign_up_input_style"}>
+                <div class="sign_up_input_box">
+                  <label for="login_e_mail">
+                    <span class="login_icon_email"><i></i></span>
+                    <input autocomplete="off" placeholder="비밀번호" name="pw" onFocus={(e) =>{handlefouce(e.target.name)}} onBlur={(e)=>{nonefouce(e.target.value)}} onChange={(e) =>{pwerror_check(e.target.value)}} type="password"></input>
+                  </label>
+                </div>
+                { pwerror.error === false  && focus !== "pw"? <div class="sign_check check">
+                   <i></i>
+                  </div> :  null}
+              </div>
+                { pwerror.spc ? <div class="error_message">
+                <svg viewBox="64 64 896 896" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class=""><path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path></svg>
+                6~20자의 영문 소문자, 숫자와 특수문자(_, -, .)만 사용 가능
+                </div> : <>{pwerror.empty === false ? <>{focus === "pw" ? <div class="check_message">
+                <svg viewBox="64 64 896 896" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class=""><path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path></svg>
+                6~20자의 영문 소문자, 숫자와 특수문자(_, -, .)만 사용 가능
+                </div>  : null}</> : null}</>} 
+            </div>
+
+            {/* pw_recheck */}
+            <div class="sell_input_box">
+
+              <div class="sign_up_input_style" className={focus === "pw_recheck" ? `sign_up_input_style ${recheckerror.error ? "input_b_red" : "input_b_blue"}`: "sign_up_input_style"}>
+                <div class="sign_up_input_box">
+                  <label for="login_e_mail">
+                    <span class="login_icon_email"><i></i></span>
+                    <input autocomplete="off" placeholder="비밀번호 확인" name="pw_recheck" onFocus={(e) =>{handlefouce(e.target.name)}} onBlur={(e)=>{nonefouce(e.target.value)}} onChange={(e) =>{pw_recheck(e.target.value)}} type="password"></input>
+                  </label>
+                </div>
+                { recheckerror.error === false  && focus !== "pw_recheck"? <div class="sign_check check">
+                   <i></i>
+                  </div> :  null}
+              </div>
+                { recheckerror.error ? <div class="error_message">
+                <svg viewBox="64 64 896 896" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class=""><path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path></svg>
+                비밀번호가 일치함
+                </div> : <>{recheckerror.empty === false ? <>{focus === "pw_recheck" ? <div class="check_message">
+                <svg viewBox="64 64 896 896" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class=""><path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path></svg>
+                비밀번호가 일치함
+                </div>  : null}</> : null}</>}
+            </div>
+
+            {/* name */}
+            <div class="sell_input_box">
+
+              <div class="sign_up_input_style" className={focus === "name" ? `sign_up_input_style ${nameerror.error ? "input_b_red" : "input_b_blue"}`: "sign_up_input_style"}>
+                <div class="sign_up_input_box">
+                  <label for="login_e_mail">
+                    <span class="login_icon_email"><i></i></span>
+                    <input autocomplete="off" placeholder="이름" name="name" onFocus={(e) =>{handlefouce(e.target.name)}} onBlur={(e)=>{nonefouce(e.target.value)}} onChange={(e) =>{nameerror_check(e.target.value)}} type="text"></input>
+                  </label>
+                </div>
+                { nameerror.error === false  && focus !== "name"? <div class="sign_check check">
+                   <i></i>
+                  </div> :  null}
+              </div>
+              { nameerror.error ? <div class="error_message">
+                이름을 정확히 입력하세요.
+                </div> : <>{nameerror.empty === false ? <>{focus === "name" ? <div class="check_message">
+                </div>  : null}</> : null}</>}
+            </div>
+
+            {/* phone */}
+            <div class="sell_input_box">
+
+              <div class="sign_up_input_style" className={focus === "phone" ? `sign_up_input_style ${phoneerror.error ? "input_b_red" : "input_b_blue"}`: "sign_up_input_style"}>
+                <div class="sign_up_input_box">
+                  <label for="login_e_mail">
+                    <span class="login_icon_email"><i></i></span>
+                    <input autocomplete="off" placeholder="휴대폰 번호" name="phone" onFocus={(e) =>{handlefouce(e.target.name)}} onBlur={(e)=>{nonefouce(e.target.value)}} onChange={(e) =>{phoneerror_check(e.target.value)}} type="text"></input>
+                  </label>
+                </div>
+                { phoneerror.error === false  && focus !== "phone"? <div class="sign_check check">
+                   <i></i>
+                  </div> :  null}
+              </div>
+              { phoneerror.error ? <div class="error_message">
+                휴대폰번호를 올바르게 입력해주세요.
+                </div> : <>{phoneerror.empty === false ? <>{focus === "phone" ? <div class="check_message">
+                
+                </div>  : null}</> : null}</>}
+            </div>
+            
+            {/* agree */}
+            <div class="sign_agree_box">
+              <div class="all_check_box">
+                <input type="checkbox" checked={all_check} id="all_check" onClick={all_check_check}></input>
+                <label>모두 동의합니다</label>
+              </div>
+              <div class="explain"><span>모두 동의에는 <strong>필수 및 선택 목적(광고성 정보 수신 포함)에 대한 동의가 포함</strong>되어있으며, 선택 목적에 동의를 거부하시는 경우에도 서비스 이용이 가능합니다.</span></div>
+                { agreeerror.error === true ? <div class="error_message">
+                <svg viewBox="64 64 896 896" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class=""><path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path></svg>
+                필수 항목에 모두 동의해주세요
+                </div> : <div class="error_message"></div>}
+
+              <div class="agree">
+                <div>
+                  <input type="checkbox" checked={termsage} id="termsage" onClick={()=>{settermsage(termsage => !termsage)}}></input>
+                  <label>[필수] 만 14세 이상입니다</label>
+                </div>
+
+                <div>
+                  <input type="checkbox" checked={termsservice} id="termsservice" onClick={()=>{settermsservice(termsservice => !termsservice)}}></input>
+                  <label>[필수] 전자금융거래 이용약관 동의</label>
+                </div>
+
+                <div>
+                  <input type="checkbox" checked={termseft} id="termseft" onClick={()=>{settermseft(termseft => !termseft)}} ></input>
+                  <label>[필수] 개인정보 수집 및 이용 동의</label>
+                </div>
+
+                <div>
+                  <input type="checkbox" checked={agreepi} id="agreepi"onClick={()=>{setagreepi(agreepi => !agreepi)}} ></input>
+                  <label>[필수] 개인정보 제3자 제공 동의</label>
+                </div>
+
+                <div>
+                  <input type="checkbox" checked={agreepiforad} id="agreepiforad" onClick={(e)=>{marketing(e);}} ></input>
+                  <label>[선택] 마케팅 목적의 개인정보 수집 및 이용 동의</label>
+                </div>
+
+                <div>
+                  <input type="checkbox" checked={agreeforad} id="agreeforad" onClick={(e)=>{marketing(e);}}></input>
+                  <label>[선택] 광고성 정보 수신 동의</label>
+                </div>
+
+                <div>
+                  <input type="checkbox" checked={email_push} id="email_push" onClick={(e)=>{setemail_push(agreeforad => !agreeforad); marketing(e)}}></input>
+                  <label>[선택] 이메일 수신 동의</label>
+                </div>
+
+                <div>
+                  <input type="checkbox" checked={sns_push} id="sns_push" onClick={(e)=>{setsns_push(agreeforad => !agreeforad); marketing(e);}}></input>
+                  <label>[선택] SMS, SNS 수신 동의</label>
+                </div>
+
+                <div>
+                  <input type="checkbox" checked={app_push} id="app_push" onClick={(e)=>{setapp_push(agreeforad => !agreeforad); marketing(e);}}></input>
+                  <label>[선택] 앱 푸시 수신 동의</label>
+                </div>
+              </div>
+
+            </div>
+
+            {/* sumit_bt */}
+            {mailerror.error  + pwerror.error + recheckerror.error + nameerror.error + phoneerror.error + agreeerror.error === 0? <input class="sign_submit_bt" type="submit" value="약관 동의하고 가입하기" />
+            : <button class="sign_submit_bt" onClick={login_check}>동의하고 가입하기</button> }
+
+            <div><span>©Coupang Corp. All rights reserved. </span></div>            
           </form>
         </div>
 
