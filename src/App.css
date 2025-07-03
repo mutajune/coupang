@@ -2342,3 +2342,150 @@ background-position: -65px -1px;
   border: 0px !important;
   color: #555;
 }
+
+/* datall */
+
+.product_detall {
+  width: 1020px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.detall_hedaer {
+  display: flex;
+}
+
+.detall_left_menu img {
+  width: 70px;
+  height: 70px;
+}
+
+.detall_big_img {
+  margin: 0 16px;
+  width: 100%;
+}
+
+.detall_big_img img{
+  width: 100%;
+  max-height: 546px;
+}
+
+.detall_contents {
+  text-align: left;
+
+}
+
+.detall_contents_header {
+  display: flex;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.detall_hedaer_contents {
+  display: flex;
+  width: calc(100% - 165px);
+  height: 1143.500px;
+  padding-bottom: 35px;
+  border-bottom: 1px solid #e5e7eb;  
+}
+
+.detall_contents_bt{
+  display: flex;
+  margin-left: 16px;
+}
+
+.detall_contents_bt button{
+  border-radius: 50%;
+  background-color: #fff;
+  border: 1px solid #b3b2b4;
+  height: 40px;
+  width: 40px;
+  margin-left: 4px;
+}
+
+.detall_contents_price {
+  padding: 16px 0px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.detall_side_bar {
+  width: 165px;
+}
+
+/*  */
+.all_option_bt{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0;
+  height: 40px;
+  color: #346aff;
+  border: 1px solid #346aff;
+}
+.all_option_bt button{
+  background-color: #fff;
+  border: 0px;
+  font-weight: 700;
+  color: #346aff;
+}
+
+.purchase_bt_box {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.number_input {
+  width: 81px;
+  height: 100%;
+}
+
+.number_input input{
+  text-align: center;
+  width: 60px;
+  height: 100%;
+  border: 1px solid rgb(204, 204, 204);
+}
+
+.purchase_bt {
+  display: flex;
+  width: 311px;
+  height: 100%;
+}
+
+.purchase_bt :first-child{
+  margin-right: 7px;
+  width: 150px;
+  height: 100%;
+  background-color: #fff;
+  color: #0074e9;
+  border: 1px solid #0074e9;
+}
+
+.purchase_bt :nth-child(2){
+  width: 150px;
+  height: 100%;
+  background-color: #0074e9;
+  color: #fff;
+  border: 1px solid #fff;
+;
+}
+
+.pruduct_detall_bt_box {
+  width: calc(100% - 165px);
+  display: flex;
+}
+
+.pruduct_detall_bt_box button{
+  width: 25%;
+  background-color: rgb(250 250 250);
+  opacity: 1;
+  padding: 15px 20px 14px 20px;
+  border: 1px solid #e5e7eb;
+}
+
+.calc165 {
+  width: calc(100% - 165px) !important;
+}

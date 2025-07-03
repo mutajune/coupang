@@ -57,7 +57,9 @@ const Main = () => {
   const [sns_push, setsns_push] = useState("")
   const [app_push, setapp_push] = useState("")
 
-  const [product, setproduct] = useState("")         
+  const [product, setproduct] = useState("")
+  const [detall, setdetall] = useState("")
+         
   
   
   const [page, setpage] = useState("")  
@@ -66,6 +68,16 @@ const Main = () => {
   window.scrollTo({top: 0, behavior: behavior});
   };
 
+  async function getdata(e) {
+    try {
+      //응답 성공 
+      const response = await axios.get(`http://localhost:3000/product/detall?detall=${e}`);
+      setdetall(response.data)
+    } catch (error) {
+      //응답 실패
+      console.error(error);
+    }
+  }
   async function getpost() {
     try {
       //응답 성공 
@@ -97,7 +109,6 @@ const Main = () => {
     console.error(error);
   }
   }
-
   async function getlogin(e) {
     e.preventDefault()
     const form_e_mail = e.target.children[0].children[0].children[1].value
@@ -122,33 +133,34 @@ const Main = () => {
     }
   }
 
-function login_check(e) {
-  e.preventDefault()
-  if ( mailerror.error != false) {
-    console.log(mailerror.error)
-    setfocus("e_mail")
-    window.scrollTo({top: 0});
-  } else if ( pwerror.error != false) {
-    setfocus("pw")
-    window.scrollTo({top: 0});
-  } else if ( recheckerror.error != false) {
-    setfocus("pw_recheck")
-    window.scrollTo({top: 0});
-  } else if ( nameerror.error != false) {
-    setfocus("name")
-    window.scrollTo({top: 0});
-  } else if ( phoneerror.error != false) {
-    setfocus("phone")
-    window.scrollTo({top: 0});
-  } else {
+  function login_check(e) {
+    e.preventDefault()
+    if ( mailerror.error != false) {
+      console.log(mailerror.error)
+      setfocus("e_mail")
+      window.scrollTo({top: 0});
+    } else if ( pwerror.error != false) {
+      setfocus("pw")
+      window.scrollTo({top: 0});
+    } else if ( recheckerror.error != false) {
+      setfocus("pw_recheck")
+      window.scrollTo({top: 0});
+    } else if ( nameerror.error != false) {
+      setfocus("name")
+      window.scrollTo({top: 0});
+    } else if ( phoneerror.error != false) {
+      setfocus("phone")
+      window.scrollTo({top: 0});
+    } else {
 
+    }
   }
-}
 
   useEffect(() => {
   getpost();
   gettag();
   getcategory();
+  getdata();
   }, []);
 
 // useEffect(() => {
@@ -418,6 +430,13 @@ function login_check(e) {
     }
   }
 
+// product_detall
+function product_detall_on (e) {
+  console.log(e)
+  setscreen({product : true , coupang : true})
+  getdata(e) 
+}
+
 
   useEffect(()=>{
     agree_check();
@@ -479,7 +498,7 @@ const onChange = checked => {
                 <div  class="black_btn_left nonarrow" onClick={(e)=> {btn_left(e)}}>left</div>
                 <ul class="list_box">
                   {post.filter((num) => num.part === 'TS')
-                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info">
                       <div class="info_title"> <span>{num.name}</span></div>
                     <div class="delivery_info_box">
@@ -1300,6 +1319,215 @@ const onChange = checked => {
         </div>
 
 
+      </>: null}
+
+      {screen.product ? <>
+      {detall.map((num) => <section class="product_detall">
+        <div class="serch_division_text"><a>쿠팡 홈</a>
+          <svg class="srp_arrowIcon__bNaNA" width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" data-sentry-element="svg" data-sentry-component="ArrowIcon" data-sentry-source-file="Breadcrumb.tsx"><path d="M3.8859 2.15732C4.0606 1.9717 4.34367 1.94925 4.54434 2.09575L4.59268 2.1359L8.84268 6.1359C9.03746 6.31922 9.05137 6.61975 8.88442 6.81982L8.84268 6.8641L4.59268 10.8641C4.3916 11.0534 4.07516 11.0438 3.8859 10.8427C3.7112 10.6571 3.70593 10.3732 3.86432 10.1817L3.90732 10.1359L7.77 6.50001L3.90732 2.8641C3.7217 2.6894 3.69925 2.40634 3.84575 2.20566L3.8859 2.15732Z" fill="#AAB5C0" data-sentry-element="path" data-sentry-source-file="Breadcrumb.tsx"></path></svg>
+          <strong>{num.category}</strong>
+        </div>
+
+        <div class="detall_hedaer">
+          <div class="detall_hedaer_contents">
+            <div class="detall_left_menu"><img src={num.list_image}/></div>
+            <div class="detall_big_img"> <img src={num.list_image}/></div>
+           
+            <div class="detall_contents">
+              <div class="detall_contents_header">
+                <div class="detall_contents_text">
+                  <div><strong>{num.name}</strong></div>
+                  <div>
+                    <span>원산지: 상품 상세설명 참조</span>
+                    <div class="review_box"><span class="score_bg"><span class="score_active" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+                  </div>
+                </div>
+
+                <div class="detall_contents_bt">
+                  <button><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.174 4.43124C13.4923 2.68731 15.0031 1.70166 16.9982 1.52692L17.2732 1.50812C18.8998 1.42763 20.5664 1.94772 21.7255 2.97238C23.1953 4.27167 24 6.252 24 8.31785C24 12.688 20.8931 16.8316 12.5507 22.3348C12.2166 22.5552 11.7834 22.5552 11.4493 22.3348C3.10692 16.8316 0 12.688 0 8.31785C0 6.252 0.80471 4.27167 2.27453 2.97238C3.43363 1.94772 5.10025 1.42763 6.72677 1.50812C8.8591 1.61362 10.4478 2.60804 11.826 4.43124L12 4.66712L12.174 4.43124ZM20.4008 4.47083C19.6531 3.80978 18.4997 3.44987 17.3721 3.50568C15.5061 3.598 14.1913 4.71228 12.8675 7.02107C12.4833 7.69117 11.5167 7.69117 11.1325 7.02107C9.80866 4.71228 8.49392 3.598 6.62792 3.50568C5.50027 3.44987 4.34694 3.80978 3.59916 4.47083C2.58082 5.37102 2 6.80038 2 8.31785C2 11.755 4.52788 15.2449 11.7579 20.1359L11.999 20.2981L12.6249 19.8752C19.4355 15.2067 21.9098 11.8187 21.9976 8.50204L22 8.31785C22 6.80038 21.4192 5.37102 20.4008 4.47083Z" fill="#454F5B"></path></svg>                  </button>
+                  <button><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 4C22 5.933 20.433 7.5 18.5 7.5C17.604 7.5 16.7866 7.16332 16.1675 6.60956L8.88141 11.0933C8.95876 11.3825 9 11.6864 9 12C9 12.3136 8.95876 12.6175 8.88142 12.9067L16.1675 17.3904C16.7866 16.8367 17.604 16.5 18.5 16.5C20.433 16.5 22 18.067 22 20C22 21.933 20.433 23.5 18.5 23.5C16.567 23.5 15 21.933 15 20C15 19.6864 15.0412 19.3825 15.1186 19.0933L7.83249 14.6096C7.21338 15.1633 6.39601 15.5 5.5 15.5C3.567 15.5 2 13.933 2 12C2 10.067 3.567 8.50002 5.5 8.50002C6.396 8.50002 7.21337 8.83671 7.83248 9.39047L15.1186 4.90671C15.0412 4.61753 15 4.31358 15 4C15 2.067 16.567 0.5 18.5 0.5C20.433 0.5 22 2.067 22 4Z" fill="#454F5B"></path></svg></button>
+                </div>
+              </div>
+
+              <div class="detall_contents_price">
+                <span>{num.discount}{num.price}</span>
+                <br/><span>{num.price}</span>
+                <br/><span>{num.price}</span>
+              </div>
+
+              <div class="detall_contents_options">
+                <div><span>더 많은 옵션 보기</span></div>
+                <div></div>
+                <div class="option_table_list">
+
+                  <div class="all_option_bt"><button> 모든 옵션 보기</button></div>
+                </div>
+              </div>
+
+              <div>{num.delivery}</div>
+              <div></div>
+              <div></div>
+              <div></div>
+
+              <div><strong>PC에서도 간편한 결제</strong></div>
+              <div class="purchase_bt_box">
+                <div class="number_input"><input type="text" value="1"/></div>
+                <div class="purchase_bt"><button>장바구니 담기</button> <button>바로구매</button></div>
+              </div>
+              <div></div>
+            </div>
+
+          </div>
+
+            <article class="detall_side_bar">
+              <ul><li></li></ul> 
+              <ul><li></li></ul>
+            </article>
+        </div>
+
+        <section class="pruduct_list_contener">
+          <div class="pruduct_list_box"><h2 class="pruduct_title showping">함께 비교하면 좋을 상품</h2>
+
+          <div class="pruduct_list">
+            <div  class="black_btn_left nonarrow" onClick={(e)=> {btn_left(e)}}>left</div>
+            <ul class="list_box">
+              {post.filter((num) => num.part === 'TS')
+              .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
+              <div class="list_info">
+                  <div class="info_title"> <span>{num.name}</span></div>
+                <div class="delivery_info_box">
+                  { num.delivery === "무료배송" ? <span class="delivery_info">{num.delivery}</span> : <img class="delivery_info" name={num.delivery}  src={num.delivery_img}/> }                    
+                  </div>
+                <div class="review_box"><span class="score_bg"><span class="score_active" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+              </div></li>)}
+            </ul>
+            <div  class="black_btn_right" onClick={(e)=> {btn_right(e);}}>right</div>
+          </div>
+          </div>
+        </section>
+
+        <section class="pruduct_list_contener_small">
+          <h2 class="pruduct_title_small">지금 이 상품이 필요하신가요?</h2>
+
+          <div class="white_btn_left nonarrow" onClick={(e)=> {white_btn_left(e)}}>left</div>
+
+          <div class="pruduct_list_box_small">
+          <div class="pruduct_list_small">
+            <ul class="list_box_small">
+              {post.filter((num) => num.part === 'NP')
+              .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+              <div class="list_info_small">
+                  <div class="info_title_small"> <span>{num.name}</span></div>
+                <div class="delivery_info_box_small">
+                  <span class="price_small">{num.price}원</span>
+                  { num.delivery === "무료배송" ? <span class="delivery_info_small">{num.delivery}</span> : <img class="delivery_info_small" name={num.delivery}  src={num.delivery_img}/> }                    
+                  </div>
+                <div class="price_piece_box"><span class="price_piece_small"></span></div>
+                <div class="review_box_small"><span class="score_bg_small"><span class="score_active_small" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+              </div></li>)}
+            </ul>
+          </div>
+          </div>
+
+          <div  class="white_btn_right" onClick={(e)=> {white_btn_right(e)}}>right</div>
+
+        </section>
+
+        <div class="pruduct_detall_bt_box">
+          <button>상품상제</button>
+          <button>상품평 ( {num.review} )</button>
+          <button>상품문의</button>
+          <button>배송/교환/반품 안내</button>
+        </div>
+
+        <section>
+
+        </section>
+
+        <section>
+
+        </section>
+        
+        <section>
+
+        </section>
+
+        <section>
+
+        </section>
+
+        <section class="pruduct_list_contener">
+          <div class="pruduct_list_box"><h2 class="pruduct_title showping">함께 비교하면 좋을 상품</h2>
+
+          <div class="pruduct_list">
+            <div  class="black_btn_left nonarrow" onClick={(e)=> {btn_left(e)}}>left</div>
+            <ul class="list_box">
+              {post.filter((num) => num.part === 'TS')
+              .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
+              <div class="list_info">
+                  <div class="info_title"> <span>{num.name}</span></div>
+                <div class="delivery_info_box">
+                  { num.delivery === "무료배송" ? <span class="delivery_info">{num.delivery}</span> : <img class="delivery_info" name={num.delivery}  src={num.delivery_img}/> }                    
+                  </div>
+                <div class="review_box"><span class="score_bg"><span class="score_active" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+              </div></li>)}
+            </ul>
+            <div  class="black_btn_right" onClick={(e)=> {btn_right(e);}}>right</div>
+          </div>
+          </div>
+        </section>
+
+        <section class="pruduct_list_contener">
+          <div class="pruduct_list_box"><h2 class="pruduct_title showping">함께 비교하면 좋을 상품</h2>
+
+          <div class="pruduct_list">
+            <div  class="black_btn_left nonarrow" onClick={(e)=> {btn_left(e)}}>left</div>
+            <ul class="list_box">
+              {post.filter((num) => num.part === 'TS')
+              .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
+              <div class="list_info">
+                  <div class="info_title"> <span>{num.name}</span></div>
+                <div class="delivery_info_box">
+                  { num.delivery === "무료배송" ? <span class="delivery_info">{num.delivery}</span> : <img class="delivery_info" name={num.delivery}  src={num.delivery_img}/> }                    
+                  </div>
+                <div class="review_box"><span class="score_bg"><span class="score_active" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+              </div></li>)}
+            </ul>
+            <div  class="black_btn_right" onClick={(e)=> {btn_right(e);}}>right</div>
+          </div>
+          </div>
+        </section>
+
+        <section class="pruduct_list_contener_small">
+          <h2 class="pruduct_title_small">지금 이 상품이 필요하신가요?</h2>
+
+          <div class="white_btn_left nonarrow" onClick={(e)=> {white_btn_left(e)}}>left</div>
+
+          <div class="pruduct_list_box_small">
+          <div class="pruduct_list_small">
+            <ul class="list_box_small">
+              {post.filter((num) => num.part === 'NP')
+              .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+              <div class="list_info_small">
+                  <div class="info_title_small"> <span>{num.name}</span></div>
+                <div class="delivery_info_box_small">
+                  <span class="price_small">{num.price}원</span>
+                  { num.delivery === "무료배송" ? <span class="delivery_info_small">{num.delivery}</span> : <img class="delivery_info_small" name={num.delivery}  src={num.delivery_img}/> }                    
+                  </div>
+                <div class="price_piece_box"><span class="price_piece_small"></span></div>
+                <div class="review_box_small"><span class="score_bg_small"><span class="score_active_small" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+              </div></li>)}
+            </ul>
+          </div>
+          </div>
+
+          <div  class="white_btn_right" onClick={(e)=> {white_btn_right(e)}}>right</div>
+
+        </section>
+
+      </section>)
+      }
+      
       </>: null}
 
       {footer ? <Footer screen={screen} setscreen={setscreen} /> : null} 
