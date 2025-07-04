@@ -59,7 +59,7 @@ const Main = () => {
 
   const [product, setproduct] = useState("")
   const [detall, setdetall] = useState("")
-         
+     
   
   
   const [page, setpage] = useState("")  
@@ -437,6 +437,85 @@ function product_detall_on (e) {
   getdata(e) 
 }
 
+    //detall bt
+
+  function detall_btn_left (e) {
+    const left = (Number(e.target.nextElementSibling.style.left.slice(0,-2)) + 855) + "px"
+
+    if (Number(e.target.nextElementSibling.style.left.slice(0,-2)) === -855 ) {
+      e.target.parentElement.children[0].classList.add("nonarrow");
+      e.target.parentElement.children[2].classList.remove("nonarrow");
+      e.target.nextElementSibling.style.left =  left
+
+    } else if (e.target.nextElementSibling.style.left !== "" ) {
+      e.target.nextElementSibling.style.left =  left
+
+    }
+  }
+  
+  function detall_btn_right (e) {
+    const right = (Number(e.target.previousElementSibling.style.left.slice(0,-2)) + -855) + "px"
+    const page = Math.ceil (e.target.previousElementSibling.children.length / 5 ) - 1
+    if ( (page -1 ) * -855 === Number(e.target.previousElementSibling.style.left.slice(0,-2)) ) {
+      e.currentTarget.classList.add("nonarrow");
+      e.target.parentElement.children[0].classList.remove("nonarrow")
+      e.target.previousElementSibling.style.left = right
+
+    } else if (e.target.previousElementSibling.style.left === "" || e.target.previousElementSibling.style.left === "0px" && page * -990 !== 1) {
+      e.target.previousElementSibling.style.left = right
+      e.target.parentElement.children[0].classList.remove("nonarrow")
+
+
+    } else if ( page * -855 < Number(e.target.previousElementSibling.style.left.slice(0,-2)) ) {
+      console.log("가고있니?")
+      e.target.previousElementSibling.style.left = right
+
+    } else {
+      // setpage(last)
+    }
+  }
+
+    //detall list_box_small
+
+  function detall_white_btn_left (e) {
+    const left = (Number(e.target.nextElementSibling.children[0].children[0].style.left.slice(0,-2)) + 801) + "px"
+
+    if (Number(e.target.nextElementSibling.children[0].children[0].style.left.slice(0,-2)) === -801 ) {
+      e.target.parentElement.children[1].classList.add("nonarrow");
+      e.target.parentElement.children[3].classList.remove("nonarrow");
+      e.target.nextElementSibling.children[0].children[0].style.left =  left
+
+    } else if (e.target.nextElementSibling.children[0].children[0].style.left !== "" ) {
+      e.target.nextElementSibling.children[0].children[0].style.left =  left
+
+    }
+  }
+  
+  function detall_white_btn_right (e) {
+    console.log(e.target.previousElementSibling.children[0].children[0])
+    console.log(e.target.parentElement.children[1])
+
+    const right = (Number(e.target.previousElementSibling.children[0].children[0].style.left.slice(0,-2)) + -801) + "px"
+    const page = Math.ceil (e.target.previousElementSibling.children[0].children[0].children.length / 5 ) - 1
+    if ( (page -1 ) * -801 === Number(e.target.previousElementSibling.children[0].children[0].style.left.slice(0,-2)) ) {
+      e.currentTarget.classList.add("nonarrow");
+      e.target.parentElement.children[1].classList.remove("nonarrow")
+      e.target.previousElementSibling.children[0].children[0].style.left = right
+
+    } else if (e.target.previousElementSibling.children[0].children[0].style.left === "" || e.target.previousElementSibling.children[0].children[0].style.left === "0px" && page * -990 !== 1) {
+      e.target.previousElementSibling.children[0].children[0].style.left = right
+      e.target.parentElement.children[1].classList.remove("nonarrow")
+
+
+    } else if ( page * -801 < Number(e.target.previousElementSibling.children[0].children[0].style.left.slice(0,-2)) ) {
+      console.log("가고있니?")
+      e.target.previousElementSibling.children[0].children[0].style.left = right
+
+    } else {
+      // setpage(last)
+    }
+  }
+
 
   useEffect(()=>{
     agree_check();
@@ -453,7 +532,7 @@ const onChange = checked => {
 
 
   return (
-    <>
+    <section class="coupang">
       {topbar ? <Topbar screen={screen} setscreen={setscreen} setproduct={setproduct} setfooter={setfooter} division={division} setsearch={setsearch} setdivision={setdivision} setfocus={setfocus} login={login} setlogin={setlogin} user={user}/>  : null} 
       
       {screen.main ? <>
@@ -1385,143 +1464,238 @@ const onChange = checked => {
             </article>
         </div>
 
-        <section class="pruduct_list_contener">
-          <div class="pruduct_list_box"><h2 class="pruduct_title showping">함께 비교하면 좋을 상품</h2>
+        <section class="detall_pruduct_list_contener">
+          <div class="detall_pruduct_list_box"><h2 class="detall_pruduct_title showping">함께 비교하면 좋을 상품</h2>
 
-          <div class="pruduct_list">
-            <div  class="black_btn_left nonarrow" onClick={(e)=> {btn_left(e)}}>left</div>
-            <ul class="list_box">
+          <div class="detall_pruduct_list">
+            <div  class="detall_black_btn_left nonarrow" onClick={(e)=> {detall_btn_left(e)}}>left</div>
+            <ul class="detall_list_box">
               {post.filter((num) => num.part === 'TS')
               .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
-              <div class="list_info">
-                  <div class="info_title"> <span>{num.name}</span></div>
-                <div class="delivery_info_box">
-                  { num.delivery === "무료배송" ? <span class="delivery_info">{num.delivery}</span> : <img class="delivery_info" name={num.delivery}  src={num.delivery_img}/> }                    
+              <div class="detall_list_info">
+                  <div class="detall_info_title"> <span>{num.name}</span></div>
+                <div class="detall_delivery_info_box">
+                  { num.delivery === "무료배송" ? <span class="detall_delivery_info">{num.delivery}</span> : <img class="detall_delivery_info" name={num.delivery}  src={num.delivery_img}/> }                    
                   </div>
-                <div class="review_box"><span class="score_bg"><span class="score_active" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+                <div class="detall_review_box"><span class="detall_score_bg"><span class="detall_score_active" style={{width: num.scope}}></span></span><span class="detall_review_num">({num.review})</span></div>
               </div></li>)}
             </ul>
-            <div  class="black_btn_right" onClick={(e)=> {btn_right(e);}}>right</div>
+            <div  class="detall_black_btn_right" onClick={(e)=> {detall_btn_right(e);}}>right</div>
           </div>
           </div>
         </section>
 
-        <section class="pruduct_list_contener_small">
-          <h2 class="pruduct_title_small">지금 이 상품이 필요하신가요?</h2>
+        <section class="detall_pruduct_list_contener_small">
+          <h2 class="detall_pruduct_title_small">지금 이 상품이 필요하신가요?</h2>
 
-          <div class="white_btn_left nonarrow" onClick={(e)=> {white_btn_left(e)}}>left</div>
+          <div class="detall_white_btn_left nonarrow" onClick={(e)=> {detall_white_btn_left(e)}}>left</div>
 
-          <div class="pruduct_list_box_small">
-          <div class="pruduct_list_small">
-            <ul class="list_box_small">
+          <div class="detall_pruduct_list_box_small">
+          <div class="detall_pruduct_list_small">
+            <ul class="detall_list_box_small">
               {post.filter((num) => num.part === 'NP')
               .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
-              <div class="list_info_small">
-                  <div class="info_title_small"> <span>{num.name}</span></div>
-                <div class="delivery_info_box_small">
-                  <span class="price_small">{num.price}원</span>
-                  { num.delivery === "무료배송" ? <span class="delivery_info_small">{num.delivery}</span> : <img class="delivery_info_small" name={num.delivery}  src={num.delivery_img}/> }                    
+              <div class="detall_list_info_small">
+                  <div class="detall_info_title_small"> <span>{num.name}</span></div>
+                <div class="detall_delivery_info_box_small">
+                  <span class="detall_price_small">{num.price}원</span>
+                  { num.delivery === "무료배송" ? <span class="detall_delivery_info_small">{num.delivery}</span> : <img class="detall_delivery_info_small" name={num.delivery}  src={num.delivery_img}/> }                    
                   </div>
-                <div class="price_piece_box"><span class="price_piece_small"></span></div>
-                <div class="review_box_small"><span class="score_bg_small"><span class="score_active_small" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+                <div class="detall_price_piece_box"><span class="detall_price_piece_small"></span></div>
+                <div class="detall_review_box_small"><span class="detall_score_bg_small"><span class="detall_score_active_small" style={{width: num.scope}}></span></span><span class="detall_review_num">({num.review})</span></div>
               </div></li>)}
             </ul>
           </div>
           </div>
 
-          <div  class="white_btn_right" onClick={(e)=> {white_btn_right(e)}}>right</div>
-
-        </section>
-
-        <div class="pruduct_detall_bt_box">
-          <button>상품상제</button>
-          <button>상품평 ( {num.review} )</button>
-          <button>상품문의</button>
-          <button>배송/교환/반품 안내</button>
-        </div>
-
-        <section>
-
-        </section>
-
-        <section>
+          <div  class="detall_white_btn_right" onClick={(e)=> {detall_white_btn_right(e)}}>right</div>
 
         </section>
         
+        <section class="pruduct_detall_contener">
+        <div class="pruduct_detall_bt_box" className={ scroll > 2200 ?  "pruduct_detall_bt_box_fix" : "pruduct_detall_bt_box"}>
+          <button onClick={()=>{}}>상품상제</button>
+          <button onClick={()=>{}}>상품평 ( {num.review} )</button>
+          <button onClick={()=>{}}>상품문의</button>
+          <button onClick={()=>{}}>배송/교환/반품 안내</button>
+        </div></section>
+
         <section>
+          <div class="notation_title"><span >필수 표기 정보</span> </div>
+          
+          <div class="notation">
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name1}</span></div> <div class="notation_text"><span>{num.notation_valvue1}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name2}</span></div> <div class="notation_text"><span>{num.notation_valvue2}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name3}</span></div> <div class="notation_text"><span>{num.notation_valvue3}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name4}</span></div> <div class="notation_text"><span>{num.notation_valvue4}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name5}</span></div> <div class="notation_text"><span>{num.notation_valvue5}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name6}</span></div> <div class="notation_text"><span>{num.notation_valvue6}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name7}</span></div> <div class="notation_text"><span>{num.notation_valvue7}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name8}</span></div> <div class="notation_text"><span>{num.notation_valvue8}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name9}</span></div> <div class="notation_text"><span>{num.notation_valvue9}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name10}</span></div> <div class="notation_text"><span>{num.notation_valvue10}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name11}</span></div> <div class="notation_text"><span>{num.notation_valvue11}</span></div></div>
+            <div class="notation_box">  <div class="notation_header"><span>{num.notation_name12}</span></div> <div class="notation_text"><span>{num.notation_valvue12}</span></div></div>
+            <div class="last_notation_box">  <div class="notation_header"><span>{num.notation_name13}</span></div> <div class="notation_text"><span>{num.notation_valvue13}</span></div></div>
+          </div>
+
+          <div class="notation_warning">
+            <span>판매자가 현금거래를 요구하면 거부하시고 즉시 사기 거래 신고센터 (1670-9832)에 신고하시기 바랍니다.</span>
+          </div>
 
         </section>
 
-        <section>
-
+        <section class="detall_img_box">
+          <img src={num.d_img1}/>
+          <img src={num.d_img2}/>
+          <img src={num.d_img3}/>
+          <img src={num.d_img4}/>
+          <img src={num.d_img5}/>
+          <img src={num.d_img6}/>
         </section>
 
-        <section class="pruduct_list_contener">
-          <div class="pruduct_list_box"><h2 class="pruduct_title showping">함께 비교하면 좋을 상품</h2>
+        <section class="detall_pruduct_list_contener_small">
+          <h2 class="detall_pruduct_title_small">지금 이 상품이 필요하신가요?</h2>
 
-          <div class="pruduct_list">
-            <div  class="black_btn_left nonarrow" onClick={(e)=> {btn_left(e)}}>left</div>
-            <ul class="list_box">
-              {post.filter((num) => num.part === 'TS')
-              .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
-              <div class="list_info">
-                  <div class="info_title"> <span>{num.name}</span></div>
-                <div class="delivery_info_box">
-                  { num.delivery === "무료배송" ? <span class="delivery_info">{num.delivery}</span> : <img class="delivery_info" name={num.delivery}  src={num.delivery_img}/> }                    
-                  </div>
-                <div class="review_box"><span class="score_bg"><span class="score_active" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
-              </div></li>)}
-            </ul>
-            <div  class="black_btn_right" onClick={(e)=> {btn_right(e);}}>right</div>
-          </div>
-          </div>
-        </section>
+          <div class="detall_white_btn_left nonarrow" onClick={(e)=> {detall_white_btn_left(e)}}>left</div>
 
-        <section class="pruduct_list_contener">
-          <div class="pruduct_list_box"><h2 class="pruduct_title showping">함께 비교하면 좋을 상품</h2>
-
-          <div class="pruduct_list">
-            <div  class="black_btn_left nonarrow" onClick={(e)=> {btn_left(e)}}>left</div>
-            <ul class="list_box">
-              {post.filter((num) => num.part === 'TS')
-              .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
-              <div class="list_info">
-                  <div class="info_title"> <span>{num.name}</span></div>
-                <div class="delivery_info_box">
-                  { num.delivery === "무료배송" ? <span class="delivery_info">{num.delivery}</span> : <img class="delivery_info" name={num.delivery}  src={num.delivery_img}/> }                    
-                  </div>
-                <div class="review_box"><span class="score_bg"><span class="score_active" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
-              </div></li>)}
-            </ul>
-            <div  class="black_btn_right" onClick={(e)=> {btn_right(e);}}>right</div>
-          </div>
-          </div>
-        </section>
-
-        <section class="pruduct_list_contener_small">
-          <h2 class="pruduct_title_small">지금 이 상품이 필요하신가요?</h2>
-
-          <div class="white_btn_left nonarrow" onClick={(e)=> {white_btn_left(e)}}>left</div>
-
-          <div class="pruduct_list_box_small">
-          <div class="pruduct_list_small">
-            <ul class="list_box_small">
+          <div class="detall_pruduct_list_box_small">
+          <div class="detall_pruduct_list_small">
+            <ul class="detall_list_box_small">
               {post.filter((num) => num.part === 'NP')
               .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
-              <div class="list_info_small">
-                  <div class="info_title_small"> <span>{num.name}</span></div>
-                <div class="delivery_info_box_small">
-                  <span class="price_small">{num.price}원</span>
-                  { num.delivery === "무료배송" ? <span class="delivery_info_small">{num.delivery}</span> : <img class="delivery_info_small" name={num.delivery}  src={num.delivery_img}/> }                    
+              <div class="detall_list_info_small">
+                  <div class="detall_info_title_small"> <span>{num.name}</span></div>
+                <div class="detall_delivery_info_box_small">
+                  <span class="detall_price_small">{num.price}원</span>
+                  { num.delivery === "무료배송" ? <span class="detall_delivery_info_small">{num.delivery}</span> : <img class="detall_delivery_info_small" name={num.delivery}  src={num.delivery_img}/> }                    
                   </div>
-                <div class="price_piece_box"><span class="price_piece_small"></span></div>
-                <div class="review_box_small"><span class="score_bg_small"><span class="score_active_small" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
+                <div class="detall_price_piece_box"><span class="detall_price_piece_small"></span></div>
+                <div class="detall_review_box_small"><span class="detall_score_bg_small"><span class="detall_score_active_small" style={{width: num.scope}}></span></span><span class="detall_review_num">({num.review})</span></div>
               </div></li>)}
             </ul>
           </div>
           </div>
 
-          <div  class="white_btn_right" onClick={(e)=> {white_btn_right(e)}}>right</div>
+          <div  class="detall_white_btn_right" onClick={(e)=> {detall_white_btn_right(e)}}>right</div>
+
+        </section>
+        
+        <section class="review_contener">
+          <div class="review_header">
+            <div><span>상품평</span></div>
+            <div><span>상품평 운영원칙</span></div>
+          </div>
+
+          <div class="review_guide"><span>동일한 상품에 대해 작성된 상품평으로, 판매자는 다를 수 있습니다.</span></div>
+
+          <div class="review_score_box"><span class="review_score_bg"><span class="review_score_active" style={{width: num.scope}}></span></span><span class="review_score_num">{num.review}</span> <button> 자세히보기</button></div>
+        
+          <div>
+            <div>
+              <h4>성분 만족도</h4>
+              <div><span>아주만족해요</span><div></div></div>
+            </div>
+          </div>
+
+          <div>
+            <div><button>베스트순</button><button>최신순</button></div>
+            <div>
+              <input placeholder="상품명을 검색해보세요"/>
+              <menu class="right_menu">
+              
+              <li onClick={()=>{}}><a>모든 별점 보기</a></li>
+
+              <div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+
+             </menu>
+            </div>
+          </div>
+        </section>
+
+        <section class="detall_pruduct_list_contener">
+          <div class="detall_pruduct_list_box"><h2 class="detall_pruduct_title showping">함께 비교하면 좋을 상품</h2>
+
+          <div class="detall_pruduct_list">
+            <div  class="detall_black_btn_left nonarrow" onClick={(e)=> {detall_btn_left(e)}}>left</div>
+            <ul class="detall_list_box">
+              {post.filter((num) => num.part === 'TS')
+              .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
+              <div class="detall_list_info">
+                  <div class="detall_info_title"> <span>{num.name}</span></div>
+                <div class="detall_delivery_info_box">
+                  { num.delivery === "무료배송" ? <span class="detall_delivery_info">{num.delivery}</span> : <img class="detall_delivery_info" name={num.delivery}  src={num.delivery_img}/> }                    
+                  </div>
+                <div class="detall_review_box"><span class="detall_score_bg"><span class="detall_score_active" style={{width: num.scope}}></span></span><span class="detall_review_num">({num.review})</span></div>
+              </div></li>)}
+            </ul>
+            <div  class="detall_black_btn_right" onClick={(e)=> {detall_btn_right(e);}}>right</div>
+          </div>
+          </div>
+        </section>
+
+        <section class="inquiry_contener">
+          <div><h2>상품문의</h2> <button>문의상품</button></div>
+          <ul>
+            <li >구매한 상품의 <em>취소/반품은 마이쿠팡 구매내역에서 신청</em> 가능합니다.</li>
+            <li >상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
+            <li ><em >가격, 판매자, 교환/환불 및 배송 등 해당 상품 자체와 관련 없는 문의는 고객센터 내 1:1 문의하기</em>를 이용해주세요.</li>
+            <li ><em >"해당 상품 자체"와 관계없는 글, 양도, 광고성, 욕설, 비방, 도배 등의 글은 예고 없이 이동, 노출제한, 삭제 등의 조치가 취해질 수 있습니다.</em></li><li class="twc-list-disc twc-ml-[16px]">공개 게시판이므로 전화번호, 메일 주소 등 고객님의 소중한 개인정보는 절대 남기지 말아주세요.</li>
+          </ul>
+
+          <div class="inquiry_input"><input/></div>
+        </section>
+
+        <section class="detall_pruduct_list_contener">
+          <div class="detall_pruduct_list_box"><h2 class="detall_pruduct_title showping">함께 비교하면 좋을 상품</h2>
+
+          <div class="detall_pruduct_list">
+            <div  class="detall_black_btn_left nonarrow" onClick={(e)=> {detall_btn_left(e)}}>left</div>
+            <ul class="detall_list_box">
+              {post.filter((num) => num.part === 'TS')
+              .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
+              <div class="detall_list_info">
+                  <div class="detall_info_title"> <span>{num.name}</span></div>
+                <div class="detall_delivery_info_box">
+                  { num.delivery === "무료배송" ? <span class="detall_delivery_info">{num.delivery}</span> : <img class="detall_delivery_info" name={num.delivery}  src={num.delivery_img}/> }                    
+                  </div>
+                <div class="detall_review_box"><span class="detall_score_bg"><span class="detall_score_active" style={{width: num.scope}}></span></span><span class="detall_review_num">({num.review})</span></div>
+              </div></li>)}
+            </ul>
+            <div  class="detall_black_btn_right" onClick={(e)=> {detall_btn_right(e);}}>right</div>
+          </div>
+          </div>
+        </section>
+
+        <section class="detall_pruduct_list_contener_small">
+          <h2 class="detall_pruduct_title_small">지금 이 상품이 필요하신가요?</h2>
+
+          <div class="detall_white_btn_left nonarrow" onClick={(e)=> {detall_white_btn_left(e)}}>left</div>
+
+          <div class="detall_pruduct_list_box_small">
+          <div class="detall_pruduct_list_small">
+            <ul class="detall_list_box_small">
+              {post.filter((num) => num.part === 'NP')
+              .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+              <div class="detall_list_info_small">
+                  <div class="detall_info_title_small"> <span>{num.name}</span></div>
+                <div class="detall_delivery_info_box_small">
+                  <span class="detall_price_small">{num.price}원</span>
+                  { num.delivery === "무료배송" ? <span class="detall_delivery_info_small">{num.delivery}</span> : <img class="detall_delivery_info_small" name={num.delivery}  src={num.delivery_img}/> }                    
+                  </div>
+                <div class="detall_price_piece_box"><span class="detall_price_piece_small"></span></div>
+                <div class="detall_review_box_small"><span class="detall_score_bg_small"><span class="detall_score_active_small" style={{width: num.scope}}></span></span><span class="detall_review_num">({num.review})</span></div>
+              </div></li>)}
+            </ul>
+          </div>
+          </div>
+
+          <div  class="detall_white_btn_right" onClick={(e)=> {detall_white_btn_right(e)}}>right</div>
 
         </section>
 
@@ -1532,7 +1706,7 @@ const onChange = checked => {
 
       {footer ? <Footer screen={screen} setscreen={setscreen} /> : null} 
 
-    </>
+    </section>
   )
 }
 
