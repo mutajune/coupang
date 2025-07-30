@@ -23,7 +23,7 @@ const Topbar = ({screen , setscreen , setfooter, division, setdivision , setprod
     <header>
       {screen.coupang ? <>
         <section id="top_bar">
-         <div class="top_menus">
+         <div class="top_menus" className={screen.main ? "header_mini top_menus" : screen.my_page ? "header_mini2 top_menus" :"top_menus"}>
           <menu class="left_menu">
             <li><a>즐겨찾기</a></li>
             <li>
@@ -50,14 +50,14 @@ const Topbar = ({screen , setscreen , setfooter, division, setdivision , setprod
           </div>
         </section>
 
-        <section id="header">
-        <div class="category_btn">
+        <section id="header" className={screen.main ? "header_mini" :  screen.my_page ? "header_mini2" :""}>
+        <div class="category_btn" onMouseOver={()=>{}}>
           <a>카테고리</a>
         </div>
 
         <div class="header_search_box">
           <div class="header_search_box_top">
-            <img onClick={()=>{ setscreen({coupang : true , main: true })}} class="coupang_img" src="https://image7.coupangcdn.com/image/coupang/common/logo_coupang_w350.png"/>
+            <img onClick={()=>{setscreen({coupang : true , main: true })}} class="coupang_img" src="https://image7.coupangcdn.com/image/coupang/common/logo_coupang_w350.png"/>
 
             <div class="header_search_form">
               <select id="search_category_select" onChange={(e)=>{setdivision(e.target.value)}}>
@@ -73,8 +73,8 @@ const Topbar = ({screen , setscreen , setfooter, division, setdivision , setprod
             </div>
             
             <ul class="icon_menus">
-              <li><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#person" /> <br/>마이쿠팡</span></a></li>
-              <li><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#cart" /> <br/>장바구니</span></a> <em>0</em></li>
+              <li onClick={()=>{setscreen({coupang : true , my_page : true})}}><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#person" /> <br/>마이쿠팡</span></a></li>
+              <li onClick={()=>{setscreen({shopping_cart : true})}}><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#cart" /> <br/>장바구니</span></a> <em>0</em></li>
             </ul>
           </div>
 

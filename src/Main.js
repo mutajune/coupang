@@ -1,9 +1,10 @@
 import {React, useEffect, useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import Topbar from './Topbar'
 import Footer from './Footer'
 import axios from 'axios';
 
-import { Alert, Switch } from "antd";
+import { Alert, Button, Switch } from "antd";
 import { Pagination as Paginations} from "antd";
 
 import { Navigation, Pagination, Autoplay,  } from "swiper/modules";
@@ -22,6 +23,15 @@ const Main = () => {
   const [banner_num, setbanner_num] = useState(0)
   const [tag, settag] = useState("")
   const [category, setcategory] = useState("")
+
+
+  function MyComponent() {
+  const navigate = useNavigate();
+
+  const goToPreviousPage = () => {
+    navigate(-1);
+  };}
+
 
   // category
   const [scroll, setscroll] = useState(false)
@@ -61,8 +71,12 @@ const Main = () => {
   const [detall_img, setdetall_img] = useState("")
   const [detall, setdetall] = useState("")
   const [option , setoption] = useState("")
-   const [option_num , setoption_num] = useState(1)
-     
+  const [option_num , setoption_num] = useState(1)
+
+  const [cart , setcart] = useState("")
+
+  const [order, setorder] = useState("")
+  const [arrive, setarrive] = useState("")
   
   
   const [page, setpage] = useState("")  
@@ -92,6 +106,37 @@ const Main = () => {
       //응답 실패
       console.error(error);
     }
+  }
+  async function getcart(e) {
+  try {
+    //응답 성공 
+    const response = await axios.get(`http://localhost:3000/shopping_cart?users=${e}`);
+    setcart(response.data)
+    console.log(cart)
+  } catch (error) {
+    //응답 실패
+    console.error(error);
+  }
+  }
+  async function getorder(e) {
+  try {
+    //응답 성공 
+    const response = await axios.get(`http://localhost:3000/coupang/user/order?users=${e}`);
+    setorder(response.data)
+  } catch (error) {
+    //응답 실패
+    console.error(error);
+  }
+  }  
+  async function getarrive(e) {
+  try {
+    //응답 성공 
+    const response = await axios.get(`http://localhost:3000/coupang/user/arrive?users=${e}`);
+    setarrive(response.data)
+  } catch (error) {
+    //응답 실패
+    console.error(error);
+  }
   }
   async function getpost() {
     try {
@@ -138,6 +183,10 @@ const Main = () => {
         setlogin(true)
         setscreen({coupang : true , main: true })
         setuser(response.data)
+        getcart(response.data[0].sno)
+        getorder(response.data[0].sno)
+        getarrive(response.data[0].sno)
+        setfooter(true)
       } else if (response.data.is_success === false) {
         alert("틀렸어요")
       } else{
@@ -195,6 +244,38 @@ const Main = () => {
     handleScrollToTop('auto');
     
   }, []);
+  // cart
+  async function delcart(e) {
+  try {
+    //응답 성공 
+    const response = await axios.get(`http://localhost:3000/cart_delete?sno=${e}&user=${user[0].sno}`);
+    console.log(cart)
+    getcart(user[0].sno); 
+  } catch (error) {
+    //응답 실패
+    console.error(error);
+  }
+}
+
+  async function addcart(e) {
+    const amounts = e.target.parentElement.parentElement.children[0].children[0].value
+    if (login === true) {
+      try {
+        //응답 성공 
+        const response = await axios.get(`http://localhost:3000/cart_add?user=${user[0].sno}&product=${option[option_num].option_product}&amount=${amounts}`);
+        console.log("장바구니 저장")
+        getcart(user[0].sno); 
+      } catch (error) {
+        //응답 실패
+        console.log(user[0].sno)
+        console.error(error);
+      }
+
+    } else {
+      alert("로그인 하여해요")
+    }
+
+}
 
   // menu
   function scrollmenu () {
@@ -446,12 +527,12 @@ const Main = () => {
   }
 
 // product_detall
-function product_detall_on (e) {
-  console.log(e)
-  setscreen({product : true , coupang : true})
-  getdata(e)
-  gatoption(e)
-}
+  function product_detall_on (e) {
+    console.log(e)
+    setscreen({product : true , coupang : true})
+    getdata(e)
+    gatoption(e)
+  }
 
     //detall bt
 
@@ -1449,7 +1530,8 @@ const onChange = checked => {
             <div class="detall_contents">
               <div class="detall_contents_header">
                 <div class="detall_contents_text">
-                  <div><strong>{option[option_num - 1].option_name}</strong></div>
+                {option.length === 0 ? <></>:
+                  <div><strong>{option[option_num - 1].option_name}</strong></div>}
                   <div>
                     <span>원산지: 상품 상세설명 참조</span>
                     <div class="review_box"><span class="score_bg"><span class="score_active" style={{width: num.scope}}></span></span><span class="review_num">({num.review})</span></div>
@@ -1472,11 +1554,12 @@ const onChange = checked => {
                 <div><span>더 많은 옵션 보기</span><div><span>{num.standard}{num.number}{num.unit} x </span></div></div>
                 <div></div>
                 <div class="option_table_list">
+                    {option.length === 0 ? <></>:
                   <div>{option.map((num) => <div class="option_list_item">
                     <div class="option_list_checkbox"><input onClick={()=>{setoption_num(num.option_num)}} type="checkbox" name="num" checked={option_num === num.option_num} /></div>
                     <div class="option_list_num">{num.option_num}</div>
                     <div class="option_list_price">{num.option_price}</div></div> )}
-                  </div>
+                  </div> }
                   <div class="all_option_bt"><button> 모든 옵션 보기</button></div>
                 </div>
               </div>
@@ -1489,7 +1572,7 @@ const onChange = checked => {
               <div><strong>PC에서도 간편한 결제</strong></div>
               <div class="purchase_bt_box">
                 <div class="number_input"><input type="text" value="1"/></div>
-                <div class="purchase_bt"><button>장바구니 담기</button> <button>바로구매</button></div>
+                <div class="purchase_bt"><button onClick={(e)=> {addcart(e)}}>장바구니 담기</button> <button>바로구매</button></div>
               </div>
               <div></div>
             </div>
@@ -1858,7 +1941,189 @@ const onChange = checked => {
       
       </>: null}
 
-      {screen.shopping_cart ? <>
+      {screen.shopping_cart ? <> <section className={cart === "" ? "": "use_shopping"}>
+        <div class="shopping_header"><img onClick={()=>{setscreen({coupang : true , main: true })}} class="coupang_img_mini" src="https://image7.coupangcdn.com/image/coupang/common/logo_coupang_w350.png"/></div>
+        <div class="shopping_cart_box">
+          <div class="shopping_cart_box_header">
+            <div class="shopping_cart_left" onClick={()=>{setscreen({coupang : true , main: true })}}><div class="left_img"></div><h2> 장바구니 </h2></div>
+            <div class="shopping_cart_right">
+              <span>01</span><span>옵션선택</span><div class="right_img"></div>
+              <span>02</span><span>장바구니</span><div class="right_img"></div>
+              <span>03</span><span>주문/결제</span><div class="right_img"></div>
+              <span>04</span><span>주문완료</span>
+            </div>
+          </div>
+          {cart === "" ?
+          <div class="shopping_cart_box_content">
+            <p>장바구니에 담은 상품이 없습니다.</p>
+            <div>로그인을 하시면, 장바구니에 보관된 상품을 확인하실 수 있습니다. {login? <a>로그인하기</a> : null}</div>
+
+            <div class="shopping_cart_box_bt">
+              <p>각 상품에서 구매할 옵션을 선택하시고, <a>구매하기</a> 버튼을 눌러 보세요!</p>
+              <p>선택한 옵션을 모두 장바구니에 담을 수 있습니다.</p>
+              <button>오늘의 추천 상품보기<div class="right_img"></div> </button>
+            </div>
+          </div> : <div class="shopping_cart_box_content_flex">
+            <div class="shopping_cart_content_list">
+              <div class="cart_content_list_header"><span>판매자배송 상품</span></div>
+              {cart.map((num)=> <div class="cart_list">
+                <input type="checkbox"/>
+                <img src={num.list_image}/>
+                <div class="cart_list_box">
+                  <div class="cart_list_header"><span>{num.name}</span> <button name={num.sno} onClick={(e)=> {delcart(e.target.name);}}>삭제</button></div>
+                  <div class="cart_list_content">
+                    <span class="cart_list_price">{num.price}</span>
+                    <div>{num.amount}</div>
+                  </div>
+                </div>
+              </div>)}
+              
+              <div></div>
+              
+            </div>
+            <div class="shopping_cart_content_price">
+              <div class="cart_content_price_header"><span>주문예상금액</span></div>
+              <div class="cart_content_price_text"><span>총 상품 가격</span><span>원</span></div>
+              <div class="cart_content_price_text"><span>총 할인</span><span>원</span></div>
+              <div class="cart_content_price_text"><span>총 배송비</span><span>원</span></div>
+              <div class="cart_content_price_totall"><span><strong></strong>원</span></div>
+              <button class="cart_content_price_bt">구매하기()</button>
+            </div>
+          </div>}
+        </div>
+      </section></>: null}
+
+      {screen.my_page ?  <>         
+          <section class="my_page_section">
+
+            <section class="my_page_contant">
+              <div class="my_page_left_menu">
+                <div class="my_page_left_menu_header">MY쿠팡</div>
+                <div class="my_page_left_menu_list">
+                  <div class="my_page_left_menu_table">
+                    <div class="my_page_left_menu_table_item">
+                      <div class="my_page_left_menu_table_item_header">MY 쇼핑</div>
+                      <ul class="my_page_left_menu_table_item_ul">
+                        <li class="my_page_left_menu_table_item_li"><a>주문목록/배송조회</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>취소/반품/교환/환불내역</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>와우 멤버십</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>구독 서비스</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>로켓프레시 프레시백</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>정기배송관리</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>영수증 조회/출력</a></li>
+                      </ul>
+                    </div>
+                    <div class="my_page_left_menu_table_item">
+                      <div class="my_page_left_menu_table_item_header">MY 혜택</div>
+                      <ul class="my_page_left_menu_table_item_ul">
+                        <li class="my_page_left_menu_table_item_li"><a>할인쿠폰</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>쿠팡캐시/기프트카드</a></li>
+                      </ul>
+                    </div>
+                    <div class="my_page_left_menu_table_item">
+                      <div class="my_page_left_menu_table_item_header">MY 활동</div>
+                      <ul class="my_page_left_menu_table_item_ul">
+                        <li class="my_page_left_menu_table_item_li"><a>문의하기</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>문의내역 확인</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>리뷰관리</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>찜 리스트</a></li>
+                      </ul>                    
+                    </div>
+                    <div class="my_page_left_menu_table_item">
+                      <div class="my_page_left_menu_table_item_header">MY 정보</div>
+                      <ul class="my_page_left_menu_table_item_ul">
+                        <li class="my_page_left_menu_table_item_li"><a>개인정보확인/수정</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>결제수단·쿠페이 관리</a></li>
+                        <li class="my_page_left_menu_table_item_li"><a>배송지 관리</a></li>
+                      </ul>                    
+                    </div>
+                  </div>
+                  <div></div>
+                </div>
+
+                <div class="my_page_left_menu_icons">
+                  <div class="my_page_left_menu_icons_1"><span></span></div>
+                  <div class="my_page_left_menu_icons_2"><span></span></div>
+                  <div class="my_page_left_menu_icons_3"><span></span></div>
+                </div>
+              </div>
+
+              <div class="my_page_contant_list">
+                <div class="my_page_contant_list_header">
+                  <div class="my_page_contant_list_item"><span>쿠페이머니</span> <span><span class="my_page_list_item_num">0</span>원</span></div>
+                  <div class="my_page_contant_list_item"><span>쿠팡캐시</span> <span><span class="my_page_list_item_num">0</span>원</span></div>                  
+                </div>
+
+                <div class="my_page_contant_list_contant">
+                  <div class="my_page_contant_list_contant_title"><span>주문목록</span></div>
+
+                  <div class="my_page_contant_list_contant_search">
+                    <div><input placeholder="주문한 상품을 검색할 수 있어요"/></div>
+                    <div class="my_page_list_contant_bt"><button>최근 6개월</button><button>2025</button><button>2024</button><button>2023</button><button>2022</button><button>2021</button><button>2020</button></div>
+                    <div class="my_page_oder_box">
+                      {order != "" && arrive != "" ?
+                      <>{arrive.map((day) => 
+                      <div>
+                        <div class="oder_box_header">
+                        <span class="oder_box_header_day">{day.order_arrive.substr(0,4)}.{day.order_arrive.substr(5,2)}.{day.order_arrive.substr(8,2)}주문</span>
+                        <a> 주문상세보기 <svg width="16" height="16" focusable="false" viewBox="0 0 16 16" aria-hidden="true" role="presentation"><path fill="#346aff" fill-rule="nonzero" d="M11.057 8L5.53 13.529c-.26.26-.26.682 0 .942.26.26.682.26.942 0l6-6c.26-.26.26-.682 0-.942l-6-6c-.26-.26-.682-.26-.942 0-.26.26-.26.682 0 .942L11.057 8z"></path></svg></a>
+                        </div>
+                        <div class="oder_content_box">
+
+                          <div class="order_left_list">
+                            <div class="oder_content_box_header">
+                              <div><h1>배송완료</h1></div>
+                              <button>:</button>
+                            </div>
+                            {order.filter((list) => list.order_arrive === day.order_arrive && list.order_status === "배송완료")
+                            .map((list) => <div class="orders_list_main_box">
+                              <div class="order_list_content"><img src={post[list.product_sno].list_image}/>
+                                <div class="order_list_content_text">
+                                  <img src={post[list.product_sno].delivery_img} />
+                                  <div>
+                                    <span>{post[list.product_sno].name}</span>
+                                    <div class="order_list_content_text_b"> <span>{post[list.product_sno].price}원 {list.order_num}개</span> <button class="cart_bt">장바구니 담기</button></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>)}
+                          </div>
+
+                          <div class="orders_list_bt_box">
+                              <button>배송조회</button>
+                              <button>교환, 반품 신청</button>
+                              <button>리뷰 작성하기</button>
+                          </div> 
+                        </div>
+                      
+                      </div> )}
+
+                      </>
+                      : null}
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          
+            <article class="my_page_side_bar">
+              <ul><li></li></ul> 
+              <ul>{post.filter((num) => num.part === "SD")
+              .map((num) => <li><img src={num.post_mark}/></li>)}</ul>
+              <ul><li></li></ul>
+              <div class="cart_box">
+                <div class="side_cart"><span>장바구니</span> <em class="cart_count">0</em></div>
+                <div class="recently_viewed_products"><span>최근본상품</span> <em class="cart_count">0</em></div>
+                <div class="recently_viewed_no_list"> <span class="no_item">최근본 상품이<br/>없습니다.</span></div>
+              </div>
+            </article>
+
+          </section>
+
+        
       </>: null}
 
       {footer ? <Footer screen={screen} setscreen={setscreen} /> : null} 
