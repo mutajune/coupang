@@ -649,7 +649,7 @@ const onChange = checked => {
                 <ul class="pruduct_hot_box">
                   {post.filter((num) => num.part === "TH")
                   .map((num) => <li class="hot_box" onMouseOver={(e) =>{handlefouce(e.target.name)}} onMouseOut={()=>{nonmouse()}} >
-                  <img name={num.post_name} className={focus === num.post_name ? "hot_img_focus" : "hot_img"} class="hot_img" src={num.post_mark}/>
+                  <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.post_name} className={focus === num.post_name ? "hot_img_focus" : "hot_img"} class="hot_img" src={num.post_mark}/>
                   <button name={num.post_name} class="hot_bt" className={focus === num.post_name ? "hot_bt_focus" : "hot_bt"}>다운로드</button>
                 </li>)}</ul>
               </div>
@@ -697,7 +697,7 @@ const onChange = checked => {
               <div class="pruduct_list_small">
                 <ul class="list_box_small">
                   {post.filter((num) => num.part === 'NP')
-                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info_small">
                       <div class="info_title_small"> <span>{num.name}</span></div>
                     <div class="delivery_info_box_small">
@@ -722,7 +722,7 @@ const onChange = checked => {
                 <div  class="black_btn_left nonarrow" onClick={(e)=> {btn_left(e)}}>left</div>
                 <ul class="list_box">
                   {post.filter((num) => num.part === 'LC')
-                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info">
                       <div class="info_title"> <span>{num.name}</span></div>
                     <div class="delivery_info_box">
@@ -745,7 +745,7 @@ const onChange = checked => {
               <div class="pruduct_list_small">
                 <ul class="list_box_small">
                   {post.filter((num) => num.part === 'TSS')
-                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info_small">
                       <div class="info_title_small"> <span>{num.name}</span></div>
                     <div class="delivery_info_box_small">
@@ -772,7 +772,7 @@ const onChange = checked => {
               <div class="pruduct_list_small">
                 <ul class="list_box_small">
                   {post.filter((num) => num.part === 'RGS')
-                  .map((num) => <li> <img name={num.name}  class="" src={num.list_image}/>
+                  .map((num) => <li> <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name}  class="" src={num.list_image}/>
                   <div class="list_info_small">
                       <div class="info_title_small"> <span>{num.name}</span></div>
                     <div class="delivery_info_box_small">
@@ -826,7 +826,7 @@ const onChange = checked => {
                           // onSwiper={(swiper) => console.log(swiper)}
                         >
                           {post.filter((num) => num.part === "CB" && num.product === null && num.banner_category === sno.sno)
-                          .map((num) => <SwiperSlide><img src={num.banner_img}/>
+                          .map((num) => <SwiperSlide><img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name} src={num.banner_img}/>
                           <div  className={`banner_description description_${sno.class}`}>{num.banner_name } <br/> <span>{num.banner_description}</span></div> </SwiperSlide>)}
 
                         </Swiper>
@@ -849,7 +849,7 @@ const onChange = checked => {
                               {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 7 && num.category === sno.sno)  
                               .map((num) =>
                               <div class="category_slide_list">
-                                <img src={num.list_image}/>
+                                <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name} src={num.list_image}/>
                                 <div class="category_slide_span"><a>{num.name}</a></div>
                                 <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
                               </div>)}   
@@ -863,7 +863,7 @@ const onChange = checked => {
                               {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 13 &&  num.p_key > 6 && num.category === sno.sno)  
                               .map((num) =>
                               <div class="category_slide_list">
-                                <img src={num.list_image}/>
+                                <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name} src={num.list_image}/>
                                 <div class="category_slide_span"><a>{num.name}</a></div>
                                 <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
                               </div>)}   
@@ -877,7 +877,7 @@ const onChange = checked => {
                               {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 19 &&  num.p_key > 12 && num.category === sno.sno)  
                               .map((num) =>
                               <div class="category_slide_list">
-                                <img src={num.list_image}/>
+                                <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name} src={num.list_image}/>
                                 <div class="category_slide_span"><a>{num.name}</a></div>
                                 <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
                               </div>)}   
@@ -891,7 +891,7 @@ const onChange = checked => {
                               {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 25 &&  num.p_key > 18 && num.category === sno.sno)  
                               .map((num) =>
                               <div class="category_slide_list">
-                                <img src={num.list_image}/>
+                                <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name} src={num.list_image}/>
                                 <div class="category_slide_span"><a>{num.name}</a></div>
                                 <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
                               </div>)}   
@@ -905,7 +905,7 @@ const onChange = checked => {
                               {post.filter((num) => num.part === "CB" && num.product !== null && num.p_key < 31 &&  num.p_key > 24 && num.category === sno.sno)  
                               .map((num) =>
                               <div class="category_slide_list">
-                                <img src={num.list_image}/>
+                                <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.name} src={num.list_image}/>
                                 <div class="category_slide_span"><a>{num.name}</a></div>
                                 <div class="category_slide_price_box"><span class="category_slide_price">{num.price}원</span> <img class="category_slide_delivery" src={num.delivery_img} /></div>
                               </div>)}   
