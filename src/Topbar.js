@@ -1,8 +1,10 @@
 import {React, useState} from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Topbar = ({screen , setscreen , setfooter, division, setdivision , setproduct, setsearch, setfocus, login, setlogin, user}) => {
+  const navigate = useNavigate();
   const [sildermenu, setsildermenu] = useState(false)
   const [menuopen, setmenuopen] = useState(false)
   
@@ -18,6 +20,14 @@ const Topbar = ({screen , setscreen , setfooter, division, setdivision , setprod
       console.error(error);
     }
   }
+
+   function Gohome() {
+    navigate("/ ")
+  };
+
+     function gosell_sign_up() {
+    navigate("/ ")
+  };
   
   return (
     <header>
@@ -106,22 +116,6 @@ const Topbar = ({screen , setscreen , setfooter, division, setdivision , setprod
         </div>
         </section>
       </> : null}
-
-      {screen.sell_sign_up ? <>
-       <section class="sell_sign_up_bar">
-         <div class="sell_sign_up" onClick={()=> {setscreen({coupang: true , main : true}); setfooter(true);}}><a></a></div>
-         <div class="sell_login_btn"><a><button>로그인</button></a></div>
-         <div onClick={()=> {setmenuopen(menuopen => !menuopen)}}><img src={ menuopen ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAZCAYAAAArK+5dAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADCSURBVHgB7ZUxCsQgEEVHC88h2HiNnNxr2AgeQyx0MxDBLIozC7Ip8qponPejxgTgZYHoG8YYV2vVSqnDex+BgT6RUjohRAwhHK1f9oNQjmNzzs5aq4FIk+Pl5YBhQCkFkyMnpJdjLc6+vy8oBbPloowVvxZSH2QYsBJwZjkNmIlSSkCVLwNGIa2bIicFDEKAKkckbGb7EkmOHIXcw/if13TrQdv6qeDIqTW3TebKkXjyvfE3Z9/AnwVHPgq5HC8P4gMuJsExIeiWXgAAAABJRU5ErkJggg==" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABiSURBVHgB7dOxDYBACAXQ78Uwh47iJDqam7gGpXNQEDmTs6XBRHO85sgVEEg+8HdDKyZTStkQgIh2Zj5rPbZPa37UOQggIqs9890XL3s2UNUl8kRIn5E5cGUOOpA5cGUOXBf4bikUcuEISAAAAABJRU5ErkJggg=="}/></div>
-         {menuopen ? <div class="sell_drop_menu">
-            <a data-v-287442f7="" href="">처음 시작하나요?</a>
-            <a data-v-287442f7="" href="">입점안내</a>
-            <a data-v-287442f7="" href="">큐펑 MBA</a>          
-            <a data-v-287442f7="" href="">판매자 스토리</a>          
-            <a data-v-287442f7="" href="">로켓그로스</a>          
-          </div> : null}
-       </section>
-      </>: null}
-
 
     </header>
   )

@@ -141,9 +141,7 @@ const options = [
             </ul>
           </div>
         </div>
-      </section>      
-
-      
+      </section>         
     </footer>
   )
 }

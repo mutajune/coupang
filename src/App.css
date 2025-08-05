@@ -3286,7 +3286,6 @@ border: 1px solid rgb(238 238 238);
 /* shopping_cart */
 .use_shopping {
   height: calc(100% - 374px);
-  background-color: rgb(240 240 240);
   padding-bottom: 40px;
 }
 
@@ -3363,8 +3362,8 @@ border: 1px solid rgb(238 238 238);
 }
 .shopping_cart_box_bt {
   margin-top: 60px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 40px;
+  background-color: rgb(240 240 240);
 }
 
 .shopping_cart_box_bt button {
