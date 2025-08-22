@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Log_in = ({focus, handlefouce, getlogin, setlogin, setuser, getcart, getorder, getarrive}) => {
+const Log_in = ({focus, handlefouce, getlogin, setlogin, setuser, getcart, getorder, getarrive, getusecoupon, setuselist }) => {
 
   const navigate = useNavigate();
   const goToPreviousPage = () => {
@@ -26,11 +26,13 @@ const Log_in = ({focus, handlefouce, getlogin, setlogin, setuser, getcart, getor
       if(response.data[0].is_success === true) {
         setlogin(true)
         setuser(response.data)
-        getcart(response.data[0].sno)
-        getorder(response.data[0].sno)
-        getarrive(response.data[0].sno)
+        getcart(response.data[0].user_sno)
+        getorder(response.data[0].user_sno)
+        getarrive(response.data[0].user_sno)
+        getusecoupon(response.data[0].user_sno)
+        window.localStorage.setItem('login',true)
+        window.localStorage.setItem('user_sno',response.data[0].user_sno)
         Gohome()
-
       } else if (response.data.is_success === false) {
         alert("틀렸어요")
       } else{
@@ -40,6 +42,7 @@ const Log_in = ({focus, handlefouce, getlogin, setlogin, setuser, getcart, getor
       //응답 실패
     }
   }
+  
 
 
   return (
@@ -59,7 +62,7 @@ const Log_in = ({focus, handlefouce, getlogin, setlogin, setuser, getcart, getor
           <div><label for="login_pw"><span class="input_icon_pw"><i></i></span><input id="login_pw" type="password" /></label><span class="input_icon_show"><i></i></span></div>
           <div class="login_checkbox_form">
             <div class="login_checkbox"><label><input type="checkbox"/><span>자동 로그인</span></label></div>
-            <div class="login_find"><a>아이디∙비밀번호 찾기 > </a></div>
+            <div class="login_find"><a>아이디∙비밀번호 찾기<div class="right_img"></div> </a></div>
           </div>
           <div class="login_content">
             <button>로그인</button>

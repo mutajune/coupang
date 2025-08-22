@@ -12,7 +12,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-const Main = ({login, setlogin, user, setuser, getdata, post, tag, category}) => {
+const Main = ({logout, login, setlogin, user, setuser, getdata, post, tag, category, cart, setcart, scroll, setscroll, handleScrollToTop}) => {
   const navigate = useNavigate();
   const [banner_num, setbanner_num] = useState(0)
 
@@ -86,6 +86,7 @@ const Main = ({login, setlogin, user, setuser, getdata, post, tag, category}) =>
 
   function Goproducts () {
   navigate("/Product")
+  handleScrollToTop()
   };
 
   const Goproduct = (postId) => {
@@ -96,7 +97,6 @@ const Main = ({login, setlogin, user, setuser, getdata, post, tag, category}) =>
   };
 
   // category
-  const [scroll, setscroll] = useState(false)
   const [width, setwidth] = useState(false)
 
   // user
@@ -133,13 +133,10 @@ const Main = ({login, setlogin, user, setuser, getdata, post, tag, category}) =>
   const [option , setoption] = useState("")
   const [option_num , setoption_num] = useState(1)
 
-  const [cart , setcart] = useState("")
-
   const [order, setorder] = useState("")
   const [arrive, setarrive] = useState("")
   
   const [sildermenu, setsildermenu] = useState(false)
-  const [menuopen, setmenuopen] = useState(false)
               
 
   async function gatoption(e) {
@@ -152,112 +149,6 @@ const Main = ({login, setlogin, user, setuser, getdata, post, tag, category}) =>
       console.error(error);
     }
   }
-  async function getcart(e) {
-  try {
-    //응답 성공 
-    const response = await axios.get(`http://localhost:3000/shopping_cart?users=${e}`);
-    setcart(response.data)
-    console.log(cart)
-  } catch (error) {
-    //응답 실패
-    console.error(error);
-  }
-  }
-  async function getorder(e) {
-  try {
-    //응답 성공 
-    const response = await axios.get(`http://localhost:3000/coupang/user/order?users=${e}`);
-    setorder(response.data)
-  } catch (error) {
-    //응답 실패
-    console.error(error);
-  }
-  }  
-  async function getarrive(e) {
-  try {
-    //응답 성공 
-    const response = await axios.get(`http://localhost:3000/coupang/user/arrive?users=${e}`);
-    setarrive(response.data)
-  } catch (error) {
-    //응답 실패
-    console.error(error);
-  }
-  }
-
-
-  async function getlogin(e) {
-    e.preventDefault()
-    const form_e_mail = e.target.children[0].children[0].children[1].value
-    const form_pw = e.target.children[1].children[0].children[1].value
-    console.log(form_e_mail)
-    console.log(form_pw) 
-      try {
-      //응답 성공 
-      const response = await axios.get(`http://localhost:3000/coupang/user/login?e_mail=${form_e_mail}&pw=${form_pw}`);
-      console.log(response.data[0].is_success)
-      if(response.data[0].is_success === true) {
-        setlogin(true)
-        setuser(response.data)
-        getcart(response.data[0].sno)
-        getorder(response.data[0].sno)
-        getarrive(response.data[0].sno)
-        Gohome()
-      } else if (response.data.is_success === false) {
-        alert("틀렸어요")
-      } else{
-
-      }
-    } catch (error) {
-      //응답 실패
-    }
-  }
-
-  function login_check(e) {
-    e.preventDefault()
-    if ( mailerror.error != false) {
-      console.log(mailerror.error)
-      setfocus("e_mail")
-      window.scrollTo({top: 0});
-    } else if ( pwerror.error != false) {
-      setfocus("pw")
-      window.scrollTo({top: 0});
-    } else if ( recheckerror.error != false) {
-      setfocus("pw_recheck")
-      window.scrollTo({top: 0});
-    } else if ( nameerror.error != false) {
-      setfocus("name")
-      window.scrollTo({top: 0});
-    } else if ( phoneerror.error != false) {
-      setfocus("phone")
-      window.scrollTo({top: 0});
-    } else {
-
-    }
-  }
-
-
-  // cart
-
-
-  async function addcart(e) {
-    const amounts = e.target.parentElement.parentElement.children[0].children[0].value
-    if (login === true) {
-      try {
-        //응답 성공 
-        const response = await axios.get(`http://localhost:3000/cart_add?user=${user[0].sno}&product=${option[option_num].option_product}&amount=${amounts}`);
-        console.log("장바구니 저장")
-        getcart(user[0].sno); 
-      } catch (error) {
-        //응답 실패
-        console.log(user[0].sno)
-        console.error(error);
-      }
-
-    } else {
-      alert("로그인 하여해요")
-    }
-
-}
 
   // menu
   function scrollmenu () {
@@ -284,149 +175,6 @@ const Main = ({login, setlogin, user, setuser, getdata, post, tag, category}) =>
   }
   function nonmouse (e) {
     setfocus()
-  }
-
-  // check
-  function iderror_check (e) {
-      setid(e)
-      const pattern_spc  =/[~!@#$%^&*()_+|<>?:{}]/;
-      if ( e ==="") {
-        setiderror({error: true , empty : true})
-      } else if (e.length > 20 || e.length < 6 || pattern_spc.test(e) === true) {
-        setiderror({error: true , empty : false})
-      } else { setiderror({error: false , empty : false})}
-  }
-  function pwerror_check (e) {
-      setpw(e)
-      const pattern_spc  =/[~!@#$%^&*()_+|<>?:{}]/;
-      if (e ==="") {
-        setpwerror({error: true, length : true , spc : true , empty : true})
-      } else if (15 > e.length && e.length < 8 && pattern_spc.test(e) !== true) {
-        setpwerror({error: true, length : true , spc : true , empty : false})
-      } else if (15 > e.length && e.length < 8){
-         setpwerror({error: true, length : true , spc : false , empty : false})
-      } else if (pattern_spc.test(e) !== true){
-      setpwerror({error: true, length : false ,spc : true , empty : false})
-      }else{
-        setpwerror({error: false, length : false ,spc : false , empty : false})}
-  }
-  function pw_recheck (e) {
-    if (e === "") {
-      setrecheckerror({error: true, empty : true})
-    } else if ( e !== pw) {
-      setrecheckerror({error: true, empty : false})
-    } else {
-      setrecheckerror({error: false, empty : false})}
-  }
-  function nameerror_check (e) {
-    const pattern_num = /[0-9]/;	// 숫자 
-    const pattern_spc  =/[~!@#$%^&*()_+|<>?:{}]/;
-    if (e === "") {
-      setnameerror({error: true, empty : true})
-    }else if(pattern_num.test(pattern_num) !== true || pattern_spc.test(e) === true){
-      setnameerror({error: true, empty : false})
-    }else{
-      setnameerror({error: false, empty : false})
-    }
-  }
-  function mailerror_check (e) {
-    const pattern_email = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
-    if (e === "") {
-      setmailerror({error: true, empty : true})
-    }else if(pattern_email.test(e) === false){
-      setmailerror({error: true, empty : false})
-    }else{
-      setmailerror({error: false, empty : false})
-    }
-  }
-  function phoneerror_check (e) {
-    console.log(e.indexOf('-'))
-    const pattern_email = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
-    if (e === "") {
-      setphone({error: true, empty : true})
-    }else if(10< e.length < 12 && e.indexOf('-') === -1){
-      setphone({error: false, empty : false})
-    }else{
-      setphone({error: true, empty : false})
-    }
-  }
-  function business_check (e) {
-    if (e === "") {
-      setbusiness({error: true, empty : true})
-    }else{
-      setbusiness({error: false, empty : false})
-    }
-  }
-  function agree_check (e) {
-    if (termsage + termsservice + termseft + agreepi === "") {
-    }else if (termsage + termsservice + termseft + agreepi === 4){
-      setagreeerror({error: false})
-    }else{
-      setagreeerror({error: true})
-    }
-  }
-  function all_check_check (e) {
-    if(all_check === false) {
-      setallcheck(true);
-      settermsage(true);
-      settermsservice(true);
-      settermseft(true);
-      setagreepi(true);
-      setagreepiforad(true);
-      setagreeforad(true);
-      setemail_push(true)
-      setsns_push(true)
-      setapp_push(true)
-    }else {
-      setallcheck(false);
-      settermsage(false);
-      settermsservice(false);
-      settermseft(false);
-      setagreepi(false);
-      setagreepiforad(false);
-      setagreeforad(false);
-      setemail_push(false)
-      setsns_push(false)
-      setapp_push(false)
-    } 
-  }
-    function marketing (e) {
-      console.log( e.target.checked, email_push , sns_push , (email_push === true && sns_push  === true && app_push === true) !== true , !email_push + !sns_push + !app_push)
-    if(e.target.id === "agreepiforad" && e.target.checked === true ) {
-      setagreepiforad(true);
-      setagreeforad(true);
-      setemail_push(true)
-      setsns_push(true)
-      setapp_push(true)
-    } else if (e.target.id === "agreepiforad" && e.target.checked === false ){
-      setagreepiforad(false);
-      setagreeforad(false);
-      setemail_push(false)
-      setsns_push(false)
-      setapp_push(false)     
-    } else if (e.target.id === "agreeforad" && e.target.checked === true ){
-      setagreepiforad(true);
-      setagreeforad(true);
-      setemail_push(true)
-      setsns_push(true)
-      setapp_push(true)
-    } else if (e.target.id === "agreeforad" && e.target.checked === false ){
-      setagreeforad(false);
-      setemail_push(false)
-      setsns_push(false)
-      setapp_push(false)
-    }  else if ( e.target.checked === true && ( e.target.id === "email_push" || e.target.id === "sns_push" || e.target.id === "app_push") ) {
-      setagreepiforad(true);
-      setagreeforad(true);
-    }  else if ( e.target.checked === false &&  e.target.id === "email_push" && sns_push === false && app_push === false){
-      setagreeforad(false);
-    }   else if ( e.target.checked === false &&  e.target.id === "sns_push" && email_push === false && app_push === false){
-      setagreeforad(false);
-    }   else if ( e.target.checked === false &&  e.target.id === "app_push" && email_push === false && sns_push === false){
-      setagreeforad(false);
-    }  else {
-      
-    }
   }
 
   // bt
@@ -612,20 +360,6 @@ const Main = ({login, setlogin, user, setuser, getdata, post, tag, category}) =>
 
 
 
-  useEffect(()=>{
-    agree_check();
-    if(termsage===true && termsservice===true && termseft===true && agreepi===true && agreepiforad===true && agreeforad===true ){
-      setallcheck(true)
-    } else {
-      setallcheck(false)
-    }
-  }, [termsage,termsservice, termseft,agreepi,agreepiforad,agreeforad])
-
-const onChange = checked => {
-  console.log(`switch to ${checked}`);
-};
-
-
   return (
     <section class="coupang">
       <header>
@@ -648,8 +382,8 @@ const onChange = checked => {
               <li onClick={Golog_in}><a>로그인</a></li>
               <li onClick={go_sign_up}><a>회원가입</a></li>            
               </> : <>
-              <li class="right_menu_nickname"><span>{user[0].nickname}님</span></li>
-              <li class="right_menu_log_out" onClick={()=>{setlogin(false)}}><button>로그아웃</button></li>
+              <li class="right_menu_nickname"><span>{user[0].user_nickname}님</span></li>
+              <li class="right_menu_log_out" onClick={()=>{logout(); Gohome();}}><button>로그아웃</button></li>
               </>}
               <li><a>고객센터</a></li>
               <li onClick={gosell_sign_up}><a>판매자 가입</a></li>
@@ -680,8 +414,8 @@ const onChange = checked => {
               </div>
               
               <ul class="icon_menus">
-                <li onClick={Gomy_page}><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#person" /> <br/>마이쿠팡</span></a></li>
-                <li onClick={Gocart}><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#cart" /> <br/>장바구니</span></a> <em>0</em></li>
+                <li onClick={login === false ? Golog_in :Gomy_page}><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#person" /> <br/>마이쿠팡</span></a></li>
+                <li onClick={login === false ? Golog_in : Gocart}><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#cart" /> <br/>장바구니</span></a> <em>{cart.length}</em></li>
               </ul>
             </div>
 
@@ -731,7 +465,7 @@ const onChange = checked => {
                   {post.filter((num) => num.part === "TH")
                   .map((num) => <li class="hot_box" onMouseOver={(e) =>{handlefouce(e.target.name)}} onMouseOut={()=>{nonmouse()}} >
                   <img onClick={(e)=>{product_detall_on(e.target.name)}} name={num.post_name} className={focus === num.post_name ? "hot_img_focus" : "hot_img"} class="hot_img" src={num.post_mark}/>
-                  <button name={num.post_name} class="hot_bt" className={focus === num.post_name ? "hot_bt_focus" : "hot_bt"}>다운로드</button>
+                  <button name={num.post_name} class="hot_bt" className={focus === num.post_name ? "hot_bt_focus" : "hot_bt"}>클릭</button>
                 </li>)}</ul>
               </div>
             </section>

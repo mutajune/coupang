@@ -10,6 +10,9 @@ import Search from './page/Search';
 import Sign_up from './page/Sign_up';
 import Product from './page/Product';
 import My_page from './page/My_page';
+import Purchase from './page/Purchase';
+import Coupon_page from './page/Coupon_page';
+import Adit from './page/adit'
 
 
 export default function Router () {
@@ -29,8 +32,10 @@ export default function Router () {
   const [product, setproduct] = useState("")
   const [search , setsearch] = useState("")
   const [sildermenu, setsildermenu] = useState(false)
-  
+  const [paycart , setpaycart] = useState([])
 
+  const [couponlist , setcouponlist] = useState()
+  const [uselist , setuselist] = useState()
 
   async function getdata(e) {
     try {
@@ -127,9 +132,9 @@ export default function Router () {
       if(response.data[0].is_success === true) {
         setlogin(true)
         setuser(response.data)
-        getcart(response.data[0].sno)
-        getorder(response.data[0].sno)
-        getarrive(response.data[0].sno)
+        getcart(response.data[0].user_sno)
+        getorder(response.data[0].user_sno)
+        getarrive(response.data[0].user_sno)
       } else if (response.data.is_success === false) {
         alert("틀렸어요")
       } else{
@@ -151,6 +156,43 @@ export default function Router () {
       console.error(error);
     }
   }
+  async function getusecoupon(e) {
+    try {
+      //응답 성공 
+      const response = await axios.get(`http://localhost:3000/coupang/usecoupon?user=${e}`);
+      setuselist(response.data)
+    } catch (error) {
+      //응답 실패
+      console.error(error);
+    }
+  }    
+  async function getcoupon(e) {
+    try {
+      //응답 성공 
+      const response = await axios.get(`http://localhost:3000/coupang/coupon`);
+      setcouponlist(response.data)
+    } catch (error) {
+      //응답 실패
+      console.error(error);
+    }
+  }  
+ 
+
+    function logout() {
+    setlogin(false)
+    setuser()
+    getcart()
+    getorder()
+    getarrive()
+    window.localStorage.clear();
+  }
+
+  function logsss(){ 
+    if (window.localStorage.getItem('login') === true) {
+  getlogin(window.localStorage.getItem('user_sno'))
+  window.location.reload();
+  };
+  }
 
 
   useEffect(() => {
@@ -158,6 +200,7 @@ export default function Router () {
   gettag();
   getcategory();
   getdata();
+  getcoupon();
   }, []);
 
   const handleScrollToTop = (behavior: 'smooth' | 'auto') => {
@@ -173,19 +216,33 @@ export default function Router () {
     setfocus(e)
   }  
 
-
+logsss()
 
   return(
     <BrowserRouter>
       <Routes>
-        <Route exact path='/' element={<Main login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} setuser={setuser} getdata={getdata} post={post} tag={tag} category={category}/>} />
-        <Route exact path='/Sell_sign_up' element={<Sell_sign_up />} />
-        <Route exact path='/Shopping_cart' element={<Shopping_cart user={user} cart={cart} getcart={getcart}  login={login} />} />
-        <Route exact path='/Log_in' element={<Log_in login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} setuser={setuser} getcart={getcart} getorder={getorder} getarrive={getarrive} handlefouce={handlefouce} focus={focus} />} />
-        <Route exact path='/Search' element={<Search login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} setuser={setuser} getcart={getcart} getorder={getorder} getarrive={getarrive} handlefouce={handlefouce} focus={focus} product={product} search={search} division={division} scroll={scroll} post={post}/>} />
-        <Route exact path='/Sign_up' element={<Sign_up />} />
-        <Route exact path='/Product' element={<Product login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} setuser={setuser} getcart={getcart} getorder={getorder} getarrive={getarrive} handlefouce={handlefouce} focus={focus} detall={detall} post={post} option={option} scroll={scroll} getdata={getdata} gatoption={gatoption} />} />
-        <Route exact path='/My_page' element={<My_page login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} order={order} arrive={arrive} post={post} />} />
+        <Route exact path='/'
+         element={<Main logout={logout} cart={cart} scroll={scroll} setscroll={setscroll} handleScrollToTop={handleScrollToTop} login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} setuser={setuser} getdata={getdata} post={post} tag={tag} category={category} setcart={setcart}/>} />
+        <Route exact path='/Sell_sign_up'
+         element={<Sell_sign_up />} />
+        <Route exact path='/Shopping_cart'
+         element={<Shopping_cart logout={logout} user={user} cart={cart} getcart={getcart} login={login} paycart={paycart} setpaycart={setpaycart}/>} />
+        <Route exact path='/Log_in'
+         element={<Log_in logout={logout} login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} setuser={setuser} getcart={getcart} getorder={getorder} getarrive={getarrive} handlefouce={handlefouce} focus={focus}  getusecoupon={getusecoupon} setuselist={setuselist} />} />
+        <Route exact path='/Search'
+         element={<Search logout={logout} login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} setuser={setuser} getcart={getcart} getorder={getorder} getarrive={getarrive} handlefouce={handlefouce} focus={focus} product={product} search={search} division={division} scroll={scroll} post={post}/>} />
+        <Route exact path='/Sign_up'
+         element={<Sign_up />} />
+        <Route exact path='/Product'
+         element={<Product logout={logout} login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} setuser={setuser} getcart={getcart} getorder={getorder} getarrive={getarrive} handlefouce={handlefouce} focus={focus} detall={detall} post={post} option={option} scroll={scroll} getdata={getdata} gatoption={gatoption} />} />
+        <Route exact path='/My_page'
+         element={<My_page logout={logout} cart={cart} login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} order={order} arrive={arrive} post={post} />} />
+        <Route exact path='/Purchase'
+         element={<Purchase logout={logout} user={user} cart={cart} getcart={getcart} login={login} paycart={paycart} setpaycart={setpaycart} setorder={setorder} getorder={getorder} uselist={uselist} />} />
+        <Route exact path='/Coupon_page'
+         element={<Coupon_page logout={logout} couponlist={couponlist} user={user} cart={cart} getcart={getcart} login={login} paycart={paycart} setpaycart={setpaycart} setorder={setorder} getorder={getorder} uselist={uselist} setuselist={setuselist} getusecoupon={getusecoupon} setlogin={setlogin} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} order={order} arrive={arrive} post={post} getcoupon={getcoupon} />} /> 
+        <Route exact path='/Adit'
+         element={<Adit logout={logout} cart={cart} login={login} setlogin={setlogin} user={user} setdivision={setdivision} getproduct={getproduct} setsearch={setsearch} sildermenu={sildermenu} setsildermenu={setsildermenu} order={order} arrive={arrive} post={post} />} />    
       </Routes>
     </BrowserRouter>
 

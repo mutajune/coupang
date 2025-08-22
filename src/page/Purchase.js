@@ -3,36 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Cascader } from "antd";
 import axios from 'axios';
 
+const Purchase = ({user, cart, getcart, login, paycart, setpaycart, getorder, setorder, uselist}) => {
+  const [couponset , setcouponset] = useState("")
 
-const Shopping_cart = ({user, cart, getcart, login, paycart, setpaycart }) => {
+  const usernum = user[0].user_sno
 
-  const [newlist , setnewlist]= useState([])
   const navigate = useNavigate();
-  const goToPreviousPage = () => {
-    navigate(-1);
-  };
   function Gohome() {
     navigate("/")
     setpaycart([])
   };
-  function Gopurchase() {
-    console.log(newlist)
-    if(paycart == "") {
-    } else {
-      navigate("/Purchase")
-    }
-  };
-  async function delcart(e) {
-  try {
-    //응답 성공 
-    const response = await axios.get(`http://localhost:3000/cart_delete?sno=${e}&user=${user[0].user_sno}`);
-    console.log(cart)
-    getcart(user[0].user_sno); 
-  } catch (error) {
-    //응답 실패
-    console.error(error);
-  }
-  }
 
     // footer
   const footer_menu = [
@@ -73,41 +53,6 @@ const Shopping_cart = ({user, cart, getcart, login, paycart, setpaycart }) => {
     },
   ];
 
-  // function paymentlist (e) {
-  //   const evalue = e.target.parentElement.children[2].children[1].children[0].innerHTML;
-  //   const targetlist = cart.filter((num) => num.product_sno == e.target.name);
-
-  //   if(e.target.checked === true){
-  //     setpaycart(paycart.push(targetlist))
-  //   } else {
-  //     setpaycart(paycart.pop(cart.filter((num) => num.product_sno == e.target.name )))
-  //   }
-  //   console.log(e.target.name)
-  //   console.log(cart)
-  //   console.log(targetlist)
-  //   console.log(paycart)
-  // }
-
-  function paymentlist (e) {
-    const evalue = e.target.parentElement.children[2].children[1].children[0].innerHTML;
-    const targetlist = cart.filter((num) => num.product_sno == e.target.name);
-
-    if(e.target.checked === true){
-     setpaycart([...paycart, targetlist[0]])
-     
-    } else if ( e.target.checked === false) {
-      paycart.splice(targetlist[0], 1)
-      setpaycart([...paycart])
-
-    } else {
-      console.log("엥")
-    }
-  }
-
-  useEffect(()=>{
-    	  setpaycart(newlist);
-    },[newlist]);
-
     const totalprice = paycart.reduce ((num , item) => {
       return num + item.price;
     }, 0)
@@ -116,10 +61,47 @@ const Shopping_cart = ({user, cart, getcart, login, paycart, setpaycart }) => {
       return num + item.coupang_price;
     }, 0)
 
-
     const totalreal_price = paycart.reduce ((num , item) => {
       return num + item.real_price;
     }, 0)
+
+    const coupang_dc = uselist.filter((sno) => sno.user_sno === usernum && sno.coupon_sno == couponset).reduce ((num , item) => {
+      return num + item.coupon_discount;
+    }, 0)
+
+      
+    async function getaddorder(e) {
+      let list = JSON.stringify(paycart)
+    try {
+      //응답 성공 
+      const response = await axios.post(`http://localhost:3000/coupang/user/add_order`,
+       {list},
+        { headers: {"Content-Type": "application/x-www-form-urlencoded"}}
+      );
+    } catch (error) {
+      //응답 실패
+      console.error(error);
+    }
+    }  
+
+    async function usecouponset(e) {
+      if( couponset != ""){
+        try {
+          //응답 성공 
+          const response = await axios.post(`http://localhost:3000/coupang/usecoupon_use`,
+          {usernum, couponset},
+            { headers: {"Content-Type": "application/x-www-form-urlencoded"}}
+          );
+          Gohome()
+        } catch (error) {
+          //응답 실패
+          console.error(error);
+        }
+      } else {
+
+      }
+
+    }  
 
 
   return (
@@ -127,53 +109,110 @@ const Shopping_cart = ({user, cart, getcart, login, paycart, setpaycart }) => {
       <section className={cart === "" ? "": "use_shopping"}>
               <div class="shopping_header"><img onClick={Gohome} class="coupang_img_mini" src="https://image7.coupangcdn.com/image/coupang/common/logo_coupang_w350.png"/></div>
               <div class="shopping_cart_box">
-                <div class="shopping_cart_box_header">
-                  <div class="shopping_cart_left" onClick={Gohome}><div class="left_img"></div><h2> 장바구니 </h2></div>
+                <div class="Purchase_box_header">
+                  <div class="shopping_cart_left" onClick={Gohome}><div class="left_img"></div><h2> 주문결제 </h2></div>
                   <div class="shopping_cart_right">
-                    <span>01</span><span>옵션선택</span><div class="right_img"></div>
-                    <span>02</span><span>장바구니</span><div class="right_img"></div>
-                    <span>03</span><span>주문/결제</span><div class="right_img"></div>
-                    <span>04</span><span>주문완료</span>
+                    <span></span><span>장바구니</span><div class="right_img"></div>
+                    <span></span><span>주문/결제</span><div class="right_img"></div>
+                    <span></span><span>주문완료</span>
                   </div>
                 </div>
-                {cart === "" ?
-                <div class="shopping_cart_box_content">
-                  <p>장바구니에 담은 상품이 없습니다.</p>
-                  {login === false ? <div>로그인을 하시면, 장바구니에 보관된 상품을 확인하실 수 있습니다.  <a>로그인하기</a> </div> : null}
 
-                  <div class="shopping_cart_box_bt">
-                    <p>각 상품에서 구매할 옵션을 선택하시고, <a>구매하기</a> 버튼을 눌러 보세요!</p>
-                    <p>선택한 옵션을 모두 장바구니에 담을 수 있습니다.</p>
-                    <button>오늘의 추천 상품보기<div class="right_img"></div> </button>
+                 <div class="shopping_cart_box_content_flex">
+                  <div>
+                    <div class="Purchase_cart_content_list">
+                      <div class="Purchase_content_list_header"><span>배송지 / {user[0].user_name}</span> <button>배송지 변경</button></div>
+
+                      <div class="cart_list">
+                          <div class="cart_list_box">
+                          <div class="cart_list_content">
+                              <span class="Purchase_list_text"><span>휴대폰 : </span>{user[0].user_phone}</span>
+                          </div>
+                          </div>
+                      </div>
+                    
+                    <div></div> 
+                    </div>
+
+                    <div class="Purchase_cart_content_list">
+                      <div class="Purchase_content_list_header"><span>배송 요청사항</span> <button>변경</button></div>
+
+                      <div class="cart_list">
+                          <div class="cart_list_box">
+                          <div class="cart_list_header"></div>
+                          <div class="cart_list_content">
+                              <span class="Purchase_list_text">문 앞</span>
+                          </div>
+                          </div>
+                      </div>
+                    
+                    <div></div> 
+                    </div>
+
+                    <div class="Purchase_cart_content_list">
+                      <div class="Purchase_content_list_header"><span>결제수단</span></div>
+
+                      <div class="cart_list">
+                          <div class="cart_list_box">
+                          <div class="cart_list_header"></div>
+                          <div class="cart_list_content">
+                              <span class="Purchase_list_text"><span>휴대폰 : </span>{user[0].user_phone}</span>
+                          </div>
+                          </div>
+                      </div>
+                    
+                    <div></div> 
+                    </div>
+
+                    <>
+                      <div class="Purchase_content_list_title"><span>배송 1건 중 1</span></div>
+                      <div class="Purchase_cart_content_list">
+                        <div class="Purchase_content_list_input_header">
+                          <div class="Purchase_delivery_day"><span>도착일</span></div>
+                          <div class="Purchase_delivery_day"><span>다른 도착일</span></div>
+                        </div>
+
+                        <div class="cart_list">
+                            <div class="cart_list_box">
+                            <div class="Purchase_list_content">
+                              {paycart.map((num)=> 
+                              <div class="Purchase_list_product_name">
+                                <div class="Purchase_list_product_header"> <span> {num.name}</span> {num.delivery_img != null ? <img src={num.delivery_img}/>  : null}</div>
+                                <div class="Purchase_list_product_detall">{num.amount}{num.unit} / 무료배송 * 30일 무료반품</div>
+                              </div>)}
+                            </div>
+                            </div>
+                        </div>
+                      
+                      <div></div> 
+                      </div>
+                    </>
+
+                  </div>
+
+                  <div class="shopping_cart_content_price">
+                    <div class="cart_content_price_header"><span>최종 결제 금액</span></div>
+                    <div class="cart_content_price_text"><span>총 상품 가격</span><span>{totalprice}원</span></div>
+                    <div class="cart_content_price_text"><span>쿠폰 할인</span> 
+                      <div>
+                      <select id="" onChange={(e)=> {setcouponset(e.target.value);}}>
+                        <option value="">0</option>
+                        {uselist.filter((num) => num.usecoupon_use === 'Y').map((sno) =>
+                        <option value={sno.coupon_sno}>{sno.coupon_name}</option>
+                          )}                
+                      </select>
+                        <span>원</span>
+                      </div>
+                    </div>
+                    <div class="cart_content_price_text"><span>총 배송비</span><span>원</span></div>
+                    <div class="Purchase_content_price_totall">
+                      <div class="Purchase_content_price_title"><span>총 결제 금액</span> <span><strong>{totalreal_price - coupang_dc}</strong>원</span></div>
+                      <div class="Purchase_content_price_subtitle"><span>구매조건 확인 및 결제대행 서비스 약관 동의</span> <button>보기</button></div>
+                    </div>
+                      <div class="Purchase_content_price_bt_subtitle"><span>위 주문 내용을 확인 하였으며, 회원 본인은 개인 정보 이용 및 정보(해외직구의 경우 국외제공)및 결제에 동의합니다</span></div>
+                    <button onClick={()=>{getaddorder(paycart); usecouponset();}} class="cart_content_price_bt">구매하기({paycart.length})</button>
                   </div>
                 </div>
-                 : <div class="shopping_cart_box_content_flex">
-                  <div class="shopping_cart_content_list">
-                    <div class="cart_content_list_header"><span>판매자배송 상품</span></div>
-                    {cart.map((num)=> <div class="cart_list">
-                      <input id="cart_list_checkbox" type="checkbox" name={num.product_sno} onClick={paymentlist}/>
-                      <img src={num.list_image}/>
-                      <div class="cart_list_box">
-                        <div class="cart_list_header"><span>{num.name}</span> <button name={num.sno} onClick={(e)=> {delcart(e.target.name);}}>삭제</button></div>
-                        <div class="cart_list_content">
-                          <span class="cart_list_price">{num.price}</span>
-                          <div>{num.amount}</div>
-                        </div>
-                      </div>
-                    </div>)}
-                    
-                    <div></div>
-                    
-                  </div>
-                  <div class="shopping_cart_content_price">
-                    <div class="cart_content_price_header"><span>주문예상금액</span></div>
-                    <div class="cart_content_price_text"><span>총 상품 가격</span><span><strong>{totalprice}</strong>원</span></div>
-                    <div class="cart_content_price_text"><span>총 할인</span><span><strong>{totalprice - totalreal_price}</strong>원</span></div>
-                    <div class="cart_content_price_text"><span>쿠팡캐시</span><span>원</span></div>
-                    <div class="cart_content_price_totall"><span><strong>{totalreal_price}</strong>원</span></div>
-                    <button onClick={Gopurchase} class="cart_content_price_bt">구매하기({paycart.length})</button>
-                  </div>
-                </div>}
               </div>
       </section>
 
@@ -278,7 +317,7 @@ const Shopping_cart = ({user, cart, getcart, login, paycart, setpaycart }) => {
         </section>         
       </footer>
     </section>
-      )
+  )
 }
 
-export default Shopping_cart
+export default Purchase

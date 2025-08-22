@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Cascader } from "antd";
 import axios from 'axios';
 
-const My_page = ({order, arrive, post ,login, setlogin, user, setdivision, getproduct, setsearch, sildermenu, setsildermenu }) => {
+const My_page = ({order, arrive, post ,login, setlogin, user, setdivision, getproduct, setsearch, sildermenu, setsildermenu, logout, cart }) => {
 
   const navigate = useNavigate();
  function gosell_sign_up() {
@@ -31,10 +31,16 @@ const My_page = ({order, arrive, post ,login, setlogin, user, setdivision, getpr
   function GoSearch() {
     navigate("/Search")
   };
-   function go_sign_up() {
+  function go_sign_up() {
     navigate("/Sign_up")
   };
-  
+  function go_coupon() {
+    navigate("/Coupon_page")
+  };  
+  function go_adit() {
+    navigate("/adit")
+  };    
+
     // footer
   const footer_menu = [
     { name: "회사소개"
@@ -77,89 +83,89 @@ const My_page = ({order, arrive, post ,login, setlogin, user, setdivision, getpr
   return (
   <>
     <header>
-          <section id="top_bar">
-            <div class="top_menus header_mini2">
-            <menu class="left_menu">
-              <li><a>즐겨찾기</a></li>
-              <li>
-                <a>입점신청</a>
-                <p></p>                        
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
-              </li>
-            </menu>
+        <section id="top_bar">
+          <div class="header_mini top_menus">
+          <menu class="left_menu">
+            <li><a>즐겨찾기</a></li>
+            <li>
+              <a>입점신청</a>
+              <p></p>                        
+              <p></p>
+              <p></p>
+              <p></p>
+              <p></p>
+            </li>
+          </menu>
 
-            <menu class="right_menu">
-              {login === false ?<>
-              <li onClick={Golog_in}><a>로그인</a></li>
-              <li onClick={go_sign_up}><a>회원가입</a></li>            
-              </> : <>
-              <li class="right_menu_nickname"><span>{user[0].nickname}님</span></li>
-              <li class="right_menu_log_out" onClick={()=>{setlogin(false)}}><button>로그아웃</button></li>
-              </>}
-              <li><a>고객센터</a></li>
-              <li onClick={gosell_sign_up}><a>판매자 가입</a></li>
-            </menu>
+          <menu class="right_menu">
+            {login === false ?<>
+            <li onClick={Golog_in}><a>로그인</a></li>
+            <li onClick={go_sign_up}><a>회원가입</a></li>            
+            </> : <>
+            <li class="right_menu_nickname"><span>{user[0].user_nickname}님</span></li>
+            <li class="right_menu_log_out" onClick={()=>{logout(); Gohome();}}><button>로그아웃</button></li>
+            </>}
+            <li><a>고객센터</a></li>
+            <li onClick={gosell_sign_up}><a>판매자 가입</a></li>
+          </menu>
+          </div>
+        </section>
+
+        <section id="header" class="header_mini">
+        <div class="category_btn" onMouseOver={()=>{}}>
+          <a>카테고리</a>
+        </div>
+
+        <div class="header_search_box">
+          <div class="header_search_box_top">
+            <img onClick={Gohome} class="coupang_img" src="https://image7.coupangcdn.com/image/coupang/common/logo_coupang_w350.png"/>
+
+            <div class="header_search_form">
+              <select id="search_category_select" onChange={(e)=>{setdivision(e.target.value)}}>
+                <option value="all">전체</option>
+                <option value=""></option>
+              </select>
+
+              <form class="header_search_input" onSubmit={(e)=> {e.preventDefault(); GoSearch(); getproduct(e.target.children[0].value); setsearch(e.target.children[0].value); }}>
+                <input type="text" class="search_input" placeholder="찾고 싶은 상품을 검색해보세요" />
+                <a class="speech_content_mic">마이크</a>
+                <button class="header_search_btn" type="submit" >검색</button >
+              </form>
             </div>
-          </section>
-
-          <section id="header" class="header_mini2">
-          <div class="category_btn" onMouseOver={()=>{}}>
-            <a>카테고리</a>
+            
+            <ul class="icon_menus">
+              <li onClick={login === false ? Golog_in :Gomy_page}><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#person" /> <br/>마이쿠팡</span></a></li>
+              <li onClick={login === false ? Golog_in : Gocart}><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#cart" /> <br/>장바구니</span></a> <em>{cart.length}</em></li>
+            </ul>
           </div>
 
-          <div class="header_search_box">
-            <div class="header_search_box_top">
-              <img onClick={Gohome} class="coupang_img" src="https://image7.coupangcdn.com/image/coupang/common/logo_coupang_w350.png"/>
+          <div class="header_search_box_bottom">
+            <div class="b_menu_btn_left" className={sildermenu ? "b_menu_btn_left_active" : "b_menu_btn_left"}  onClick={()=> {setsildermenu(false)}}></div>
 
-              <div class="header_search_form">
-                <select id="search_category_select" onChange={(e)=>{setdivision(e.target.value)}}>
-                  <option value="all">전체</option>
-                  <option value=""></option>
-                </select>
+            <ul class="b_menu_item_box" className={sildermenu ? "b_menu_item_box_scroll": "b_menu_item_box"}>
+              <li class="b_menu_item"><a><img src="https://image7.coupangcdn.com/image/coupang/home/icons/web/kr/coupang-play.png"/><span>쿠팡플레이</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image8.coupangcdn.com/image/coupang/home/icons/web/kr/rocket-delivery.png"/><span>로켓배송</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image7.coupangcdn.com/image/coupang/home/icons/web/kr/rocket-fresh.png"/><span>로켓프레시</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image10.coupangcdn.com/image/coupang/common/fbi_icon_3x.png"/><span>다시 구매</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image6.coupangcdn.com/image/coupang/home/icons/web/kr/biz.png"/><span>쿠팡비즈</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image10.coupangcdn.com/image/coupang/home/icons/web/kr/oversea-delivery.png"/><span>로켓직구</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image8.coupangcdn.com/image/coupang/home/icons/web/kr/gold-box.png"/><span>골드박스</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image8.coupangcdn.com/image/coupang/home/icons/web/kr/new-item-of-month.png"/><span>이달의신상</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image7.coupangcdn.com/image/coupang/home/icons/web/kr/omp.png"/><span>판매자특가</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image6.coupangcdn.com/image/coupang/home/icons/web/kr/wow.png"/><span>와우회원할인</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image8.coupangcdn.com/image/coupang/home/icons/web/kr/benefit.png"/><span>이벤트/쿠폰</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image7.coupangcdn.com/image/coupang/home/icons/web/kr/returned-market.png"/><span>반품마켓</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image6.coupangcdn.com/image/coupang/home/icons/web/kr/sustainable-market.png"/><span>착한상점</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image6.coupangcdn.com/image/coupang/home/icons/web/kr/event.png"/><span>기획전</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image6.coupangcdn.com/image/coupang/home/icons/web/kr/travel.png"/><span>쿠팡트래블</span></a></li>
+              <li class="b_menu_item"><a><img src="https://image8.coupangcdn.com/image/coupang/home/icons/web/kr/sell-on-coupang.png"/><span>입점신청</span></a></li>
+            </ul>
 
-                <form class="header_search_input" onSubmit={(e)=> {e.preventDefault(); GoSearch(); getproduct(e.target.children[0].value); setsearch(e.target.children[0].value); }}>
-                  <input type="text" class="search_input" placeholder="찾고 싶은 상품을 검색해보세요" />
-                  <a class="speech_content_mic">마이크</a>
-                  <button class="header_search_btn" type="submit" >검색</button >
-                </form>
-              </div>
-              
-              <ul class="icon_menus">
-                <li onClick={Gomy_page}><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#person" /> <br/>마이쿠팡</span></a></li>
-                <li onClick={Gocart}><a><span><img src="https://static.coupangcdn.com/image/coupang/common/pc_header_img_sprite_new_gnb.svg#cart" /> <br/>장바구니</span></a> <em>0</em></li>
-              </ul>
-            </div>
-
-            <div class="header_search_box_bottom">
-              <div class="b_menu_btn_left" className={sildermenu ? "b_menu_btn_left_active" : "b_menu_btn_left"}  onClick={()=> {setsildermenu(false)}}></div>
-
-              <ul class="b_menu_item_box" className={sildermenu ? "b_menu_item_box_scroll": "b_menu_item_box"}>
-                <li class="b_menu_item"><a><img src="https://image7.coupangcdn.com/image/coupang/home/icons/web/kr/coupang-play.png"/><span>쿠팡플레이</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image8.coupangcdn.com/image/coupang/home/icons/web/kr/rocket-delivery.png"/><span>로켓배송</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image7.coupangcdn.com/image/coupang/home/icons/web/kr/rocket-fresh.png"/><span>로켓프레시</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image10.coupangcdn.com/image/coupang/common/fbi_icon_3x.png"/><span>다시 구매</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image6.coupangcdn.com/image/coupang/home/icons/web/kr/biz.png"/><span>쿠팡비즈</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image10.coupangcdn.com/image/coupang/home/icons/web/kr/oversea-delivery.png"/><span>로켓직구</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image8.coupangcdn.com/image/coupang/home/icons/web/kr/gold-box.png"/><span>골드박스</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image8.coupangcdn.com/image/coupang/home/icons/web/kr/new-item-of-month.png"/><span>이달의신상</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image7.coupangcdn.com/image/coupang/home/icons/web/kr/omp.png"/><span>판매자특가</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image6.coupangcdn.com/image/coupang/home/icons/web/kr/wow.png"/><span>와우회원할인</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image8.coupangcdn.com/image/coupang/home/icons/web/kr/benefit.png"/><span>이벤트/쿠폰</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image7.coupangcdn.com/image/coupang/home/icons/web/kr/returned-market.png"/><span>반품마켓</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image6.coupangcdn.com/image/coupang/home/icons/web/kr/sustainable-market.png"/><span>착한상점</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image6.coupangcdn.com/image/coupang/home/icons/web/kr/event.png"/><span>기획전</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image6.coupangcdn.com/image/coupang/home/icons/web/kr/travel.png"/><span>쿠팡트래블</span></a></li>
-                <li class="b_menu_item"><a><img src="https://image8.coupangcdn.com/image/coupang/home/icons/web/kr/sell-on-coupang.png"/><span>입점신청</span></a></li>
-              </ul>
-
-              <div class="b_menu_btn_right_active" className={sildermenu ? "b_menu_btn_right" : "b_menu_btn_right_active"} onClick={()=> {setsildermenu(true)}}></div>
-            </div>
-
+            <div class="b_menu_btn_right_active" className={sildermenu ? "b_menu_btn_right" : "b_menu_btn_right_active"} onClick={()=> {setsildermenu(true)}}></div>
           </div>
-          </section>
+
+        </div>
+        </section>
     </header>  
 
 
@@ -185,7 +191,7 @@ const My_page = ({order, arrive, post ,login, setlogin, user, setdivision, getpr
                 <div class="my_page_left_menu_table_item">
                     <div class="my_page_left_menu_table_item_header">MY 혜택</div>
                     <ul class="my_page_left_menu_table_item_ul">
-                    <li class="my_page_left_menu_table_item_li"><a>할인쿠폰</a></li>
+                    <li onClick={go_coupon} class="my_page_left_menu_table_item_li"><a>할인쿠폰</a></li>
                     <li class="my_page_left_menu_table_item_li"><a>쿠팡캐시/기프트카드</a></li>
                     </ul>
                 </div>
@@ -201,7 +207,7 @@ const My_page = ({order, arrive, post ,login, setlogin, user, setdivision, getpr
                 <div class="my_page_left_menu_table_item">
                     <div class="my_page_left_menu_table_item_header">MY 정보</div>
                     <ul class="my_page_left_menu_table_item_ul">
-                    <li class="my_page_left_menu_table_item_li"><a>개인정보확인/수정</a></li>
+                    <li onClick={go_adit} class="my_page_left_menu_table_item_li"><a>개인정보확인/수정</a></li>
                     <li class="my_page_left_menu_table_item_li"><a>결제수단·쿠페이 관리</a></li>
                     <li class="my_page_left_menu_table_item_li"><a>배송지 관리</a></li>
                     </ul>                    

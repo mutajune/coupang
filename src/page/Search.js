@@ -258,7 +258,7 @@ const onChange = checked => {
               <li onClick={Golog_in}><a>로그인</a></li>
               <li onClick={go_sign_up}><a>회원가입</a></li>            
               </> : <>
-              <li class="right_menu_nickname"><span>{user[0].nickname}님</span></li>
+              <li class="right_menu_nickname"><span>{user[0].user_nickname}님</span></li>
               <li class="right_menu_log_out" onClick={()=>{setlogin(false)}}><button>로그아웃</button></li>
               </>}
               <li><a>고객센터</a></li>

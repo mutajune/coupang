@@ -236,12 +236,12 @@ const Product = ({login, setlogin, user, setdivision, getproduct, setsearch, sil
     if (login === true) {
       try {
         //응답 성공 
-        const response = await axios.get(`http://localhost:3000/cart_add?user=${user[0].sno}&product=${option[option_num].option_product}&amount=${amounts}`);
+        const response = await axios.get(`http://localhost:3000/cart_add?user=${user[0].user_sno}&product=${option[option_num].option_product}&amount=${amounts}`);
         console.log("장바구니 저장")
-        getcart(user[0].sno); 
+        getcart(user[0].user_sno); 
       } catch (error) {
         //응답 실패
-        console.log(user[0].sno)
+        console.log(user[0].user_sno)
         console.error(error);
       }
 
@@ -281,7 +281,7 @@ const Product = ({login, setlogin, user, setdivision, getproduct, setsearch, sil
               <li onClick={Golog_in}><a>로그인</a></li>
               <li onClick={go_sign_up}><a>회원가입</a></li>            
               </> : <>
-              <li class="right_menu_nickname"><span>{user[0].nickname}님</span></li>
+              <li class="right_menu_nickname"><span>{user[0].user_nickname}님</span></li>
               <li class="right_menu_log_out" onClick={()=>{setlogin(false)}}><button>로그아웃</button></li>
               </>}
               <li><a>고객센터</a></li>
