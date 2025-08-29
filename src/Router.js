@@ -119,22 +119,38 @@ export default function Router () {
     console.error(error);
   }
   }
-  async function getlogin(e) {
-    e.preventDefault()
-    const form_e_mail = e.target.children[0].children[0].children[1].value
-    const form_pw = e.target.children[1].children[0].children[1].value
-    console.log(form_e_mail)
-    console.log(form_pw) 
+
+  async function getlogin_data(email) {
       try {
       //응답 성공 
-      const response = await axios.get(`http://localhost:3000/coupang/user/login?e_mail=${form_e_mail}&pw=${form_pw}`);
+      const response = await axios.get(`http://localhost:3000/coupang/user/login_data?e_mail=${email}`);
       console.log(response.data[0].is_success)
-      if(response.data[0].is_success === true) {
         setlogin(true)
         setuser(response.data)
         getcart(response.data[0].user_sno)
         getorder(response.data[0].user_sno)
         getarrive(response.data[0].user_sno)
+        window.localStorage.setItem('login', true)
+        window.localStorage.setItem('user', response.data[0].user_sno)
+        window.localStorage.setItem('data', response.data)
+
+    } catch (error) {
+      //응답 실패
+    }
+  }
+
+  async function getlogin(e) {
+    e.preventDefault()
+    const form_e_mail = e.target.children[0].children[0].children[1].value
+    const form_pw = e.target.children[1].children[0].children[1].value
+      try {
+      //응답 성공 
+      const response = await axios.post(`http://localhost:3000/coupang/user/login`,
+        {form_e_mail, form_pw},
+        { headers: {"Content-Type": "application/x-www-form-urlencoded"}});
+
+      if(response.data.is_success === true) {
+        getlogin_data(response.data.email, response.data.key)        
       } else if (response.data.is_success === false) {
         alert("틀렸어요")
       } else{
@@ -144,6 +160,8 @@ export default function Router () {
       //응답 실패
     }
   }
+
+
   async function getproduct(e) {
     console.log(e)
     try {
@@ -194,14 +212,24 @@ export default function Router () {
   };
   }
 
+  useEffect(() => {
+    if( window.localStorage.getItem('login') == 'true') {
+    setlogin(window.localStorage.getItem('login'))
+    setuser(JSON.parse(window.localStorage.getItem('data')))
+    getcart(window.localStorage.getItem('user'))
+    getorder(window.localStorage.getItem('user'))
+    getarrive(window.localStorage.getItem('user'))
+    }
+    console.log(window.localStorage.key(1) , window.localStorage.getItem('data') )
+  }, []);
 
   useEffect(() => {
-  getpost();
-  gettag();
-  getcategory();
-  getdata();
-  getcoupon();
-  }, []);
+    getpost();
+    gettag();
+    getcategory();
+    getdata();
+    getcoupon();
+  }, [cart, order]);
 
   const handleScrollToTop = (behavior: 'smooth' | 'auto') => {
   window.scrollTo({top: 0, behavior: behavior});

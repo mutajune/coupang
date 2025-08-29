@@ -4121,6 +4121,8 @@ border: 1px solid rgb(238 238 238);
 }
 
 .adit_information_data_header {
+  display: flex;
+  align-items: center;
   background-color: #EEF1F8;
   padding: 20px;
   box-sizing: border-box;
@@ -4133,7 +4135,6 @@ border: 1px solid rgb(238 238 238);
   box-sizing: border-box;
   width: 75%;
   border-bottom: 1px solid #DDDDDD;
-  box-sizing: border-box;
   padding-left: 20px;
   align-items: center;
 }
@@ -4156,4 +4157,100 @@ border: 1px solid rgb(238 238 238);
 .adit_information_submit {
   background-color: #16A5EE !important;
   margin-right: 10px;
+}
+
+.adit_data_body {
+  width: 100%;
+  margin: auto 0;
+  padding: 10px 0px;
+}
+
+.adit_bt {
+  color: #837070;
+  background-color: #F4F4F4;
+  border: 1px solid #837070;
+  border-radius: 2px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 4px 5px;
+}
+
+.adit_bt_active {
+  color: #fff;
+  background-color: #9DA0AD;
+  border: 1px solid #837070;
+  border-radius: 2px;
+  margin-left: 10px;
+  padding: 4px 5px;
+}
+
+.atoggle_header {
+  background-color: #EEF1F8;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  width: 25%;
+  border: 1px solid #DDDDDD;
+}
+
+.toggle_box {
+  box-sizing: border-box;
+  width: calc(100% - 40px);
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #F0F0F0;
+}
+
+.toggle_box span{
+  font-size: 10px;
+}
+
+.toggle_box input {
+  width: 200px;
+  padding: 3px;
+}
+
+.toggle_bt {
+  margin-left: 5px;
+  background-color: #139FEA;
+  color: #fff;
+  border: 1px solid #837070;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.adit_form_pwbody {
+  width: 100%;
+  margin: auto 0;
+  padding: 10px 0px;
+}
+
+.adit_pw_box {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.adit_pw_box span{
+  display: inline-block;
+  min-width: 120px;
+  font-size: 15px;
+}
+
+.adit_pw_box input {
+  background-color: #fff;
+}
+
+.adit_pw_box_bt {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.adit_pw_box_bt button{
+  color: #837070;
+  background-color: #F4F4F4;
+  border: 1px solid #837070;
+  border-radius: 2px;
+  margin-left: 10px;
+  padding: 4px 5px;
 }
