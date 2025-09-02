@@ -22,6 +22,7 @@ const Log_in = ({focus, handlefouce, getlogin, setlogin, setuser, getcart, getor
         getcart(response.data[0].user_sno)
         getorder(response.data[0].user_sno)
         getarrive(response.data[0].user_sno)
+        getusecoupon(response.data[0].user_sno)
         Gohome()
         window.localStorage.setItem('login', true)
         window.localStorage.setItem('user', response.data[0].user_sno)
