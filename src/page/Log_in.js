@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Log_in = ({focus, handlefouce, getlogin, setlogin, setuser, getcart, getorder, getarrive, getusecoupon, setuselist }) => {
+const Log_in = ({focus, handlefouce, setlogin, setuser, getcart, getorder, getarrive, getusecoupon, setuselist }) => {
 
   const navigate = useNavigate();
   const goToPreviousPage = () => {
@@ -12,25 +12,6 @@ const Log_in = ({focus, handlefouce, getlogin, setlogin, setuser, getcart, getor
   function Gohome() {
     navigate("/ ")
   };
-
-  async function getlogin_data(email) {
-      try {
-      //응답 성공 
-      const response = await axios.get(`http://localhost:3000/coupang/user/login_data?e_mail=${email}`);
-        setlogin(true)
-        setuser(response.data)
-        getcart(response.data[0].user_sno)
-        getorder(response.data[0].user_sno)
-        getarrive(response.data[0].user_sno)
-        getusecoupon(response.data[0].user_sno)
-        Gohome()
-        window.localStorage.setItem('login', true)
-        window.localStorage.setItem('user', response.data[0].user_sno)
-        window.localStorage.setItem('data', JSON.stringify(response.data))
-      } catch (error) {
-      //응답 실패
-    }
-  }
 
   async function getlogin(e) {
     e.preventDefault()
@@ -42,8 +23,17 @@ const Log_in = ({focus, handlefouce, getlogin, setlogin, setuser, getcart, getor
         {form_e_mail, form_pw},
         { headers: {"Content-Type": "application/x-www-form-urlencoded"}});
 
-      if(response.data.is_success === true) {
-        getlogin_data(response.data.email, response.data.key)
+      if(response.data[0].is_success === true) {
+        setlogin(true)
+        setuser(response.data)
+        getcart(response.data[0].user_sno)
+        getorder(response.data[0].user_sno)
+        getarrive(response.data[0].user_sno)
+        getusecoupon(response.data[0].user_sno)
+        Gohome()
+        window.localStorage.setItem('login', true)
+        window.localStorage.setItem('user', response.data[0].user_sno)
+        window.localStorage.setItem('data', JSON.stringify(response.data))
       } else if (response.data.is_success === false) {
         alert("틀렸어요")
       } else{

@@ -120,25 +120,6 @@ export default function Router () {
   }
   }
 
-  async function getlogin_data(email) {
-      try {
-      //응답 성공 
-      const response = await axios.get(`http://localhost:3000/coupang/user/login_data?e_mail=${email}`);
-      console.log(response.data[0].is_success)
-        setlogin(true)
-        setuser(response.data)
-        getcart(response.data[0].user_sno)
-        getorder(response.data[0].user_sno)
-        getarrive(response.data[0].user_sno)
-        window.localStorage.setItem('login', true)
-        window.localStorage.setItem('user', response.data[0].user_sno)
-        window.localStorage.setItem('data', response.data)
-
-    } catch (error) {
-      //응답 실패
-    }
-  }
-
   async function getlogin(e) {
     e.preventDefault()
     const form_e_mail = e.target.children[0].children[0].children[1].value
@@ -150,7 +131,15 @@ export default function Router () {
         { headers: {"Content-Type": "application/x-www-form-urlencoded"}});
 
       if(response.data.is_success === true) {
-        getlogin_data(response.data.email, response.data.key)        
+        setlogin(true)
+        setuser(response.data)
+        getcart(response.data[0].user_sno)
+        getorder(response.data[0].user_sno)
+        getarrive(response.data[0].user_sno)
+        getusecoupon(response.data[0].user_sno)
+        window.localStorage.setItem('login', true)
+        window.localStorage.setItem('user', response.data[0].user_sno)
+        window.localStorage.setItem('data', JSON.stringify(response.data))
       } else if (response.data.is_success === false) {
         alert("틀렸어요")
       } else{
@@ -160,7 +149,6 @@ export default function Router () {
       //응답 실패
     }
   }
-
 
   async function getproduct(e) {
     console.log(e)
@@ -196,20 +184,13 @@ export default function Router () {
   }  
  
 
-    function logout() {
+  function logout() {
     setlogin(false)
     setuser()
     getcart()
     getorder()
     getarrive()
     window.localStorage.clear();
-  }
-
-  function logsss(){ 
-    if (window.localStorage.getItem('login') === true) {
-  getlogin(window.localStorage.getItem('user_sno'))
-  window.location.reload();
-  };
   }
 
   useEffect(() => {
@@ -243,8 +224,6 @@ export default function Router () {
   function handlefouce (e) {
     setfocus(e)
   }  
-
-logsss()
 
   return(
     <BrowserRouter>
